@@ -1,0 +1,38 @@
+body {
+    margin: 20px;
+    padding: 20px;
+    border: 3px solid black;
+    border-radius: 10px;
+}
+
+h6{
+  font-size: 18px;
+  margin: 1px;
+  
+}
+
+p {
+  font-size: 16px;
+  margin: 1px;
+}
+
+img {
+  border: 1px solid black; 
+  border-radius: 10px;
+  margin: 0 auto;
+}
+
+table {
+  border: 2px solid black;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+  margin: auto;
+  text-align: center;
+  th{
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #f2f2f2;
+    padding: 8px;
+  }
+}
