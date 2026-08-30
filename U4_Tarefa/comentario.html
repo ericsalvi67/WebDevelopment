@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <link rel="stylesheet" href="styles.css" />
@@ -8,7 +8,7 @@
     <script src="validacao.js"></script>
     <script>
       function validateGrade() {
-        var nota = document.getElementById("nota").value;
+        var nota = Number(document.getElementById("nota").value);
         if (nota < 0 || nota > 10) {
           alert("A nota deve estar entre 0 e 10.");
           return false;
@@ -16,43 +16,57 @@
         return true;
       }
     </script>
-
   </head>
 
   <body>
-    <h2> Comentários</h2>
-    <br>
+    <h2>Comentários</h2>
+    <br />
     <form action="sucesso.html" method="post" onsubmit="return validateForm();">
+      <label for="avaliacao">Avaliação:</label>
+      <select id="avaliacao" name="avaliacao" required>
+        <option value="">Selecione</option>
+        <option value="home">Página Principal</option>
+        <option value="formacao">Formação</option>
+        <option value="idioma">Idiomas</option>
+        <option value="experiencia">Experiências Profissionais</option>
+        <option value="pessoal">Gostos Pessoais</option>
+        <option value="outros">Outros</option>
+      </select>
+      <br /><br />
 
-        <label for="avaliacao">Avaliação:</label>
-        <select id="avaliacao" name="avaliacao" required>
-            <option value="">Selecione</option>
-            <option value="home">Página Principal</option>
-            <option value="formacao">Formação</option>
-            <option value="idioma">Idiomas</option>
-            <option value="experiencia">Experiências Profissionais</option>
-            <option value="pessoal">Gostos Pessoais</option>
-            <option value="outros">Outros</option>
-        </select>
-        <br><br>
+      <label for="nota">Nota:</label>
+      <input
+        onBlur="return validateGrade();"
+        id="nota"
+        type="number"
+        name="nota"
+        required
+      />
+      <br /><br />
 
-        <label for="nota">Nota:</label>
-        <input onBlur="return validateGrade();" id="nota" type="number" name="nota" required/>
-        <br><br>
+      <label for="comentario">Comentário:</label><br />
+      <textarea
+        id="comentario"
+        name="comentario"
+        rows="5"
+        cols="50"
+        required
+      ></textarea>
+      <br /><br />
 
-        <label for="comentario">Comentário:</label><br />
-        <textarea id="comentario" name="comentario" rows="5" cols="50" required></textarea>
-        <br><br>
-    
-        <input style="margin: 0 0 20px 0; padding: 10px 20px;" type="submit" value="Enviar" />
+      <input
+        style="margin: 0 0 20px 0; padding: 10px 20px"
+        type="submit"
+        value="Enviar"
+      />
     </form>
 
     <footer>
-        <input
-            type="button"
-            value="Voltar"
-            onclick="window.location.href = 'index.html'"
-            />
+      <input
+        type="button"
+        value="Voltar"
+        onclick="window.location.href = 'index.html'"
+      />
     </footer>
   </body>
 </html>
