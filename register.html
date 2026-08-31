@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+    <title>Registre-se</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body class="form-container">
+    <h2> Cadastro de Usuário</h2>
+    <br>
+    <form action="sucesso.html" method="post" onsubmit="return validateForm();">
+
+        <label for="usuario">Usuário:</label><br>
+        <input id="username" type="text" name="username" required/>
+        <br><br>
+
+        <label for="Senha">Senha:</label><br>
+        <input id="password" type="password" name="password" required></input>
+        <br><br>
+        <label for="Confirmação de Senha">Confirmação de Senha:</label><br>
+        <input id="confirm_password" type="password" name="confirm_password" required></input>
+        <br><br>
+    
+        <input class="botao" type="submit" value="Registrar" />
+    </form> 
+
+    <footer>
+        <input
+            type="button"
+            value="Voltar"
+            onclick="window.location.href = 'login.html'"
+            />
+    </footer>
+  </body>
+</html>

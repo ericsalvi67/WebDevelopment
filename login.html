@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+    <title>Login</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body class="form-container">
+    <h2> Login</h2>
+    <br>
+    <form action="sucesso.html" method="post" onsubmit="return validateForm();">
+
+        <label for="Login">Login:</label>
+        <input id="username" type="text" name="username" required/>
+        <br><br>
+
+        <label for="Senha">Senha:</label>
+        <input id="password" type="password" name="password" required></input>
+        <br><br>
+    
+        <input class="botao" type="submit" value="Enviar" />
+        <input class="botao" type="button" value="Registre-se" onclick="window.location.href = 'register.html'" />
+    </form>
+  </body>
+</html>
