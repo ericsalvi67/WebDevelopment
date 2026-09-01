@@ -11,12 +11,22 @@
   border-radius: 5px;
 }
 
-.form-container { 
-  margin: 100px auto;
+.container { 
   padding: 40px;
-  width: 310px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
   box-sizing: border-box;
   border: 3px solid black;
   border-radius: 10px;
   background-color: #c1c1c1a0;
+}
+
+.body {
+  background-color: #48c2ff;
+}
+
+.h2{
+  text-align: center;
 }

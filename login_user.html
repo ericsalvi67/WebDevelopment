@@ -6,10 +6,11 @@
     <meta charset="UTF-8" />
   </head>
 
-  <body class="form-container">
-    <h2> Login</h2>
-    <br>
-    <form action="sucesso.html" method="post" onsubmit="return validateForm();">
+  <body class="body">
+    
+    <form class="container" action="sucesso.html" method="post" onsubmit="return validateForm();">
+        <h2> Login</h2>
+        <br>
 
         <label for="Login">Login:</label>
         <input id="username" type="text" name="username" required/>
@@ -20,7 +21,7 @@
         <br><br>
     
         <input class="botao" type="submit" value="Enviar" />
-        <input class="botao" type="button" value="Registre-se" onclick="window.location.href = 'register.html'" />
+        <input class="botao" type="button" value="Registre-se" onclick="window.location.href = 'register_user.html'" />
     </form>
   </body>
 </html>
