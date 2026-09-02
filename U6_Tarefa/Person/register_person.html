@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../styles.css" />
+    <title>Registro de Pessoas</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body class="body">
+    <form class="container" action="sucesso.html" method="post" onsubmit="return validateForm();">
+        <h2> Cadastro de Pessoas</h2>
+        <br>
+
+        <label for="name">Nome:</label><br>
+        <input id="name" type="text" name="name" required/>
+        <br><br>
+
+        <label for="email">email:</label><br>
+        <input id="email" type="email" name="email" required></input>
+        <br><br>
+
+        <label for="phone">Telefone:</label><br>
+        <input id="phone" type="text" name="phone" required></input>
+        <br><br>
+
+        <label for="date_of_birth">Data de Nascimento:</label><br>
+        <input id="date_of_birth" type="date" name="date_of_birth" required></input>
+        <br><br>
+    
+        <input class="botao" type="submit" value="Registrar" />
+
+        <footer>
+            <input
+                type="button"
+                value="Voltar"
+                onclick="window.location.href = 'person.html'"
+                />
+        </footer>
+    </form>     
+  </body>
+</html>
