@@ -48,15 +48,6 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -64,11 +55,11 @@ public class UserServlet extends HttpServlet {
 
         System.out.println("Estou no GET.");
 
-        String parametro1 = request.getParameter("param1");
+        String action = request.getParameter("a");
         String pagina = request.getParameter("pagina");
         String prod = request.getParameter("produto");
 
-        System.out.println("Param 1: " + parametro1);
+        System.out.println("Param 1: " + action);
         System.out.println("Página: " + pagina);
         System.out.println("Produto: " + prod);
 
@@ -76,14 +67,6 @@ public class UserServlet extends HttpServlet {
         String a = request.getParameter("a");
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -102,11 +85,6 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";

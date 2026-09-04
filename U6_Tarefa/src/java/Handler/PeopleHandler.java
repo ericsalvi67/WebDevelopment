@@ -22,8 +22,7 @@ public class PeopleHandler implements IDAOT<People> {
             "insert into people "
             + "(name, email, phone, birth) "
             + "values "
-            + "(?, ?, ?, ?)"
-            + "returning id";
+            + "(?, ?, ?, ?)";
 
     public static final String _update = 
             "update people set "
@@ -38,10 +37,8 @@ public class PeopleHandler implements IDAOT<People> {
             + "where id = ?";
 
     @Override
-    public String salvar(People o) {
-        int idGerado = -1;
-
-        try {
+    public boolean Insert(People o) {
+         try {
             PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_insert);
 
             pst.setString(1, o.name);
@@ -49,23 +46,19 @@ public class PeopleHandler implements IDAOT<People> {
             pst.setString(3, o.phone);
             pst.setString(4, o.birth.toString());
 
-            ResultSet rs = pst.executeQuery();
+            pst.executeQuery();
             System.out.println("SQL executado!");
 
-            if (rs.next()) {
-                idGerado = rs.getInt("id");
-            }
-
-            return String.valueOf(idGerado);
+            return true;
 
         } catch (Exception e) {
             System.out.println("Erro ao inserir PEOPLE: " + e);
-            return e.toString();
+            return false;
         }
     }
 
     @Override
-    public String atualizar(People o) {
+    public boolean Update(People o) {
         try {
             PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_update);
 
@@ -78,16 +71,16 @@ public class PeopleHandler implements IDAOT<People> {
             pst.executeUpdate();
             System.out.println("SQL executado!");
 
-            return "0";
+            return true;
 
         } catch (Exception e) {
             System.out.println("Erro ao atualizar PEOPLE: " + e);
-            return e.toString();
+            return false;
         }
     }
 
     @Override
-    public String excluir(int id) {
+    public boolean Delete(int id) {
         try {
             PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_delete);
 
@@ -96,16 +89,16 @@ public class PeopleHandler implements IDAOT<People> {
             pst.executeUpdate();
             System.out.println("SQL executado!");
 
-            return null;
+            return true;
 
         } catch (Exception e) {
             System.out.println("Erro ao excluir PEOPLE: " + e);
-            return e.toString();
+            return false;
         }
     }
 
     @Override
-    public ArrayList<People> consultarTodos() {
+    public ArrayList<People> GetAll() {
         ArrayList<People> people = new ArrayList<>();
 
         try {
@@ -131,7 +124,7 @@ public class PeopleHandler implements IDAOT<People> {
     }
 
     @Override
-    public ArrayList<People> consultar(String criterio, String valor) {
+    public ArrayList<People> GetByValue(String criterio, String valor) {
         ArrayList<People> people = new ArrayList<>();
         String sql = _select + " where " + criterio + " ilike '%" + valor + "%';";
         
@@ -162,7 +155,7 @@ public class PeopleHandler implements IDAOT<People> {
     }
 
     @Override
-    public People consultarId(int id) {
+    public People GetById(int id) {
         People people = null;
 
         try {

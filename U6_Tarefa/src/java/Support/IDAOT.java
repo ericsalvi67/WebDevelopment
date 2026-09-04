@@ -5,15 +5,15 @@ import java.util.ArrayList;
 // Utiliza Generics como tipo de dado
 
 public interface IDAOT<T> {
-    public String salvar(T entity);
+    public boolean Insert(T entity);
 
-    public String atualizar(T entity);
+    public boolean Update(T entity);
 
-    public String excluir(int id);
+    public boolean Delete(int id);
 
-    public ArrayList<T> consultarTodos();
+    public ArrayList<T> GetAll();
 
-    public ArrayList<T> consultar(String criterio, String valor);
+    public ArrayList<T> GetByValue(String criterio, String valor);
 
-    public T consultarId(int id);
+    public T GetById(int id);
 }

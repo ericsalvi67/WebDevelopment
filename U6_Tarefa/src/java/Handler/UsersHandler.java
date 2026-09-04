@@ -17,32 +17,32 @@ public class UsersHandler implements IDAOT<User> {
                 + "and password = ? ";
 
     @Override
-    public String salvar(User o) {
+    public boolean Insert(User o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String atualizar(User o) {
+    public boolean Update(User o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String excluir(int id) {
+    public boolean Delete(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<User> consultarTodos() {
+    public ArrayList<User> GetAll() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<User> consultar(String criterio, String valor) {
+    public ArrayList<User> GetByValue(String criterio, String valor) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public User consultarId(int id) {
+    public User GetById(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
