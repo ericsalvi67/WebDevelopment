@@ -13,8 +13,8 @@ public class TablesInsertionDB {
             "	name varchar(150) NOT NULL," +
             "	password varchar(200) NOT NULL," +
             "	last_modification timestamp NOT NULL DEFAULT NOW()," +
-            "	CONSTRAINT usuario_pk PRIMARY KEY (id)," +
-            "	CONSTRAINT usuario_email_un UNIQUE (email));";
+            "	CONSTRAINT usuario_pk PRIMARY KEY (id), " +
+            "   CONSTRAINT usuario_un UNIQUE (name));";
     
     private static final String _createPeople = 
             "CREATE TABLE IF NOT EXISTS people ("
@@ -25,11 +25,11 @@ public class TablesInsertionDB {
             + " birth date NOT NULL,"
             + "	estado varchar(15) NOT NULL,"
             + "	last_modification timestamp NOT NULL DEFAULT NOW(),"
-            + "	CONSTRAINT endereco_pk PRIMARY KEY (id));";
+            + "	CONSTRAINT email_pk PRIMARY KEY (id));";
     
     private static final String _insertData = 
-            "INSERT INTO users (user, password)"
-            + "VALUES ('test', " + MD5.getMd5("test") + ");";
+            "INSERT INTO users (name, password)"
+            + "VALUES ('test', '" + MD5.getMd5("test") + "');";
 
 
     public static boolean CreateTables() throws Exception {

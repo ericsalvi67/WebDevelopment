@@ -8,8 +8,8 @@ package servlet;
 import Entity.User;
 import Handler.UsersHandler;
 import Support.MD5;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +20,7 @@ import java.io.PrintWriter;
  *
  * @author pretto
  */
+@WebServlet("/UserServlet")
 public class UserServlet extends HttpServlet {
 
     /**
@@ -67,21 +68,30 @@ public class UserServlet extends HttpServlet {
         String a = request.getParameter("a");
     }
 
+    /**
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         System.out.println("Estou no POST.");
         
-        String user = request.getParameter("user");
-        String password = request.getParameter("password");
+        String user = request.getParameter("username");
+        String password = MD5.getMd5(request.getParameter("password"));
         
-        User users = new User (user, MD5.getMd5(password));
+        User users = new User (user,password);
+        System.out.println(user);
+        System.out.println(password);
 
         if (new UsersHandler().Auth(users)) {
             Action.RouterPage("Menu.jsp", request, response);
         } else {
-            Action.RouterPage("erro.jsp", request, response);
+            Action.RouterPage("Error.jsp", request, response);
         }
     }
 

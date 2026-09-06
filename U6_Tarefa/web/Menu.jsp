@@ -20,7 +20,7 @@
         <h2 class="h2" > Menu</h2>
         <br>
 
-        <input class="botao" type="button" value="Pessoas" onclick="window.location.href = 'Person/person.html'" />
+        <input class="botao" type="button" value="Pessoas" onclick="window.location.href = 'People/People.jsp'" />
     </div>
   </body>
 </html>

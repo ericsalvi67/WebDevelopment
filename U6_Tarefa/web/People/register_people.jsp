@@ -1,3 +1,10 @@
+<%-- 
+    Document   : register_people
+    Created on : 6 de set. de 2026, 17:13:39
+    Author     : Salvi
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -17,7 +24,7 @@
           <br><br>
         </div>
         <div>
-          <label for="email">email:</label><br>
+          <label for="email">Email:</label><br>
           <input id="email" type="email" name="email" required></input>
           <br><br>
         </div>
@@ -45,3 +52,5 @@
     </form>     
   </body>
 </html>
+
+

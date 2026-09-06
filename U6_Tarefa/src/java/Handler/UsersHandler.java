@@ -11,9 +11,9 @@ import java.sql.PreparedStatement;
 public class UsersHandler implements IDAOT<User> {
     
     public static final String _select = 
-                "select user, password "
+                "select name, password "
                 + "from users "
-                + "where user = ? "
+                + "where name = ? "
                 + "and password = ? ";
 
     @Override
@@ -52,7 +52,7 @@ public class UsersHandler implements IDAOT<User> {
             PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_select);
 
             pst.setString(1, u.user);
-            pst.setString(2, MD5.getMd5(u.password));
+            pst.setString(2, u.password);
 
             ResultSet result = pst.executeQuery();
             System.out.println("SQL executado!");

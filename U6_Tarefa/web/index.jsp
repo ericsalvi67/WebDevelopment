@@ -14,23 +14,38 @@
     <title>Login</title>
     <meta charset="UTF-8" />
   </head>
-
   <body class="body">
+      
+      <%-- USE FOR INSERT TABLES AND ADD A TEST USER --%>
+      <%--
+            TablesInsertionDB.CreateTables()
+      --%>
     
-    <form class="container" action="/UserServlet" method="post";">
+    <form class="container" action="UserServlet" method="post" autocomplete="off">
         <h2> Login</h2>
         <br>
-        <%= 
-            TablesInsertionDB.CreateTables()
-        %>
 
         <label for="Login">Login:</label>
-        <input id="username" type="text" name="username" required/>
+        <input
+            id="username"
+            type="text"
+            name="username"
+            value=""
+            autocomplete="new-password"
+            required
+        />
         <br><br>
 
         <label for="Senha">Senha:</label>
-        <input id="password" type="password" name="password" required></input>
-        <br><br>
+        <input
+            id="password"
+            type="password"
+            name="password"
+            value=""
+            autocomplete="new-password"
+            required
+        />
+        <br><br> 
     
         <input class="botao" type="submit" value="Enviar" />
     </form>

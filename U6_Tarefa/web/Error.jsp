@@ -20,7 +20,7 @@
         class="botao"
         type="button"
         value="Voltar"
-        onclick="window.location.href = '../index.html'"
+        onclick="window.location.href = 'index.jsp'"
       />
     </footer>
   </body>

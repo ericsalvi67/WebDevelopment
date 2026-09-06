@@ -104,7 +104,7 @@ public class PeopleHandler implements IDAOT<People> {
         try {
             Statement st = ConexaoBD.getInstance().getConnection().createStatement();
 
-            ResultSet rs = st.executeQuery(_select + " order by rua");
+            ResultSet rs = st.executeQuery(_select + " order by name");
             System.out.println("SQL executado!");
 
             while (rs.next()) {
@@ -124,18 +124,25 @@ public class PeopleHandler implements IDAOT<People> {
     }
 
     @Override
-    public ArrayList<People> GetByValue(String criterio, String valor) {
+    public ArrayList<People> GetByValue(String criteria, String value) {
         ArrayList<People> people = new ArrayList<>();
-        String sql = _select + " where " + criterio + " ilike '%" + valor + "%';";
-        
-        if(criterio == "ID"){
-            sql = _select + " where " + criterio + " = " + valor + ";";
-        }
+        String whereSql = 
+            " where id = '?' "
+            + "or name ilike '?' "
+            + "or email ilike '?' "
+            + "or phone ilike '?' "
+            + "or birth ilike '?' ";
 
         try {
-            Statement st = ConexaoBD.getInstance().getConnection().createStatement();
-
-            ResultSet rs = st.executeQuery(sql);
+            PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_select + whereSql);
+            
+            pst.setString(1, value);
+            pst.setString(2, value);
+            pst.setString(3, value);
+            pst.setString(4, value);
+            pst.setString(5, value);
+            
+            ResultSet rs = pst.executeQuery();
             System.out.println("SQL executado!");
 
             while (rs.next()) {

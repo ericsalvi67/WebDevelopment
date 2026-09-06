@@ -9,6 +9,7 @@ import Entity.People;
 import Handler.PeopleHandler;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import java.sql.Date;
  *
  * @author pretto
  */
+@WebServlet("/PeopleServlet")
 public class PeopleServlet extends HttpServlet {
 
     /**
