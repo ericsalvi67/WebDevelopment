@@ -10,11 +10,12 @@
   <head>
     <link rel="stylesheet" href="../styles.css" />
     <title>Registro de Pessoas</title>
+    <script src="people_scripts.js"></script>
     <meta charset="UTF-8" />
   </head>
 
   <body class="body">
-    <form class="container" action="sucesso.html" method="post" onsubmit="return validateForm();">
+    <form class="container" action="../PeopleServlet" method="post" onsubmit="return validateForm()">
         <h2> Cadastro de Pessoas</h2>
         <br>
 
@@ -46,7 +47,7 @@
             <input
                 type="button"
                 value="Voltar"
-                onclick="window.location.href = 'person.html'"
+                onclick="window.location.href = 'People.jsp'"
                 />
         </footer>
     </form>     

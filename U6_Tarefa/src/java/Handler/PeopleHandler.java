@@ -6,7 +6,9 @@ import Entity.People;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.sql.Date;
 
 public class PeopleHandler implements IDAOT<People> {
 
@@ -33,22 +35,21 @@ public class PeopleHandler implements IDAOT<People> {
             + "where id = ?";
 
     public static final String _delete = 
-            "delete from endereco "
+            "delete from people "
             + "where id = ?";
 
     @Override
     public boolean Insert(People o) {
          try {
             PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_insert);
-
+            
             pst.setString(1, o.name);
             pst.setString(2, o.email);
             pst.setString(3, o.phone);
-            pst.setString(4, o.birth.toString());
+            pst.setDate(4, o.birth);
 
-            pst.executeQuery();
+            pst.execute();
             System.out.println("SQL executado!");
-
             return true;
 
         } catch (Exception e) {
@@ -65,12 +66,17 @@ public class PeopleHandler implements IDAOT<People> {
             pst.setString(1, o.name);
             pst.setString(2, o.email);
             pst.setString(3, o.phone);
-            pst.setString(4, o.birth.toString());
-            pst.setInt(6, o.id);
+            pst.setDate(4, o.birth);
+            pst.setInt(5, o.id);
 
-            pst.executeUpdate();
-            System.out.println("SQL executado!");
-
+            int rows = pst.executeUpdate();
+            
+            if (rows == 0) {
+                System.out.println("Nenhuma coluna atualizada.");
+                return false;
+            }
+            
+            System.out.println("SQL executado! Colunas atualizadas: " + rows);
             return true;
 
         } catch (Exception e) {
@@ -83,12 +89,11 @@ public class PeopleHandler implements IDAOT<People> {
     public boolean Delete(int id) {
         try {
             PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_delete);
-
+            
             pst.setInt(1, id);
 
-            pst.executeUpdate();
+            pst.execute();
             System.out.println("SQL executado!");
-
             return true;
 
         } catch (Exception e) {

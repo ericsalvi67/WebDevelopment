@@ -48,33 +48,7 @@ public class UserServlet extends HttpServlet {
             out.println("</html>");
         }
     }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-//        processRequest(request, response);
-
-        System.out.println("Estou no GET.");
-
-        String action = request.getParameter("a");
-        String pagina = request.getParameter("pagina");
-        String prod = request.getParameter("produto");
-
-        System.out.println("Param 1: " + action);
-        System.out.println("Página: " + pagina);
-        System.out.println("Produto: " + prod);
-
-        // -------------------------------------------------------------------
-        String a = request.getParameter("a");
-    }
-
-    /**
-     *
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -85,8 +59,10 @@ public class UserServlet extends HttpServlet {
         String password = MD5.getMd5(request.getParameter("password"));
         
         User users = new User (user,password);
-        System.out.println(user);
-        System.out.println(password);
+        System.out.println("------------USER------------");
+        System.out.println(users.user);
+        System.out.println(users.password);
+        System.out.println("------------USER------------");
 
         if (new UsersHandler().Auth(users)) {
             Action.RouterPage("Menu.jsp", request, response);

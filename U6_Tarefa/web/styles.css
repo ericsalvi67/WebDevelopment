@@ -57,3 +57,46 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   border-radius: 20px;
   background-color: #FF9999;
 }
+
+.tabela {
+    border-collapse: collapse !important;
+    width: 100%;
+    max-width: 900px;
+    min-width: 800px;
+    margin: 20px auto;
+    text-align: center;
+    font-family: sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+}
+
+.tabela th {
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #A658A7 !important;
+    color: #ffffff !important;
+    padding: 12px 8px;
+    border: 1px solid #8a4a8c;
+}
+
+.tabela td {
+    font-size: 15px;
+    padding: 10px 8px;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.tabela tbody tr:nth-child(even) {
+    background-color: #f7f2f9;
+}
+
+.tabela tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+.tabela tbody tr:hover td {
+    background-color: #eaddee;
+    transition: background-color 0.2s ease-in-out;
+}

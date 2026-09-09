@@ -21,25 +21,31 @@ public class TablesInsertionDB {
             + "	id serial4 NOT NULL,"
             + "	name varchar(150) NOT NULL,"
             + " email varchar(50) NOT NULL,"
-            + " telefone varchar(15) NOT NULL,"
+            + " phone varchar(15) NOT NULL,"
             + " birth date NOT NULL,"
-            + "	estado varchar(15) NOT NULL,"
             + "	last_modification timestamp NOT NULL DEFAULT NOW(),"
-            + "	CONSTRAINT email_pk PRIMARY KEY (id));";
+            + "	CONSTRAINT people_pk PRIMARY KEY (id),"
+            + " CONSTRAINT people_un UNIQUE (email));";
     
     private static final String _insertData = 
             "INSERT INTO users (name, password)"
-            + "VALUES ('test', '" + MD5.getMd5("test") + "');";
+            + "VALUES "
+            + "('admin', '" + MD5.getMd5("admin") + "'),"
+            + "('juca', '" + MD5.getMd5("bala") + "');";
 
 
-    public static boolean CreateTables() throws Exception {
+    public static boolean CreateTables(boolean createTable, boolean addData) throws Exception {
         try {
             Statement st = ConexaoBD.getInstance().getConnection().createStatement();
 
-            st.executeUpdate(_createUsers);
-            st.executeUpdate(_createPeople);
+            if(createTable){
+                st.executeUpdate(_createUsers);
+                st.executeUpdate(_createPeople);
+            }
             
-            st.executeUpdate(_insertData);
+            if (addData){
+                st.executeUpdate(_insertData);
+            }
             
             return true;
 

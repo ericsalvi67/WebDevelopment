@@ -1,10 +1,5 @@
-<%-- 
-    Document   : Error
-    Created on : 3 de set. de 2026, 22:25:41
-    Author     : Salvi
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- Document : Error Created on : 3 de set. de 2026, 22:25:41 Author : Salvi
+--%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -20,7 +15,7 @@
         class="botao"
         type="button"
         value="Voltar"
-        onclick="window.location.href = 'index.jsp'"
+        onclick="window.location.href = '../'"
       />
     </footer>
   </body>

@@ -7,7 +7,6 @@ package servlet;
 
 import Entity.People;
 import Handler.PeopleHandler;
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
@@ -55,31 +55,34 @@ public class PeopleServlet extends HttpServlet {
             throws ServletException, IOException {
 
         System.out.println("Estou no GET.");
+        
+        ArrayList<People> people = new ArrayList<>();
 
         String action = request.getParameter("a");
         String criteria = request.getParameter("c");
         String value = request.getParameter("v");
-        int id = Integer.parseInt(request.getParameter("id"));
 
         System.out.println("Action: " + action);
         System.out.println("Criteria: " + criteria);
         System.out.println("Value: " + value);
-        System.out.println("ID: " + id);
-
+        
         // -------------------------------------------------------------------
         switch (action) {
             case "getAll":
-                new PeopleHandler().GetAll();
+                people.addAll(new PeopleHandler().GetAll());
                 break;
             case "getByValue":
-                new PeopleHandler().GetByValue(criteria, value);
+                people.addAll(new PeopleHandler().GetByValue(criteria, value));
                 break;
             case "getById":
-                new PeopleHandler().GetById(id);
+                people.add(new PeopleHandler().GetById(Integer.parseInt(request.getParameter("id"))));
                 break;
             default:
                 System.out.println("Ação não reconhecida");
         }
+        
+        request.setAttribute("peopleList", people);
+        Action.RouterPage("People/select_people.jsp", request, response);
     }
 
     @Override
@@ -91,14 +94,23 @@ public class PeopleServlet extends HttpServlet {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
-        Date birth = Date.valueOf(request.getParameter("birth"));
+        Date birth = Date.valueOf(request.getParameter("date_of_birth"));
 
         People people = new People(0, name, email, phone, birth);
+        
+        System.out.println("------------PEOPLE------------");
+        System.out.println(people.name);
+        System.out.println(people.email);
+        System.out.println(people.phone);
+        System.out.println(people.birth);
+        System.out.println("------------PEOPLE------------");
 
         if (new PeopleHandler().Insert(people)){
+            response.setStatus(HttpServletResponse.SC_OK);
             Action.RouterPage("Menu.jsp", request, response);
         } else {
-            Action.RouterPage("erro.jsp", request, response);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            Action.RouterPage("Error.jsp", request, response);
 
         }
     }
@@ -113,14 +125,14 @@ public class PeopleServlet extends HttpServlet {
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
-        Date birth = Date.valueOf(request.getParameter("birth"));
+        Date birth = Date.valueOf(request.getParameter("date_of_birth"));
 
         People people = new People(id, name, email, phone, birth);
 
         if (new PeopleHandler().Update(people)){
-            Action.RouterPage("Menu.jsp", request, response);
+            response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            Action.RouterPage("erro.jsp", request, response);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
         }
     }
@@ -134,10 +146,9 @@ public class PeopleServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
 
         if (new PeopleHandler().Delete(id)){
-            Action.RouterPage("Menu.jsp", request, response);
+            response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            Action.RouterPage("erro.jsp", request, response);
-
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
