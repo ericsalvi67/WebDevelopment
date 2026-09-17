@@ -27,62 +27,48 @@ public class PeopleHandler implements IDAOT<People> {
             + "(?, ?, ?, ?)";
 
     public static final String _update = 
-            "update people set "
+            "update set "
             + "name = ?, "
             + "email = ?, "
             + "phone = ?, "
-            + "birth = ? "
-            + "where id = ?";
+            + "birth = ? ";
 
     public static final String _delete = 
             "delete from people "
             + "where id = ?";
+    
+    public static final String _upsert = 
+            _insert
+            + " ON CONFLICT (email) DO " 
+            + _update; 
 
     @Override
     public boolean Insert(People o) {
          try {
-            PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_insert);
+            PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_upsert);
             
             pst.setString(1, o.name);
             pst.setString(2, o.email);
             pst.setString(3, o.phone);
             pst.setDate(4, o.birth);
+            pst.setString(5, o.name);
+            pst.setString(6, o.email);
+            pst.setString(7, o.phone);
+            pst.setDate(8, o.birth);
 
             pst.execute();
             System.out.println("SQL executado!");
             return true;
 
         } catch (Exception e) {
-            System.out.println("Erro ao inserir PEOPLE: " + e);
+            System.out.println("Erro ao executar upsert em PEOPLE: " + e);
             return false;
         }
     }
 
     @Override
     public boolean Update(People o) {
-        try {
-            PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_update);
-
-            pst.setString(1, o.name);
-            pst.setString(2, o.email);
-            pst.setString(3, o.phone);
-            pst.setDate(4, o.birth);
-            pst.setInt(5, o.id);
-
-            int rows = pst.executeUpdate();
-            
-            if (rows == 0) {
-                System.out.println("Nenhuma coluna atualizada.");
-                return false;
-            }
-            
-            System.out.println("SQL executado! Colunas atualizadas: " + rows);
-            return true;
-
-        } catch (Exception e) {
-            System.out.println("Erro ao atualizar PEOPLE: " + e);
-            return false;
-        }
+        return true;
     }
 
     @Override

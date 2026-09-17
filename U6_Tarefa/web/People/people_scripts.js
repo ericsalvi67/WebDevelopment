@@ -4,23 +4,25 @@
  */
 
 function deletePerson(contextPath, id) {
-  if (!confirm("Deseja realmente excluir esta pessoa?")) {
-    return;
-  }
 
-  fetch(contextPath + "/PeopleServlet?id=" + id, {
-    method: "DELETE"
-  })
-    .then((response) => {
-      if (response.ok) {
-        window.location.href = contextPath + "/PeopleServlet?a=getAll";
-      } else {
-        alert("Erro ao excluir pessoa.");
-      }
+    if (!confirm("Deseja realmente excluir esta pessoa?")) {
+        return;
+    }
+
+    fetch(contextPath + "/PeopleServlet?id=" + id, {
+        method: "DELETE"
     })
-    .catch((error) => {
-      console.error(error);
-      alert("Erro ao excluir pessoa.");
+    .then(response => {
+        if (response.ok) {
+            window.location.href =
+                contextPath + "/PeopleServlet?a=getAll";
+        } else {
+            alert("Erro ao excluir pessoa.");
+        }
+    })
+    .catch(error => {
+        console.error("Erro no DELETE:", error);
+        alert("Erro ao excluir pessoa.");
     });
 }
 

@@ -66,6 +66,7 @@ public class PeopleServlet extends HttpServlet {
         System.out.println("Criteria: " + criteria);
         System.out.println("Value: " + value);
         
+        System.out.println("Action recebida: [" + action + "]");
         // -------------------------------------------------------------------
         switch (action) {
             case "getAll":
@@ -75,8 +76,10 @@ public class PeopleServlet extends HttpServlet {
                 people.addAll(new PeopleHandler().GetByValue(criteria, value));
                 break;
             case "getById":
-                people.add(new PeopleHandler().GetById(Integer.parseInt(request.getParameter("id"))));
-                break;
+                People person = new PeopleHandler().GetById(Integer.parseInt(request.getParameter("id")));
+                request.setAttribute("person", person);
+                Action.RouterPage("People/update_people.jsp", request, response);
+                return;
             default:
                 System.out.println("Ação não reconhecida");
         }
@@ -107,32 +110,10 @@ public class PeopleServlet extends HttpServlet {
 
         if (new PeopleHandler().Insert(people)){
             response.setStatus(HttpServletResponse.SC_OK);
-            Action.RouterPage("Menu.jsp", request, response);
+            Action.RouterPage("People/People.jsp", request, response);
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             Action.RouterPage("Error.jsp", request, response);
-
-        }
-    }
-
-    @Override
-    protected void doPatch(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        System.out.println("Estou no PATCH.");
-        
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        Date birth = Date.valueOf(request.getParameter("date_of_birth"));
-
-        People people = new People(id, name, email, phone, birth);
-
-        if (new PeopleHandler().Update(people)){
-            response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
         }
     }
@@ -144,10 +125,13 @@ public class PeopleServlet extends HttpServlet {
         System.out.println("Estou no DELETE.");
         
         int id = Integer.parseInt(request.getParameter("id"));
+        System.out.println("ID recebido no DELETE: " + id);
 
         if (new PeopleHandler().Delete(id)){
+            System.out.println("Pessoa excluída com sucesso.");
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
+            System.out.println("Erro ao excluir pessoa.");
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

@@ -16,7 +16,7 @@
         <meta charset="UTF-8">
         <title>People</title>
         <link rel="stylesheet" href="styles.css">
-        <script src="people_scripts.js"></script>
+        <script src="People/people_scripts.js"></script>
     </head>
     <body class="body">
 
@@ -63,11 +63,10 @@
                             <%= people.birth %>
                         </td>
                         <td>
-                            <input
-                                type="button"
-                                value="Editar"
-                                onclick="window.location.href = 'PeopleServlet?a=getById&id=<%= people.id %>'"
-                            >
+                            <a
+                                href="PeopleServlet?a=getById&id=<%= people.id %>">
+                                Editar
+                            </a>
                         </td>
                         <td>
                             <input
