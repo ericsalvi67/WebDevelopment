@@ -40,14 +40,15 @@
           <br><br>
         </div>
         <div>
-          <input class="botao" type="submit" value="Registrar" />
+          <input class="botao3" type="submit" value="Registrar" />
         </div>
 
         <footer>
             <input
                 type="button"
+                class="botao"
                 value="Voltar"
-                onclick="window.location.href = 'People.jsp'"
+                onclick="window.location.href = 'Cars.jsp'"
                 />
         </footer>
     </form>     
