@@ -11,7 +11,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -29,3 +28,5 @@ replay_pid*
 /U6_Tarefa/build/
 /U6_Tarefa/dist/
 /EricSalvi_WebDevProject/dist/
+/EricSalvi_WebDevProject/nbproject/private/
+/EricSalvi_WebDevProject/build/

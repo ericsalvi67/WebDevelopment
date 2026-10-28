@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import Entities.Cars;
 import Entities.People;
 import Handlers.PeopleHandler;
 import jakarta.servlet.ServletException;
@@ -21,8 +22,8 @@ import java.util.ArrayList;
  *
  * @author pretto
  */
-@WebServlet("/PeopleServlet")
-public class PeopleServlet extends HttpServlet {
+@WebServlet("/OptionsServlet")
+public class OptionsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,7 +42,7 @@ public class PeopleServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>People Servlet</title>");
+            out.println("<title>Options Servlet</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet action at " + request.getContextPath() + "</h1>");
@@ -56,7 +57,7 @@ public class PeopleServlet extends HttpServlet {
 
         System.out.println("Estou no GET.");
         
-        ArrayList<People> people = new ArrayList<>();
+        ArrayList<Options> options = new ArrayList<>();
 
         String action = request.getParameter("a");
         String criteria = request.getParameter("c");
@@ -70,22 +71,22 @@ public class PeopleServlet extends HttpServlet {
         // -------------------------------------------------------------------
         switch (action) {
             case "getAll":
-                people.addAll(new PeopleHandler().GetAll());
+                options.addAll(new OptionsHandler().GetAll());
                 break;
             case "getByValue":
-                people.addAll(new PeopleHandler().GetByValue(criteria, value));
+                options.addAll(new OptionsHandler().GetByValue(criteria, value));
                 break;
             case "getById":
-                People person = new PeopleHandler().GetById(Integer.parseInt(request.getParameter("id")));
-                request.setAttribute("person", person);
-                Action.RouterPage("People/update_people.jsp", request, response);
+                Options option = new OptionsHandler().GetById(Integer.parseInt(request.getParameter("id")));
+                request.setAttribute("option", option);
+                Action.RouterPage("Options/Update.jsp", request, response);
                 return;
             default:
                 System.out.println("Ação não reconhecida");
         }
         
-        request.setAttribute("peopleList", people);
-        Action.RouterPage("People/select_people.jsp", request, response);
+        request.setAttribute("optionsList", options);
+        Action.RouterPage("Options/Options.jsp", request, response);
     }
 
     @Override
@@ -93,24 +94,17 @@ public class PeopleServlet extends HttpServlet {
             throws ServletException, IOException {
 
         System.out.println("Estou no POST.");
-
         String name = request.getParameter("name");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        Date birth = Date.valueOf(request.getParameter("date_of_birth"));
 
-        People people = new People(0, name, email, phone, birth);
+        Options options = new Options(0, name);
         
-        System.out.println("------------PEOPLE------------");
-        System.out.println(people.name);
-        System.out.println(people.email);
-        System.out.println(people.phone);
-        System.out.println(people.birth);
-        System.out.println("------------PEOPLE------------");
+        System.out.println("------------OPTIONS------------");
+        System.out.println(options.name);
+        System.out.println("------------OPTIONS------------");
 
-        if (new PeopleHandler().Insert(people)){
+        if (new OptionsHandler().Insert(options)){
             response.setStatus(HttpServletResponse.SC_OK);
-            Action.RouterPage("People/People.jsp", request, response);
+            Action.RouterPage("Options/Options.jsp", request, response);
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             Action.RouterPage("Error.jsp", request, response);
@@ -127,11 +121,12 @@ public class PeopleServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         System.out.println("ID recebido no DELETE: " + id);
 
-        if (new PeopleHandler().Delete(id)){
-            System.out.println("Pessoa excluída com sucesso.");
+
+        if (new OptionsHandler().Delete(id)){
+            System.out.println("Opção excluída com sucesso.");
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            System.out.println("Erro ao excluir pessoa.");
+            System.out.println("Erro ao excluir opção.");
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }

@@ -1,0 +1,145 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package servlet;
+
+import Entities.Cars;
+import Entities.People;
+import Handlers.PeopleHandler;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Date;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author pretto
+ */
+@WebServlet("/CarsServlet")
+public class CarsServlet extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Cars Servlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet action at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        System.out.println("Estou no GET.");
+        
+        ArrayList<Cars> cars = new ArrayList<>();
+
+        String action = request.getParameter("a");
+        String criteria = request.getParameter("c");
+        String value = request.getParameter("v");
+
+        System.out.println("Action: " + action);
+        System.out.println("Criteria: " + criteria);
+        System.out.println("Value: " + value);
+        
+        System.out.println("Action recebida: [" + action + "]");
+        // -------------------------------------------------------------------
+        switch (action) {
+            case "getAll":
+                cars.addAll(new CarsHandler().GetAll());
+                break;
+            case "getByValue":
+                cars.addAll(new CarsHandler().GetByValue(criteria, value));
+                break;
+            case "getById":
+                Cars car = new CarsHandler().GetById(Integer.parseInt(request.getParameter("id")));
+                request.setAttribute("car", car);
+                Action.RouterPage("Cars/Update.jsp", request, response);
+                return;
+            default:
+                System.out.println("Ação não reconhecida");
+        }
+        
+        request.setAttribute("carsList", cars);
+        Action.RouterPage("Cars/Cars.jsp", request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        System.out.println("Estou no POST.");
+        String name = request.getParameter("name");
+        String number_plate = request.getParameter("number_plate");
+        String color = request.getParameter("color");
+        String users_email = request.getParameter("users_email");
+
+        Cars cars = new Cars(0, name, number_plate, color, users_email);
+        
+        System.out.println("------------CARS------------");
+        System.out.println(cars.name);
+        System.out.println(cars.number_plate);
+        System.out.println(cars.color);
+        System.out.println(cars.users_email);
+        System.out.println("------------CARS------------");
+
+        if (new CarsHandler().Insert(cars)){
+            response.setStatus(HttpServletResponse.SC_OK);
+            Action.RouterPage("Cars/Cars.jsp", request, response);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            Action.RouterPage("Error.jsp", request, response);
+
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        System.out.println("Estou no DELETE.");
+        
+        int id = Integer.parseInt(request.getParameter("id"));
+        System.out.println("ID recebido no DELETE: " + id);
+
+        if (new CarsHandler().Delete(id)){
+            System.out.println("Carro excluído com sucesso.");
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            System.out.println("Erro ao excluir carro.");
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+
+}

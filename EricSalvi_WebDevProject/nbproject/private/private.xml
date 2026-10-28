@@ -2,22 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Entities/Users.java</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Handlers/UsersHandler.java</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Entities/People.java</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/servlet/UsersServlet.java</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/servlet/Action.java</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/web/index.jsp</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/web/styles.css</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/web/Error.jsp</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/web/Menu.jsp</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Support/MD5.java</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Support/TablesInsertionDB.java</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/web/Cars/Cars.jsp</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/web/Cars/Scripts.js</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/web/META-INF/context.xml</file>
-            <file>file:/C:/Users/erics/OneDrive/Documentos/PROG/WebDevelopment/EricSalvi_WebDevProject/web/Cars/Register.jsp</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

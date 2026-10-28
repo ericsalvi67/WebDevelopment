@@ -2,72 +2,61 @@ package Handlers;
 
 import Support.ConexaoBD;
 import Support.IDAOT;
-import Entities.People;
+import Entities.Options;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.sql.Date;
 
-public class PeopleHandler implements IDAOT<People> {
+public class OptionsHandler implements IDAOT<Options> {
 
     public static final String _select = 
             "select id, "
             + "name, "
-            + "email, "
-            + "phone, "
-            + "birth "
-            + "from people ";
+            + "from options ";
 
     public static final String _insert = 
-            "insert into people "
-            + "(name, email, phone, birth) "
+            "insert into options "
+            + "(name) "
             + "values "
-            + "(?, ?, ?, ?)";
+            + "(?)";
 
     public static final String _update = 
             "update set "
             + "name = ?, "
-            + "email = ?, "
-            + "phone = ?, "
-            + "birth = ? ";
+            + "updated_at = ? ";
 
     public static final String _delete = 
-            "delete from people "
+            "delete from options "
             + "where id = ?";
     
     public static final String _upsert = 
             _insert
-            + " ON CONFLICT (email) DO " 
+            + " ON CONFLICT (name) DO " 
             + _update; 
 
     @Override
-    public boolean Insert(People o) {
+    public boolean Insert(Options o) {
          try {
             PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_upsert);
             
             pst.setString(1, o.name);
-            pst.setString(2, o.email);
-            pst.setString(3, o.phone);
-            pst.setDate(4, o.birth);
-            pst.setString(5, o.name);
-            pst.setString(6, o.email);
-            pst.setString(7, o.phone);
-            pst.setDate(8, o.birth);
-
+            pst.setString(2, o.name);
+            pst.setTimestamp(3, Timestamp.from(Instant.now()));
             pst.execute();
             System.out.println("SQL executado!");
             return true;
 
         } catch (Exception e) {
-            System.out.println("Erro ao executar upsert em PEOPLE: " + e);
+            System.out.println("Erro ao executar upsert em Options: " + e);
             return false;
         }
     }
 
     @Override
-    public boolean Update(People o) {
+    public boolean Update(Options o) {
         return true;
     }
 
@@ -83,14 +72,14 @@ public class PeopleHandler implements IDAOT<People> {
             return true;
 
         } catch (Exception e) {
-            System.out.println("Erro ao excluir PEOPLE: " + e);
+            System.out.println("Erro ao excluir Options: " + e);
             return false;
         }
     }
 
     @Override
-    public ArrayList<People> GetAll() {
-        ArrayList<People> people = new ArrayList<>();
+    public ArrayList<Options> GetAll() {
+        ArrayList<Options> Options = new ArrayList<>();
 
         try {
             Statement st = ConexaoBD.getInstance().getConnection().createStatement();
@@ -99,30 +88,24 @@ public class PeopleHandler implements IDAOT<People> {
             System.out.println("SQL executado!");
 
             while (rs.next()) {
-                people.add(new People(
+                Options.add(new Options(
                         rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getDate("birth")));
+                        rs.getString("name")));
             }
 
         } catch (Exception e) {
-            System.out.println("Erro ao consultar PEOPLE: " + e);
+            System.out.println("Erro ao consultar Options: " + e);
         }
 
-        return people;
+        return Options;
     }
 
     @Override
-    public ArrayList<People> GetByValue(String criteria, String value) {
-        ArrayList<People> people = new ArrayList<>();
+    public ArrayList<Options> GetByValue(String criteria, String value) {
+        ArrayList<Options> Options = new ArrayList<>();
         String whereSql = 
             " where id = '?' "
-            + "or name ilike '?' "
-            + "or email ilike '?' "
-            + "or phone ilike '?' "
-            + "or birth ilike '?' ";
+            + "or name ilike '?' ";
 
         try {
             PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_select + whereSql);
@@ -137,24 +120,21 @@ public class PeopleHandler implements IDAOT<People> {
             System.out.println("SQL executado!");
 
             while (rs.next()) {
-                people.add(new People(
+                Options.add(new Options(
                     rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("email"),
-                    rs.getString("phone"),
-                    rs.getDate("birth")));
+                    rs.getString("name")));
             }
 
         } catch (Exception e) {
-            System.out.println("Erro ao consultar PEOPLE: " + e);
+            System.out.println("Erro ao consultar Options: " + e);
         }
 
-        return people;
+        return Options;
     }
 
     @Override
-    public People GetById(int id) {
-        People people = null;
+    public Options GetById(int id) {
+        Options Options = null;
 
         try {
             Statement st = ConexaoBD.getInstance().getConnection().createStatement();
@@ -163,17 +143,14 @@ public class PeopleHandler implements IDAOT<People> {
             System.out.println("SQL executado!");
 
             while (rs.next()) {
-                people = new People(rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getString("phone"),
-                        rs.getDate("birth"));
+                Options = new Options(rs.getInt("id"),
+                        rs.getString("name"));
             }
 
         } catch (Exception e) {
-            System.out.println("Erro ao consultar PEOPLE: " + e);
+            System.out.println("Erro ao consultar Options: " + e);
         }
 
-        return people;
+        return Options;
     }
 }
