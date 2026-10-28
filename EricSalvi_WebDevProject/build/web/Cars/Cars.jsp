@@ -12,9 +12,8 @@
 
 <html>
     <head>
-
         <meta charset="UTF-8">
-        <title>Cars</title>
+        <title>Carros</title>
         <link rel="stylesheet" href="../styles.css">
         <script src="Cars/Scripts.js"></script>
     </head>

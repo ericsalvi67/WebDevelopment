@@ -7,116 +7,157 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Salvi
 */
 
+/* =========================
+   CONFIGURAÇÕES GERAIS
+   ========================= */
+
+.body {
+    background-color: #14532D;
+    font-family: sans-serif;
+    color: #333333;
+}
+
+.h2 {
+    text-align: center;
+    color: #333333;
+}
+
+/* =========================
+   CONTAINERS
+   ========================= */
+
+.container,
+.error {
+    padding: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    border: 3px solid #000000;
+    border-radius: 20px;
+}
+
+.container {
+    background-color: #DCFCE7;
+}
+
+.error {
+    background-color: #ff9999;
+}
+
+/* =========================
+   MENU
+   ========================= */
+
+.menu {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 15px;
+}
+
+/* =========================
+   BOTÕES
+   ========================= */
+
+.botao,
+.botao2,
+.botao3 {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #000000;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .botao {
-  font-size: 16px;
-  color: #000000;
-  border: 1px solid #000000;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 0 0 20px 0;
-  cursor: pointer;
-  border-radius: 5px;
+    margin: 0 0 20px 0;
+    background-color: #ffffff;
 }
 
 .botao2 {
-  font-size: 16px;
-  color: #000000;
-  border: 1px solid #000000;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 0 0 20px 0;
-  cursor: pointer;
-  border-radius: 5px;
-  position: fixed;
-  right: 30px;
-  background-color: #55FF55;
+    position: fixed;
+    right: 30px;
+    background-color: #55ff55;
 }
 
 .botao3 {
-  font-size: 16px;
-  color: #000000;
-  border: 1px solid #000000;
-  padding: 10px 80px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 30px 0 30px 0;
-  cursor: pointer;
-  border-radius: 5px;
-  position: inherit;
-  background-color: #55FF55;
+    padding: 10px 80px;
+    margin: 30px 0;
+    background-color: #55ff55;
 }
 
-.container { 
-  padding: 30px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: absolute;
-  box-sizing: content-box;
-  border: 3px solid black;
-  border-radius: 20px;
-  background-color: #c1c1c1a0;
+.botao:hover,
+.botao2:hover,
+.botao3:hover {
+    filter: brightness(0.92);
 }
 
-.menu { 
-  grid-template-columns: 2fr;
-  grid-template-rows: auto;
-  display: grid;
+/* =========================
+   LABELS E CAMPOS
+   ========================= */
+
+.container label {
+    font-family: sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #333333;
 }
 
-.body {
-  background-color: #cbacff;
+.container input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
+.container select,
+.container textarea {
+    padding: 8px;
+    border: 1px solid #888888;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
 }
 
-.h2{
-  text-align: center;
+.container input:focus,
+.container select:focus,
+.container textarea:focus {
+    outline: none;
+    border-color: #a658a7;
 }
 
-.error { 
-  padding: 30px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: absolute;
-  box-sizing: content-box;
-  border: 3px solid black;
-  border-radius: 20px;
-  background-color: #FF9999;
-}
+/* =========================
+   TABELAS
+   ========================= */
 
 .tabela {
-    border-collapse: collapse !important;
     width: 100%;
     max-width: 900px;
     min-width: 800px;
     margin: 20px auto;
+    border-collapse: collapse;
     text-align: center;
     font-family: sans-serif;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid #cccccc;
     border-radius: 10px;
     overflow: hidden;
-    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .tabela th {
+    padding: 12px 8px;
     font-size: 18px;
     font-weight: bold;
-    background-color: #A658A7 !important;
-    color: #ffffff !important;
-    padding: 12px 8px;
+    color: #ffffff;
+    background-color: #F97316;
     border: 1px solid #8a4a8c;
 }
 
 .tabela td {
-    font-size: 15px;
     padding: 10px 8px;
-    border: 1px solid #ddd;
-    color: #333;
+    font-size: 15px;
+    color: #333333;
+    border: 1px solid #dddddd;
 }
 
 .tabela tbody tr:nth-child(even) {

@@ -2,7 +2,6 @@ package Handlers;
 
 import Support.ConexaoBD;
 import Support.IDAOT;
-import Support.MD5;
 import Entities.Users;
 import java.util.ArrayList;
 import java.sql.ResultSet;

@@ -22,7 +22,7 @@ contentType="text/html" pageEncoding="UTF-8" %>
       <h2 class="h2">Login</h2>
       <br />
 
-      <label for="email">Email: </label>
+      <label for="email">Email:</label>
       <input
         id="email"
         type="text"
