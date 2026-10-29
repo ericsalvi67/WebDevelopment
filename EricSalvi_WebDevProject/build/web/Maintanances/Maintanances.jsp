@@ -84,7 +84,7 @@
                     %>
                     <tr>
                         <td colspan="7">
-                            Nenhum carro encontrado.
+                            Nenhuma manutenção encontrada.
                         </td>
 
                     </tr>

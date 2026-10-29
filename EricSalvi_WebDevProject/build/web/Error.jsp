@@ -8,17 +8,14 @@
     <link rel="stylesheet" href="../styles.css" />
   </head>
 
-  (HttpServletResponse) result = (HttpServletResponse) request.getAttribute("response");
+  (HttpServletResponse) result = (HttpServletResponse)
+  request.getAttribute("response");
 
   <body class="error">
     <h1>Erro ao executar</h1>
     <div class="error-message">
-      <p>
-        <strong>Erro:</strong> <%= result.getStatus() %>
-      </p>
-      <p>
-        <strong>Mensagem:</strong> <%= result.getErrorMessage() %>
-      </p>
+      <p><strong>Erro:</strong> <%= result.getStatus() %></p>
+      <p><strong>Mensagem:</strong> <%= result.getErrorMessage() %></p>
     </div>
 
     <footer>

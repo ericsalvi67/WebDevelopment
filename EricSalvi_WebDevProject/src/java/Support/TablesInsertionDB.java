@@ -60,7 +60,7 @@ public class TablesInsertionDB {
             "	unit_value decimal(9,2) NOT NULL," +
             "	CONSTRAINT maintanances_options_pk PRIMARY KEY (maintanance_id, option_id), " +
             "   CONSTRAINT maintanances_options_fk1 FOREIGN KEY (maintanance_id) REFERENCES maintanances(id) ON DELETE CASCADE," +
-            "   CONSTRAINT maintanances_options_fk2 FOREIGN KEY (option_id) REFERENCES options(id) ON DELETE CASCADE);";
+            "   CONSTRAINT maintanances_options_fk2 FOREIGN KEY (option_id) REFERENCES options(id) ON DELETE RESTRICT);";
 
     private static final String _insertData = 
             "INSERT INTO users (email, password)"

@@ -72,7 +72,7 @@
                     %>
                     <tr>
                         <td colspan="7">
-                            Nenhum carro encontrado.
+                            Nenhuma opção encontrada.
                         </td>
 
                     </tr>

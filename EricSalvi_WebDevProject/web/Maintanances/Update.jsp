@@ -1,0 +1,73 @@
+<%-- 
+    Document   : Update
+    Created on : 6 de set. de 2026, 17:13:39
+    Author     : Salvi
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="Entities.Maintanances"%>
+<%
+    Maintanances maintanances = (Maintanances) request.getAttribute("maintanance");
+%>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css">
+    <script src="<%= request.getContextPath() %>/Maintanances/Scripts.js"></script>
+    <title>Registro de Carros</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body class="body">
+    <form class="container" action="../MaintanancesServlet" method="post" onsubmit="return validateForm()">
+        <h2> Cadastro de Carros</h2>
+        <br>
+
+        <input
+            type="hidden"
+            name="id"
+            value="<%= maintanances.id %>"
+        >
+        <div>
+          <label for="name">Nome:</label><br>
+          <input id="name" type="text" name="name" maxlength="30" value="<%= maintanances.name %>" required/>
+          <br><br>
+        </div>
+        <div>
+          <label for="car_plate">Placa:</label><br>
+          <input id="car_plate" type="text" name="car_plate" maxlength="15" value="<%= maintanances.car_plate %>" readonly></input>
+          <br><br>
+        </div>
+        <div>
+          <label for="done_by">Realizado por:</label><br>
+          <input id="done_by" type="text" name="done_by" maxlength="100" value="<%= maintanances.done_by %>"></input>
+          <br><br>
+        </div>
+        <div>
+          <label for="done_at">Data:</label><br>
+          <input id="done_at" type="date" name="done_at" value="<%= maintanances.done_at %>"></input>
+          <br><br>
+        </div>
+        <div>
+          <label for="observations">Observação:</label><br>
+          <input id="observations" type="text" name="observations" maxlength="500" value="<%= maintanances.observations %>"></input>
+          <br><br>
+        </div>
+          
+        <div>
+          <input class="botao" type="submit" value="Salvar" />
+        </div>
+
+        <footer>
+            <input
+            type="button"
+            value="Voltar"
+            onclick="window.location.href =
+                '<%= request.getContextPath() %>/MaintanancesServlet?a=getAll'"
+        />
+        </footer>
+    </form>     
+  </body>
+</html>
+
+
