@@ -15,17 +15,19 @@ public class OptionsHandler implements IDAOT<Options> {
     public static final String _select = 
             "select id, "
             + "name, "
+            + "description "
             + "from options ";
 
     public static final String _insert = 
             "insert into options "
-            + "(name) "
+            + "(name, description) "
             + "values "
-            + "(?)";
+            + "(?, ?)";
 
     public static final String _update = 
             "update set "
             + "name = ?, "
+            + "description = ?, "
             + "updated_at = ? ";
 
     public static final String _delete = 
@@ -43,7 +45,9 @@ public class OptionsHandler implements IDAOT<Options> {
             PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_upsert);
             
             pst.setString(1, o.name);
-            pst.setString(2, o.name);
+            pst.setString(2, o.description);
+            pst.setString(3, o.name);
+            pst.setString(4, o.description);
             pst.setTimestamp(3, Timestamp.from(Instant.now()));
             pst.execute();
             System.out.println("SQL executado!");
@@ -90,7 +94,8 @@ public class OptionsHandler implements IDAOT<Options> {
             while (rs.next()) {
                 Options.add(new Options(
                         rs.getInt("id"),
-                        rs.getString("name")));
+                        rs.getString("name"),
+                        rs.getString("description")));
             }
 
         } catch (Exception e) {
@@ -105,7 +110,8 @@ public class OptionsHandler implements IDAOT<Options> {
         ArrayList<Options> Options = new ArrayList<>();
         String whereSql = 
             " where id = '?' "
-            + "or name ilike '?' ";
+            + "or name ilike '?' "
+            + "or description ilike '?' ";
 
         try {
             PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_select + whereSql);
@@ -113,8 +119,6 @@ public class OptionsHandler implements IDAOT<Options> {
             pst.setString(1, value);
             pst.setString(2, value);
             pst.setString(3, value);
-            pst.setString(4, value);
-            pst.setString(5, value);
             
             ResultSet rs = pst.executeQuery();
             System.out.println("SQL executado!");
@@ -122,7 +126,8 @@ public class OptionsHandler implements IDAOT<Options> {
             while (rs.next()) {
                 Options.add(new Options(
                     rs.getInt("id"),
-                    rs.getString("name")));
+                    rs.getString("name"),
+                    rs.getString("description")));
             }
 
         } catch (Exception e) {
@@ -144,7 +149,8 @@ public class OptionsHandler implements IDAOT<Options> {
 
             while (rs.next()) {
                 Options = new Options(rs.getInt("id"),
-                        rs.getString("name"));
+                        rs.getString("name"),
+                        rs.getString("description"));
             }
 
         } catch (Exception e) {

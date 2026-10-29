@@ -61,6 +61,9 @@ public class OptionsServlet extends HttpServlet {
         if (action == null) {
             action = (String) request.getAttribute("a");
         }
+        if (action == null) {
+            action = "getAll";
+        }
         
         String criteria = request.getParameter("c");
         String value = request.getParameter("v");
@@ -97,11 +100,13 @@ public class OptionsServlet extends HttpServlet {
 
         System.out.println("Estou no POST.");
         String name = request.getParameter("name");
+        String description = request.getParameter("description");
 
-        Options options = new Options(0, name);
+        Options options = new Options(0, name, description);
         
         System.out.println("------------OPTIONS------------");
         System.out.println(options.name);
+        System.out.println(options.description);
         System.out.println("------------OPTIONS------------");
 
         if (new OptionsHandler().Insert(options)){

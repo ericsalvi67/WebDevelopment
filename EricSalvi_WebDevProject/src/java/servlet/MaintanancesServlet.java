@@ -62,6 +62,9 @@ public class MaintanancesServlet extends HttpServlet {
         if (action == null) {
             action = (String) request.getAttribute("a");
         }
+        if (action == null) {
+            action = "getAll";
+        }
         
         String criteria = request.getParameter("c");
         String value = request.getParameter("v");

@@ -7,8 +7,9 @@
     <title>Error</title>
     <link rel="stylesheet" href="../styles.css" />
   </head>
+
   <body class="error">
-    <h1>Erro ao Logar</h1>
+    <h1>Erro ao executar</h1>
 
     <footer>
       <input

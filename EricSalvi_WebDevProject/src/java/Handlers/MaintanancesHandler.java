@@ -139,6 +139,7 @@ public class MaintanancesHandler implements IDAOT<Maintanances> {
             pst.setString(3, value);
             pst.setString(4, value);
             pst.setString(5, value);
+            pst.setString(6, value);
             
             ResultSet rs = pst.executeQuery();
             System.out.println("SQL executado!");
