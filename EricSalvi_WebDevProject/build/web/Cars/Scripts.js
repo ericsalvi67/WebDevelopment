@@ -36,8 +36,8 @@ function validateForm() {
         return false;
     }
 
-    if (name.length > 150) {
-        alert("Nome do veículo maior que o permitido (150 caracteres).");
+    if (name.length > 30) {
+        alert("Nome do veículo maior que o permitido (30 caracteres).");
         return false;
     }
 
@@ -46,18 +46,13 @@ function validateForm() {
         return false;
     }
 
-    if (numberPlate.length > 10) {
-        alert("Placa maior que o permitido (10 caracteres).");
+    if (numberPlate.length > 15) {
+        alert("Placa maior que o permitido (15 caracteres).");
         return false;
     }
 
-    if (color.length === 0) {
-        alert("Por favor, insira a cor do veículo.");
-        return false;
-    }
-
-    if (color.length > 50) {
-        alert("Cor maior que o permitido (50 caracteres).");
+    if (color.length > 20) {
+        alert("Cor maior que o permitido (20 caracteres).");
         return false;
     }
 

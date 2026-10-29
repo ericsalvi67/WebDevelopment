@@ -40,7 +40,7 @@
         </div>
         <div>
           <label for="done_by">Realizado por:</label><br>
-          <input id="done_by" type="text" name="done_by" maxlength="20" value="<%= maintanances.done_by %>"></input>
+          <input id="done_by" type="text" name="done_by" maxlength="100" value="<%= maintanances.done_by %>"></input>
           <br><br>
         </div>
         <div>
@@ -50,7 +50,7 @@
         </div>
         <div>
           <label for="observations">Observação:</label><br>
-          <input id="observations" type="text" name="observations" value="<%= maintanances.observations %>"></input>
+          <input id="observations" type="text" name="observations" maxlength="500" value="<%= maintanances.observations %>"></input>
           <br><br>
         </div>
           

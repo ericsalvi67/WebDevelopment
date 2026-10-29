@@ -29,6 +29,9 @@ function deletePerson(contextPath, id) {
 function validateForm() {
     var name = document.getElementById("name").value.trim();
     var carPlate = document.getElementById("car_plate").value.trim();
+    var doneBy = document.getElementById("done_by").value.trim();
+    var doneDate = document.getElementById("done_date").value.trim();
+    var observations = document.getElementById("observations").value.trim();
 
     if (name.length === 0) {
         alert("Por favor, insira o nome do veículo.");
@@ -47,6 +50,21 @@ function validateForm() {
 
     if (carPlate.length > 10) {
         alert("Placa maior que o permitido (10 caracteres).");
+        return false;
+    }
+
+    if (doneBy.length > 100) {
+        alert("Realizado por maior que o permitido (100 caracteres).");
+        return false;
+    }
+
+    if (doneDate > new Date().toString()) {
+        alert("A data de realização não pode ser maior que a data atual.");
+        return false;
+    }
+
+    if (observations.length > 500) {
+        alert("Observação maior que o permitido (500 caracteres).");
         return false;
     }
 

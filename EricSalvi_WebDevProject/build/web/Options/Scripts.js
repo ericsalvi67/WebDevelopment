@@ -40,13 +40,8 @@ function validateForm() {
         return false;
     }
 
-    if (description.length === 0) {
-        alert("Por favor, insira uma descrição válida.");
-        return false;
-    }
-
-    if (description.length > 300) {
-        alert("Descrição da opção maior que o permitido (300 caracteres).");
+    if (description.length > 255) {
+        alert("Descrição da opção maior que o permitido (255 caracteres).");
         return false;
     }
 

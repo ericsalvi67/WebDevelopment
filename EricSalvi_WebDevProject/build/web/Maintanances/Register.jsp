@@ -32,7 +32,7 @@
         </div>
         <div>
           <label for="done_by">Realizado por:</label><br>
-          <input id="done_by" type="text" name="done_by" maxlength="20"></input>
+          <input id="done_by" type="text" name="done_by" maxlength="100"></input>
           <br><br>
         </div>
         <div>
@@ -42,7 +42,7 @@
         </div>
         <div>
           <label for="observations">Observação:</label><br>
-          <input id="observations" type="text" name="observations" maxlength="100"></input>
+          <input id="observations" type="text" name="observations" maxlength="500"></input>
           <br><br>
         </div>
         <div>

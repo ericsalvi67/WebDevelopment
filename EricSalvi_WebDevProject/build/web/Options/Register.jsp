@@ -22,12 +22,12 @@
 
         <div>
           <label for="name">Nome:</label><br>
-          <input id="name" type="text" name="name" maxlength="30" required/>
+          <input id="name" type="text" name="name" maxlength="50" required/>
           <br><br>
         </div>
         <div>
           <label for="description">Descrição:</label><br>
-          <input id="description" type="text" name="description" maxlength="300" required/>
+          <input id="description" type="text" name="description" maxlength="255"/>
           <br><br>
         </div>
         <div>

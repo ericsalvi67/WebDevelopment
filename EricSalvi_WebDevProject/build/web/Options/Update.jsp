@@ -36,7 +36,7 @@
 
         <div>
           <label for="description">Descrição:</label><br>
-          <input id="description" type="text" name="description" maxlength="300" value="<%= options.description %>" required/>
+          <input id="description" type="text" name="description" maxlength="255" value="<%= options.description %>"/>
           <br><br>
         </div>
           

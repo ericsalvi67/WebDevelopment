@@ -40,7 +40,7 @@
         </div>
         <div>
           <label for="color">Cor:</label><br>
-          <input id="color" type="text" name="color" maxlength="20" value="<%= cars.color %>" required></input>
+          <input id="color" type="text" name="color" maxlength="20" value="<%= cars.color %>"></input>
           <br><br>
         </div>
         

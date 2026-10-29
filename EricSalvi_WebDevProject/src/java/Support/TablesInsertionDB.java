@@ -19,7 +19,7 @@ public class TablesInsertionDB {
     private static final String _createCars = 
             "CREATE TABLE IF NOT EXISTS cars (" +
             "	id serial4 NOT NULL ," +
-            "	name varchar(30) NULL," +
+            "	name varchar(30) NOT NULL," +
             "	number_plate varchar(15) NOT NULL," +
             "	color varchar(20) NULL," +
             "	users_email varchar(60) NOT NULL," +
@@ -33,6 +33,7 @@ public class TablesInsertionDB {
             "CREATE TABLE IF NOT EXISTS options (" +
             "	id serial4 NOT NULL ," +
             "	name varchar(50) NOT NULL," +
+            "	description varchar(255) NULL," +
             "	created_at timestamp NOT NULL DEFAULT NOW()," +
             "	updated_at timestamp NOT NULL DEFAULT NOW()," +
             "	CONSTRAINT options_pk PRIMARY KEY (id), " +
