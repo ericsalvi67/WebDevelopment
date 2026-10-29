@@ -58,6 +58,10 @@ public class OptionsServlet extends HttpServlet {
         ArrayList<Options> options = new ArrayList<>();
 
         String action = request.getParameter("a");
+        if (action == null) {
+            action = (String) request.getAttribute("a");
+        }
+        
         String criteria = request.getParameter("c");
         String value = request.getParameter("v");
 
@@ -102,7 +106,9 @@ public class OptionsServlet extends HttpServlet {
 
         if (new OptionsHandler().Insert(options)){
             response.setStatus(HttpServletResponse.SC_OK);
-            Action.RouterPage("Options/Options.jsp", request, response);
+            
+            request.setAttribute("a", "getAll");
+            doGet(request, response);
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             Action.RouterPage("Error.jsp", request, response);

@@ -59,6 +59,10 @@ public class MaintanancesServlet extends HttpServlet {
         ArrayList<Maintanances> maintanances = new ArrayList<>();
 
         String action = request.getParameter("a");
+        if (action == null) {
+            action = (String) request.getAttribute("a");
+        }
+        
         String criteria = request.getParameter("c");
         String value = request.getParameter("v");
 
@@ -111,7 +115,9 @@ public class MaintanancesServlet extends HttpServlet {
 
         if (new MaintanancesHandler().Insert(maintanance)){
             response.setStatus(HttpServletResponse.SC_OK);
-            Action.RouterPage("Maintanances/Maintanances.jsp", request, response);
+            
+            request.setAttribute("a", "getAll");
+            doGet(request, response);
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             Action.RouterPage("Error.jsp", request, response);

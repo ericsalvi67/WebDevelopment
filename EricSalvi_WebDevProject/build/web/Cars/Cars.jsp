@@ -14,8 +14,8 @@
     <head>
         <meta charset="UTF-8">
         <title>Carros</title>
-        <link rel="stylesheet" href="../styles.css">
-        <script src="Cars/Scripts.js"></script>
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css">
+        <script src="<%= request.getContextPath() %>/Cars/Scripts.js"></script>
     </head>
     <body class="body">
 

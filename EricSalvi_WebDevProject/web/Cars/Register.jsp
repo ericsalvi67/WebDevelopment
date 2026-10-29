@@ -9,9 +9,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css">
     <title>Registro de Carros</title>
-    <script src="Cars/Scripts.js"></script>
+    <script src="<%= request.getContextPath() %>/Cars/Scripts.js"></script>
     <meta charset="UTF-8" />
   </head>
 

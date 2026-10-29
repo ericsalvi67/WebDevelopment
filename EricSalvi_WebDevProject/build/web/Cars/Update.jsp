@@ -7,13 +7,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Entities.Cars"%>
 <%
-    Cars cars = (Cars) request.getAttribute("cars");
+    Cars cars = (Cars) request.getAttribute("car");
 %>
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="../styles.css" />
-    <script src="Cars/Scripts.js"></script>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css">
+    <script src="<%= request.getContextPath() %>/Cars/Scripts.js"></script>
     <title>Registro de Carros</title>
     <meta charset="UTF-8" />
   </head>
@@ -35,7 +35,7 @@
         </div>
         <div>
           <label for="number_plate">Placa:</label><br>
-          <input id="number_plate" type="text" name="number_plate" maxlength="15" value="<%= cars.number_plate %>" required></input>
+          <input id="number_plate" type="text" name="number_plate" maxlength="15" value="<%= cars.number_plate %>" readonly></input>
           <br><br>
         </div>
         <div>

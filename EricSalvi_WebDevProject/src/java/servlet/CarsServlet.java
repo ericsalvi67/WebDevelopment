@@ -56,8 +56,15 @@ public class CarsServlet extends HttpServlet {
         System.out.println("Estou no GET.");
         
         ArrayList<Cars> cars = new ArrayList<>();
-
+        
         String action = request.getParameter("a");
+        if (action == null) {
+            action = (String) request.getAttribute("a");
+        }
+        if (action == null) {
+            action = "getAll";
+        }
+
         String criteria = request.getParameter("c");
         String value = request.getParameter("v");
 
@@ -108,7 +115,9 @@ public class CarsServlet extends HttpServlet {
 
         if (new CarsHandler().Insert(cars)){
             response.setStatus(HttpServletResponse.SC_OK);
-            Action.RouterPage("CarsServlet?a=getAll", request, response);
+            
+            request.setAttribute("a", "getAll");
+            doGet(request, response);
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             Action.RouterPage("Error.jsp", request, response);

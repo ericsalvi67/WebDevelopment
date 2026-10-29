@@ -5,7 +5,7 @@ contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css">
     <title>Login</title>
     <meta charset="UTF-8" />
   </head>
