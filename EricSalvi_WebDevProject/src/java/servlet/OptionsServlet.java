@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author pretto
+ * @author Salvi
  */
 @WebServlet("/OptionsServlet")
 public class OptionsServlet extends HttpServlet {
