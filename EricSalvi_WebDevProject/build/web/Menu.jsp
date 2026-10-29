@@ -1,7 +1,6 @@
 <%-- Document : Menu Created on : 3 de set. de 2026, 21:47:20 Author : Salvi
 --%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
   <head>
     <link rel="stylesheet" href="styles.css" />
@@ -18,21 +17,21 @@
         class="botao"
         type="button"
         value="Carros"
-        onclick="window.location.href = 'Cars/Cars.jsp'"
+        onclick="window.location.href='<%= request.getContextPath() %>/CarsServlet?a=getAll'"
       />
       
       <input
         class="botao"
         type="button"
         value="Manutenções"
-        onclick="window.location.href = 'Maintanance/Maintanance.jsp'"
+        onclick="window.location.href='<%= request.getContextPath() %>/MaintanancesServlet?a=getAll'"
       />
       
       <input
         class="botao"
         type="button"
         value="Categorias de Manutenção"
-        onclick="window.location.href = 'Categories/Categories.jsp'"
+        onclick="window.location.href='<%= request.getContextPath() %>/OptionsServlet?a=getAll'"
       />
     </div>
   </body>

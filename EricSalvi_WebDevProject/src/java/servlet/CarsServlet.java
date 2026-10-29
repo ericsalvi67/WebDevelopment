@@ -6,8 +6,7 @@
 package servlet;
 
 import Entities.Cars;
-import Entities.People;
-import Handlers.PeopleHandler;
+import Handlers.CarsHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,12 +14,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.util.ArrayList;
 
 /**
  *
- * @author pretto
+ * @author Salvi
  */
 @WebServlet("/CarsServlet")
 public class CarsServlet extends HttpServlet {
@@ -110,7 +108,7 @@ public class CarsServlet extends HttpServlet {
 
         if (new CarsHandler().Insert(cars)){
             response.setStatus(HttpServletResponse.SC_OK);
-            Action.RouterPage("Cars/Cars.jsp", request, response);
+            Action.RouterPage("CarsServlet?a=getAll", request, response);
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             Action.RouterPage("Error.jsp", request, response);

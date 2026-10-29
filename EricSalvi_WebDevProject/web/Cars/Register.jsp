@@ -37,11 +37,11 @@
         </div>
         
         <%
-            String user_email = (String) session.getAttribute("emailuser");
+            String users_email = (String) session.getAttribute("emailuser");
         %>
         <div>
-          <label for="user_email">Email proprietário:</label><br>
-          <input id="user_email" type="text" name="user_email" type="" value="<%= user_email %>" readonly></input>
+          <label for="users_email">Email proprietário:</label><br>
+          <input id="users_email" type="text" name="users_email" type="" value="<%= users_email %>" readonly></input>
           <br><br>
         </div>
         <div>
@@ -53,7 +53,8 @@
                 type="button"
                 class="botao"
                 value="Voltar"
-                onclick="window.location.href = 'Cars.jsp'"
+                onclick="window.location.href = 
+                        '<%= request.getContextPath() %>/CarsServlet?a=getAll'"
                 />
         </footer>
     </form>     

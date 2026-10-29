@@ -22,9 +22,9 @@ public class CarsHandler implements IDAOT<Cars> {
 
     public static final String _insert = 
             "insert into cars "
-            + "(name, number_plate, color, user_email) "
+            + "(name, number_plate, color, users_email) "
             + "values "
-            + "(?, ?, ?, ?)";
+            + "(?, ?, ?, ?) ";
 
     public static final String _update = 
             "update set "

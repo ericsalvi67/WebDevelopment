@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
-<%@page import="Entities.People"%>
+<%@page import="Entities.Cars"%>
 
 <!DOCTYPE html>
 
@@ -34,32 +34,29 @@
                 </thead>
                 <tbody>
                     <%
-                        List<People> peopleList =
-                                (List<People>) request.getAttribute("peopleList");
+                        List<Cars> carsList =
+                                (List<Cars>) request.getAttribute("carsList");
 
-                        if (peopleList != null && !peopleList.isEmpty()) {
+                        if (carsList != null && !carsList.isEmpty()) {
 
-                            for (People people : peopleList) {
+                            for (Cars cars : carsList) {
                     %>
                     <tr>
                         <td>
-                            <%= people.id %>
+                            <%= cars.id %>
                         </td>
                         <td>
-                            <%= people.name %>
+                            <%= cars.name %>
                         </td>
                         <td>
-                            <%= people.email %>
+                            <%= cars.number_plate %>
                         </td>
                         <td>
-                            <%= people.phone %>
-                        </td>
-                        <td>
-                            <%= people.birth %>
+                            <%= cars.color %>
                         </td>
                         <td>
                             <a
-                                href="PeopleServlet?a=getById&id=<%= people.id %>">
+                                href="CarsServlet?a=getById&id=<%= cars.id %>">
                                 Editar
                             </a>
                         </td>
@@ -68,7 +65,7 @@
                                 style="color: #ff5050;"
                                 type="button"
                                 value="Excluir"
-                                onclick="deletePerson('<%= request.getContextPath() %>', <%= people.id %>)"
+                                onclick="deletePerson('<%= request.getContextPath() %>', <%= cars.id %>)"
                             >
                         </td>
                     </tr>
@@ -102,7 +99,7 @@
                 class="botao2"
                 type="button"
                 value="Adicionar"
-                onclick="window.location.href = 'Register.jsp'"
+                onclick="window.location.href = 'Cars/Register.jsp'"
             >
         </div>
     </body>

@@ -44,12 +44,12 @@ public class TablesInsertionDB {
             "	name varchar(30) NOT NULL," +
             "	car_plate varchar(15) NOT NULL," +
             "	done_by varchar(100) NULL," +
-            "	done_at datetime NULL," +
+            "	done_at timestamp NULL," +
             "	observations varchar(500) NULL," +
             "	created_at timestamp NOT NULL DEFAULT NOW()," +
             "	updated_at timestamp NOT NULL DEFAULT NOW()," +
             "	CONSTRAINT maintanances_pk PRIMARY KEY (id), " +
-            "	CONSTRAINT maintanances_un UNIQUE KEY (name), " +
+            "	CONSTRAINT maintanances_un UNIQUE (name), " +
             "  CONSTRAINT maintanances_fk FOREIGN KEY (car_plate) REFERENCES cars(number_plate) ON DELETE CASCADE);";
    
     private static final String _createMaintanancesOptions = 

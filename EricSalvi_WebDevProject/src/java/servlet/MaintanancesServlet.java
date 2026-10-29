@@ -5,11 +5,8 @@
  */
 package servlet;
 
-import Entities.Cars;
 import Entities.Maintanances;
-import Entities.Options;
-import Entities.People;
-import Handlers.PeopleHandler;
+import Handlers.MaintanancesHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -73,13 +70,13 @@ public class MaintanancesServlet extends HttpServlet {
         // -------------------------------------------------------------------
         switch (action) {
             case "getAll":
-                maintanances.addAll(new MaintananceHandler().GetAll());
+                maintanances.addAll(new MaintanancesHandler().GetAll());
                 break;
             case "getByValue":
-                maintanances.addAll(new MaintananceHandler().GetByValue(criteria, value));
+                maintanances.addAll(new MaintanancesHandler().GetByValue(criteria, value));
                 break;
             case "getById":
-                Maintanances maintanance= new MaintananceHandler().GetById(Integer.parseInt(request.getParameter("id")));
+                Maintanances maintanance= new MaintanancesHandler().GetById(Integer.parseInt(request.getParameter("id")));
                 request.setAttribute("maintanance", maintanance);
                 Action.RouterPage("Maintanances/Update.jsp", request, response);
                 return;
