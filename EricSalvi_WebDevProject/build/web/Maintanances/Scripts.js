@@ -28,7 +28,7 @@ function validateForm() {
   var name = document.getElementById("name").value.trim();
   var carPlate = document.getElementById("car_plate").value.trim();
   var doneBy = document.getElementById("done_by").value.trim();
-  var doneDate = document.getElementById("done_date").value.trim();
+  var doneDate = document.getElementById("done_at").value;
   var observations = document.getElementById("observations").value.trim();
 
   if (name.length === 0) {
@@ -56,7 +56,7 @@ function validateForm() {
     return false;
   }
 
-  if (doneDate > new Date().toString()) {
+  if (doneDate && new Date(doneDate + "T00:00:00") > new Date()) {
     alert("A data de realização não pode ser maior que a data atual.");
     return false;
   }
