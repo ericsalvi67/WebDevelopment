@@ -40,7 +40,7 @@
         </div>
         <div>
           <label for="color">Cor:</label><br>
-          <input id="color" type="text" name="color" maxlength="20" value="<%= cars.color %>"></input>
+          <input id="color" type="text" name="color" maxlength="20" value="<%= cars.color %>" required></input>
           <br><br>
         </div>
         
@@ -50,20 +50,17 @@
           <br><br>
         </div>
           
-        <div>
-          <input class="botao" type="submit" value="Salvar" />
-        </div>
-
-        <footer>
+        <div class="form-actions">
             <input
-            type="button"
-            value="Voltar"
-            onclick="window.location.href =
-                '<%= request.getContextPath() %>/CarsServlet?a=getAll'"
-        />
-        </footer>
+                type="button"
+                class="botao"
+                value="Voltar"
+                onclick="window.location.href =
+                    '<%= request.getContextPath() %>/CarsServlet?a=getAll'"
+            />
+            <input class="botao3" type="submit" value="Salvar" />
+        </div>
     </form>     
   </body>
 </html>
-
 

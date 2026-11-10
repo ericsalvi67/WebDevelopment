@@ -177,4 +177,30 @@ public class CarsHandler implements IDAOT<Cars> {
 
         return Cars;
     }
+
+    public ArrayList<Cars> GetByUserEmail(String usersEmail) {
+        ArrayList<Cars> cars = new ArrayList<>();
+        String sql = _select + " where users_email = ? order by number_plate";
+
+        try {
+            PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql);
+            pst.setString(1, usersEmail);
+
+            ResultSet rs = pst.executeQuery();
+            System.out.println("SQL executado!");
+
+            while (rs.next()) {
+                cars.add(new Cars(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("number_plate"),
+                        rs.getString("color"),
+                        rs.getString("users_email")));
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar cars por e-mail: " + e);
+        }
+
+        return cars;
+    }
 }

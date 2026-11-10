@@ -83,7 +83,7 @@
                         } else {
                     %>
                     <tr>
-                        <td colspan="7">
+                        <td colspan="8">
                             Nenhuma manutenção encontrada.
                         </td>
 

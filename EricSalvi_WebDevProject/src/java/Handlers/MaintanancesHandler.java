@@ -18,7 +18,7 @@ public class MaintanancesHandler implements IDAOT<Maintanances> {
             + "car_plate, "
             + "done_by, "
             + "done_at, "
-            + "observations, "
+            + "observations "
             + "from maintanances ";
 
     public static final String _insert = 
@@ -42,8 +42,12 @@ public class MaintanancesHandler implements IDAOT<Maintanances> {
     
     public static final String _upsert = 
             _insert
-            + " ON CONFLICT (name) DO " 
-            + _update; 
+            + " ON CONFLICT (name) DO UPDATE SET "
+            + "car_plate = excluded.car_plate, "
+            + "done_by = excluded.done_by, "
+            + "done_at = excluded.done_at, "
+            + "observations = excluded.observations, "
+            + "updated_at = NOW()";
 
     @Override
     public boolean Insert(Maintanances o) {
@@ -55,11 +59,6 @@ public class MaintanancesHandler implements IDAOT<Maintanances> {
             pst.setString(3, o.done_by);
             pst.setDate(4, (java.sql.Date) o.done_at);
             pst.setString(5, o.observations);
-            pst.setString(6, o.name);
-            pst.setString(7, o.car_plate);
-            pst.setString(8, o.done_by);
-            pst.setDate(9, (java.sql.Date) o.done_at);
-            pst.setTimestamp(10, Timestamp.from(Instant.now()));
 
             pst.execute();
             System.out.println("SQL executado!");
@@ -73,7 +72,22 @@ public class MaintanancesHandler implements IDAOT<Maintanances> {
 
     @Override
     public boolean Update(Maintanances o) {
-        return true;
+        try {
+            PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(
+                    "update maintanances set name = ?, car_plate = ?, done_by = ?, "
+                    + "done_at = ?, observations = ?, updated_at = NOW() where id = ?");
+            pst.setString(1, o.name);
+            pst.setString(2, o.car_plate);
+            pst.setString(3, o.done_by);
+            pst.setDate(4, (java.sql.Date) o.done_at);
+            pst.setString(5, o.observations);
+            pst.setInt(6, o.id);
+            pst.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Erro ao atualizar Maintanances: " + e);
+            return false;
+        }
     }
 
     @Override
@@ -185,5 +199,30 @@ public class MaintanancesHandler implements IDAOT<Maintanances> {
         }
 
         return Maintanances;
+    }
+
+    public Maintanances GetByName(String name) {
+        Maintanances maintanance = null;
+
+        try {
+            PreparedStatement pst = ConexaoBD.getInstance().getConnection()
+                    .prepareStatement(_select + " where name = ?");
+            pst.setString(1, name);
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                maintanance = new Maintanances(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("car_plate"),
+                        rs.getString("done_by"),
+                        rs.getDate("done_at"),
+                        rs.getString("observations"));
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar manutenção por nome: " + e);
+        }
+
+        return maintanance;
     }
 }

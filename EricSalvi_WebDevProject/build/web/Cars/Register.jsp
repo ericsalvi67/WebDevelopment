@@ -44,11 +44,7 @@
           <input id="users_email" type="text" name="users_email" type="" value="<%= users_email %>" readonly></input>
           <br><br>
         </div>
-        <div>
-          <input class="botao3" type="submit" value="Registrar" />
-        </div>
-
-        <footer>
+        <div class="form-actions">
             <input
                 type="button"
                 class="botao"
@@ -56,9 +52,9 @@
                 onclick="window.location.href = 
                         '<%= request.getContextPath() %>/CarsServlet?a=getAll'"
                 />
-        </footer>
+            <input class="botao3" type="submit" value="Registrar" />
+        </div>
     </form>     
   </body>
 </html>
-
 

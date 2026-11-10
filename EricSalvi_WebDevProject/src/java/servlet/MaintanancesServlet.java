@@ -6,7 +6,9 @@
 package servlet;
 
 import Entities.Maintanances;
+import Entities.MaintanancesOptions;
 import Handlers.MaintanancesHandler;
+import Handlers.MaintanancesOptionsHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -103,10 +105,15 @@ public class MaintanancesServlet extends HttpServlet {
         String name = request.getParameter("name");
         String car_plate = request.getParameter("car_plate");
         String done_by = request.getParameter("done_by");
-        Date done_at = Date.valueOf(request.getParameter("done_at"));
+        String doneAtValue = request.getParameter("done_at");
+        Date done_at = doneAtValue == null || doneAtValue.isEmpty()
+                ? null : Date.valueOf(doneAtValue);
         String observations = request.getParameter("observations");
+        String idValue = request.getParameter("id");
 
-        Maintanances maintanance = new Maintanances(0, name, car_plate, done_by, done_at, observations);
+        Maintanances maintanance = new Maintanances(
+                idValue == null || idValue.isEmpty() ? 0 : Integer.parseInt(idValue),
+                name, car_plate, done_by, done_at, observations);
         
         System.out.println("------------MAINTANANCES------------");
         System.out.println(maintanance.name);
@@ -116,7 +123,32 @@ public class MaintanancesServlet extends HttpServlet {
         System.out.println(maintanance.observations);
         System.out.println("------------MAINTANANCES------------");
 
-        if (new MaintanancesHandler().Insert(maintanance)){
+        MaintanancesHandler maintanancesHandler = new MaintanancesHandler();
+        boolean saved = maintanance.id == 0
+                ? maintanancesHandler.Insert(maintanance)
+                : maintanancesHandler.Update(maintanance);
+
+        if (saved) {
+            if (maintanance.id == 0) {
+                Maintanances savedMaintanance = maintanancesHandler.GetByName(name);
+                if (savedMaintanance != null) {
+                    maintanance.id = savedMaintanance.id;
+                }
+            }
+
+            MaintanancesOptionsHandler optionsHandler = new MaintanancesOptionsHandler();
+            optionsHandler.DeleteByMaintenanceId(maintanance.id);
+            String[] optionIds = request.getParameterValues("option_ids");
+            String[] unitValues = request.getParameterValues("unit_values");
+            if (optionIds != null && unitValues != null && optionIds.length == unitValues.length) {
+                for (int i = 0; i < optionIds.length; i++) {
+                    optionsHandler.Insert(new MaintanancesOptions(
+                            maintanance.id,
+                            Integer.parseInt(optionIds[i]),
+                            Double.parseDouble(unitValues[i])));
+                }
+            }
+
             response.setStatus(HttpServletResponse.SC_OK);
             
             request.setAttribute("a", "getAll");

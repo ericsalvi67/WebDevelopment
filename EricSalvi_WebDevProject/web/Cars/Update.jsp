@@ -50,20 +50,17 @@
           <br><br>
         </div>
           
-        <div>
-          <input class="botao" type="submit" value="Salvar" />
-        </div>
-
-        <footer>
+        <div class="form-actions">
             <input
-            type="button"
-            value="Voltar"
-            onclick="window.location.href =
-                '<%= request.getContextPath() %>/CarsServlet?a=getAll'"
-        />
-        </footer>
+                type="button"
+                class="botao"
+                value="Voltar"
+                onclick="window.location.href =
+                    '<%= request.getContextPath() %>/CarsServlet?a=getAll'"
+            />
+            <input class="botao3" type="submit" value="Salvar" />
+        </div>
     </form>     
   </body>
 </html>
-
 

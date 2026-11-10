@@ -48,7 +48,7 @@ public class OptionsHandler implements IDAOT<Options> {
             pst.setString(2, o.description);
             pst.setString(3, o.name);
             pst.setString(4, o.description);
-            pst.setTimestamp(3, Timestamp.from(Instant.now()));
+            pst.setTimestamp(5, Timestamp.from(Instant.now()));
             pst.execute();
             System.out.println("SQL executado!");
             return true;

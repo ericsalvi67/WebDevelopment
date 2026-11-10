@@ -4,58 +4,61 @@
  */
 
 function deletePerson(contextPath, id) {
+  if (!confirm("Deseja realmente excluir este carro?")) {
+    return;
+  }
 
-    if (!confirm("Deseja realmente excluir este carro?")) {
-        return;
-    }
-
-    fetch(contextPath + "/CarsServlet?id=" + id, {
-        method: "DELETE"
-    })
-    .then(response => {
-        if (response.ok) {
-            window.location.href =
-                contextPath + "/CarsServlet?a=getAll";
-        } else {
-            alert("Erro ao excluir carro.");
-        }
-    })
-    .catch(error => {
-        console.error("Erro no DELETE:", error);
+  fetch(contextPath + "/CarsServlet?id=" + id, {
+    method: "DELETE",
+  })
+    .then((response) => {
+      if (response.ok) {
+        window.location.href = contextPath + "/CarsServlet?a=getAll";
+      } else {
         alert("Erro ao excluir carro.");
+      }
+    })
+    .catch((error) => {
+      console.error("Erro no DELETE:", error);
+      alert("Erro ao excluir carro.");
     });
 }
 
 function validateForm() {
-    var name = document.getElementById("name").value.trim();
-    var numberPlate = document.getElementById("number_plate").value.trim();
-    var color = document.getElementById("color").value.trim();
+  var name = document.getElementById("name").value.trim();
+  var numberPlate = document.getElementById("number_plate").value.trim();
+  var color = document.getElementById("color").value.trim();
 
-    if (name.length === 0) {
-        alert("Por favor, insira o nome do veículo.");
-        return false;
-    }
+  if (name.length === 0) {
+    alert("Por favor, insira o nome do veículo.");
+    return false;
+  }
 
-    if (name.length > 30) {
-        alert("Nome do veículo maior que o permitido (30 caracteres).");
-        return false;
-    }
+  if (name.length > 150) {
+    alert("Nome do veículo maior que o permitido (150 caracteres).");
+    return false;
+  }
 
-    if (numberPlate.length === 0) {
-        alert("Por favor, insira a placa do veículo.");
-        return false;
-    }
+  if (numberPlate.length === 0) {
+    alert("Por favor, insira a placa do veículo.");
+    return false;
+  }
 
-    if (numberPlate.length > 15) {
-        alert("Placa maior que o permitido (15 caracteres).");
-        return false;
-    }
+  if (numberPlate.length > 10) {
+    alert("Placa maior que o permitido (10 caracteres).");
+    return false;
+  }
 
-    if (color.length > 20) {
-        alert("Cor maior que o permitido (20 caracteres).");
-        return false;
-    }
+  if (color.length === 0) {
+    alert("Por favor, insira a cor do veículo.");
+    return false;
+  }
 
-    console.log("Formulário validado com sucesso!");
-    return true;
+  if (color.length > 50) {
+    alert("Cor maior que o permitido (50 caracteres).");
+    return false;
+  }
+
+  console.log("Formulário validado com sucesso!");
+  return true;
 }

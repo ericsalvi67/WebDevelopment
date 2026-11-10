@@ -42,13 +42,13 @@
                     %>
                     <tr>
                         <td>
-                            <%= Options.id %>
+                            <%= options.id %>
                         </td>
                         <td>
-                            <%= Options.name %>
+                            <%= options.name %>
                         </td>
                         <td>
-                            <%= Options.description %>
+                            <%= options.description %>
                         </td>
                         <td>
                             <a
