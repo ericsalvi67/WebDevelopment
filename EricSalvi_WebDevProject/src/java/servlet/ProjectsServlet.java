@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 
 @WebServlet("/ProjectsServlet")
@@ -22,44 +23,42 @@ public class ProjectsServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         Users user = session != null ? (Users) session.getAttribute("user") : null;
-//        if (user == null) {
-//            response.sendRedirect(request.getContextPath() + "/index.jsp");
-//            return;
-//        }
+       if (user == null) {
+           response.sendRedirect(request.getContextPath() + "/index.jsp");
+           return;
+       }
 
         ArrayList<Projects> projects = new ArrayList<>();
         String action = request.getParameter("a");
-        if (action == null) {
-            action = (String) request.getAttribute("a");
-        }
-        if (action == null) {
-            action = "getAll";
-        }
+        action = (action == null) ? "getAll" : (String) request.getAttribute("a");
 
         String criteria = request.getParameter("c");
         String value = request.getParameter("v");
-        ProjectsHandler handler = new ProjectsHandler();
+        ProjectsHandler projectHandler = new ProjectsHandler();
 
         switch (action) {
             case "getAll":
-                projects.addAll(handler.GetAll());
+                projects.addAll(projectHandler.GetAll());
                 break;
+
             case "getByValue":
-                projects.addAll(handler.GetByValue(criteria, value));
+                projects.addAll(projectHandler.GetByValue(criteria, value));
                 break;
+
             case "getById":
-                String projectId = request.getParameter("id");
-                if (projectId == null) {
-                    projectId = String.valueOf(request.getAttribute("id"));
-                }
-                Projects project = handler.GetById(Integer.parseInt(projectId));
+                int projectId = Integer.parseInt(request.getParameter("id"));
+                
+                Projects project = projectHandler.GetById(projectId);
+
                 if (project == null) {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Projeto não encontrado.");
                     return;
                 }
+
                 request.setAttribute("project", project);
                 request.setAttribute("requirementsList",
                         new RequirementsHandler().GetByProjectId(project.id));
+
                 Action.RouterPage("Projects/Update.jsp", request, response);
                 return;
             default:
@@ -82,18 +81,17 @@ public class ProjectsServlet extends HttpServlet {
             return;
         }
 
-        String idValue = request.getParameter("id");
-        int id = (idValue == null || idValue.trim().isEmpty()) ? 0 : Integer.parseInt(idValue);
+        int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
 
         Projects project = new Projects(id, name, user.email);
-        ProjectsHandler handler = new ProjectsHandler();
+        ProjectsHandler projectHandler = new ProjectsHandler();
 
-        boolean saved = (id == 0) ? handler.Insert(project) : handler.Update(project);
+        boolean saved = (id == 0) ? projectHandler.Insert(project) : projectHandler.Update(project);
 
         if (saved) {
             if (id == 0) {
-                Projects savedProject = handler.GetByName(name);
+                Projects savedProject = projectHandler.GetByName(name);
                 int newId = savedProject != null ? savedProject.id : id;
                 response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getById&id=" + newId + "&tab=req");
             } else {
@@ -117,6 +115,7 @@ public class ProjectsServlet extends HttpServlet {
         }
 
         int id = Integer.parseInt(request.getParameter("id"));
+        
         if (new ProjectsHandler().Delete(id)) {
             System.out.println("Projeto excluído com sucesso.");
             response.setStatus(HttpServletResponse.SC_OK);

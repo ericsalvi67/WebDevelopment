@@ -21,6 +21,7 @@ public class RequirementsServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         Users user = session != null ? (Users) session.getAttribute("user") : null;
+
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/index.jsp");
             return;
@@ -52,10 +53,11 @@ public class RequirementsServlet extends HttpServlet {
             return;
         }
 
-        String idValue = request.getParameter("id");
+        int requirementId = Integer.parseInt(request.getParameter("id"));
+        int projectId =  Integer.parseInt(request.getParameter("project_id"));
 
         Requirements requirement = new Requirements(
-                idValue == null || idValue.isEmpty() ? 0 : Integer.parseInt(idValue),
+                requirementId,
                 request.getParameter("code"),
                 request.getParameter("type"),
                 request.getParameter("requirement"),
@@ -63,7 +65,7 @@ public class RequirementsServlet extends HttpServlet {
                 Integer.parseInt(request.getParameter("priority")),
                 Integer.parseInt(request.getParameter("complexity")),
                 Integer.parseInt(request.getParameter("version")),
-                Integer.parseInt(request.getParameter("project_id")));
+                projectId);
 
         RequirementsHandler handler = new RequirementsHandler();
 
@@ -76,7 +78,7 @@ public class RequirementsServlet extends HttpServlet {
             return;
         }
 
-        response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getById&id=" + Integer.parseInt(request.getParameter("project_id")));
+        response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getById&id=" + projectId);
     }
 
     @Override
@@ -92,6 +94,7 @@ public class RequirementsServlet extends HttpServlet {
         }
 
         int id = Integer.parseInt(request.getParameter("id"));
+        
         if (new RequirementsHandler().Delete(id)) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {

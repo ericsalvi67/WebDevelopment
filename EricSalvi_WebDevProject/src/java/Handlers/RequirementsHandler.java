@@ -39,9 +39,12 @@ public class RequirementsHandler implements IDAOT<Requirements> {
     public static final String _upsert =
             _insert
             + " on conflict (project_id, code, version) do update set "
-            + "type = excluded.type, requirement = excluded.requirement, "
-            + "description = excluded.description, priority = excluded.priority, "
-            + "complexity = excluded.complexity, updated_at = NOW()";
+            + "type = excluded.type, "
+            + "requirement = excluded.requirement, "
+            + "description = excluded.description, "
+            + "priority = excluded.priority, "
+            + "complexity = excluded.complexity, "
+            + "updated_at = NOW()";
 
     @Override
     public boolean Insert(Requirements o) {

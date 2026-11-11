@@ -25,11 +25,10 @@ public class UsersServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        response.sendRedirect(request.getContextPath() + "/Menu.jsp");
-        
         String email = request.getParameter("email");
-        String passwordRaw = request.getParameter("password");
-        String password = (passwordRaw != null) ? MD5.getMd5(passwordRaw) : "";
+        String password = MD5.getMd5(request.getParameter("password"));
+
+        System.out.println("Login: " + email + " - " + password);
 
         UsersHandler usersHandler = new UsersHandler();
         Users user = usersHandler.Auth(new Users(email, password));

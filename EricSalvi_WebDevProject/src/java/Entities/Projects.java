@@ -14,7 +14,7 @@ public class Projects {
             id,
             name, 
             created_by, 
-            null
+            Timestamp.from(java.time.Instant.now())
         );
     }
 
