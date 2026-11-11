@@ -1,12 +1,14 @@
 package servlet;
 
 import Entities.Requirements;
+import Entities.Users;
 import Handlers.RequirementsHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -17,44 +19,38 @@ public class RequirementsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        ArrayList<Requirements> requirements = new ArrayList<>();
-        String action = request.getParameter("a");
-        if (action == null) {
-            action = (String) request.getAttribute("a");
-        }
-        if (action == null) {
-            action = "getAll";
+        HttpSession session = request.getSession(false);
+        Users user = session != null ? (Users) session.getAttribute("user") : null;
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            return;
         }
 
-        String criteria = request.getParameter("c");
-        String value = request.getParameter("v");
-        RequirementsHandler handler = new RequirementsHandler();
-
-        switch (action) {
-            case "getAll":
-                requirements.addAll(handler.GetAll());
-                break;
-            case "getByValue":
-                requirements.addAll(handler.GetByValue(criteria, value));
-                break;
-            case "getById":
-                Requirements requirement = handler.GetById(
-                        Integer.parseInt(request.getParameter("id")));
-                request.setAttribute("requirement", requirement);
-                Action.RouterPage("Requirements/Update.jsp", request, response);
-                return;
-            default:
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Ação não reconhecida.");
-                return;
+        String projectId = request.getParameter("project_id");
+        if (projectId != null && !projectId.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getById&id=" + projectId);
+            return;
         }
 
-        request.setAttribute("requirementsList", requirements);
-        Action.RouterPage("Requirements/Requirements.jsp", request, response);
+        response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getAll");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        Users user = session != null ? (Users) session.getAttribute("user") : null;
+
+        if (user == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuário não autenticado.");
+            return;
+        }
+
+        if (user.role != 1) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Apenas administradores podem cadastrar requisitos.");
+            return;
+        }
 
         String idValue = request.getParameter("id");
 
@@ -76,25 +72,30 @@ public class RequirementsServlet extends HttpServlet {
                 : handler.Update(requirement);
 
         if (!saved) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Erro ao salvar requisito.");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao salvar requisito.");
             return;
         }
 
-        response.sendRedirect(request.getContextPath()
-                + "/ProjectsServlet?a=getById&id=" + requirement.project_id);
+        response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getById&id=" + Integer.parseInt(request.getParameter("project_id")));
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        HttpSession session = request.getSession(false);
+        Users user = session != null ? (Users) session.getAttribute("user") : null;
+
+        if (user == null || user.role != 1) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Apenas administradores podem excluir requisitos.");
+            return;
+        }
+
         int id = Integer.parseInt(request.getParameter("id"));
         if (new RequirementsHandler().Delete(id)) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Erro ao excluir requisito.");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao excluir requisito.");
         }
     }
 }

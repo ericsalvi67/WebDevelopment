@@ -1,30 +1,24 @@
-<%-- Document : Error Created on : 3 de set. de 2026, 22:25:41 Author : Salvi
---%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Error</title>
-    <link rel="stylesheet" href="../styles.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Erro</title>
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css">
   </head>
-
-  (HttpServletResponse) result = (HttpServletResponse)
-  request.getAttribute("response");
-
-  <body class="error">
-    <h1>Erro ao executar</h1>
-    <div class="error-message">
-      <p><strong>Erro:</strong> <%= result.getStatus() %></p>
-      <p><strong>Mensagem:</strong> <%= result.getErrorMessage() %></p>
+  <body class="body">
+    <div class="error">
+      <h2 style="color: #cc0000; text-align: center; margin-top: 0;">Erro na Operação</h2>
+      <p style="text-align: center;">Ocorreu uma falha ao processar a solicitação ou as credenciais/permissões são inválidas.</p>
+      <br>
+      <div style="text-align: center;">
+        <input
+          class="botao"
+          type="button"
+          value="Voltar ao Início"
+          onclick="window.location.href = '<%= request.getContextPath() %>/index.jsp'"
+        >
+      </div>
     </div>
-
-    <footer>
-      <input
-        class="botao"
-        type="button"
-        value="Voltar"
-        onclick="window.location.href = '../'"
-      />
-    </footer>
   </body>
 </html>

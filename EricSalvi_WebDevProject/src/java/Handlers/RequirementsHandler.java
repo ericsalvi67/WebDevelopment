@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class RequirementsHandler implements IDAOT<Requirements> {
 
     public static final String _select =
-            "select id, code, type, requirement, description, priority, complexity, "
-            + "version, project_id from requirements ";
+            "select id, code, type, requirement, description, priority, complexity, version, project_id "
+            + "from requirements ";
 
     public static final String _insert =
             "insert into requirements "
@@ -21,9 +21,17 @@ public class RequirementsHandler implements IDAOT<Requirements> {
             + "values (?, ?, ?, ?, ?, ?, ?, ?)";
 
     public static final String _update =
-            "update requirements set code = ?, type = ?, requirement = ?, "
-            + "description = ?, priority = ?, complexity = ?, version = ?, project_id = ?, "
-            + "updated_at = ? where id = ?";
+            "update requirements set "
+            + "code = ?, " 
+            + "type = ?, "
+            + "requirement = ?, "
+            + "description = ?, "
+            + "priority = ?, "
+            + "complexity = ?, "
+            + "version = ?, "
+            + "project_id = ?, "
+            + "updated_at = ? "
+            + "where id = ?";
 
     public static final String _delete =
             "delete from requirements where id = ?";

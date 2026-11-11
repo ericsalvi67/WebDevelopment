@@ -1,4 +1,4 @@
-<%-- Document : Update Created on : 6 de set. de 2026, 17:13:39 Author : Salvi
+<!-- <%-- Document : Update Created on : 6 de set. de 2026, 17:13:39 Author : Salvi
 --%> <%@page contentType="text/html" pageEncoding="UTF-8"%> <%@page
 import="Entities.Options"%> <% Options options = (Options)
 request.getAttribute("option"); %>
@@ -61,4 +61,4 @@ request.getAttribute("option"); %>
       </div>
     </form>
   </body>
-</html>
+</html> -->

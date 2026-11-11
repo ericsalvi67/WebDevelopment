@@ -2,7 +2,6 @@ package servlet;
 
 import Entities.Projects;
 import Entities.Users;
-import Entities.Requirements;
 import Handlers.ProjectsHandler;
 import Handlers.RequirementsHandler;
 import jakarta.servlet.ServletException;
@@ -10,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,6 +19,13 @@ public class ProjectsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        Users user = session != null ? (Users) session.getAttribute("user") : null;
+//        if (user == null) {
+//            response.sendRedirect(request.getContextPath() + "/index.jsp");
+//            return;
+//        }
 
         ArrayList<Projects> projects = new ArrayList<>();
         String action = request.getParameter("a");
@@ -56,8 +63,7 @@ public class ProjectsServlet extends HttpServlet {
                 Action.RouterPage("Projects/Update.jsp", request, response);
                 return;
             default:
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Ação não reconhecida.");
-                return;
+                System.out.println("Ação não reconhecida: " + action);
         }
 
         request.setAttribute("projectsList", projects);
@@ -68,88 +74,55 @@ public class ProjectsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        HttpSession session = request.getSession(false);
+        Users user = session != null ? (Users) session.getAttribute("user") : null;
+
+        if (user == null || user.role != 1) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuário não autorizado.");
+            return;
+        }
+
         String idValue = request.getParameter("id");
+        int id = (idValue == null || idValue.trim().isEmpty()) ? 0 : Integer.parseInt(idValue);
         String name = request.getParameter("name");
-        Users user = (Users) request.getSession().getAttribute("user");
 
-        if (user.email == null || user.email.isEmpty()) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-        }
-
-        Projects project = new Projects(
-                idValue == null || idValue.isEmpty() ? 0 : Integer.parseInt(idValue),
-                name,
-                user.email);
-
+        Projects project = new Projects(id, name, user.email);
         ProjectsHandler handler = new ProjectsHandler();
-        
-        if (project.id != 0 && (user == null || user.role != 1)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
 
-        boolean saved = project.id == 0 ? handler.Insert(project) : handler.Update(project);
+        boolean saved = (id == 0) ? handler.Insert(project) : handler.Update(project);
 
-        if (!saved) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao salvar projeto.");
-            return;
-        }
-
-        if (project.id == 0) {
-            Projects savedProject = handler.GetByName(project.name);
-            
-            if (savedProject != null) {
-                String[] codes = request.getParameterValues("code");
-                String[] types = request.getParameterValues("type");
-                String[] requirements = request.getParameterValues("requirement");
-                String[] descriptions = request.getParameterValues("description");
-                String[] priorities = request.getParameterValues("priority");
-                String[] complexities = request.getParameterValues("complexity");
-                String[] versions = request.getParameterValues("version");
-
-                if (codes != null 
-                    && types != null 
-                    && requirements != null
-                    && descriptions != null 
-                    && priorities != null
-                    && complexities != null 
-                    && versions != null) {
-                    RequirementsHandler requirementsHandler = new RequirementsHandler();
-
-                    for (int i = 0; i < codes.length; i++) {
-                        requirementsHandler.Insert(
-                            new Requirements(
-                                codes[i], 
-                                types[i], 
-                                requirements[i], 
-                                descriptions[i],
-                                Integer.parseInt(priorities[i]), 
-                                Integer.parseInt(complexities[i]),
-                                Integer.parseInt(versions[i]), 
-                                savedProject.id)
-                        );
-                    }
-                }
+        if (saved) {
+            if (id == 0) {
+                Projects savedProject = handler.GetByName(name);
+                int newId = savedProject != null ? savedProject.id : id;
+                response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getById&id=" + newId + "&tab=req");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getById&id=" + id);
             }
+        } else {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao salvar projeto.");
         }
-
-        request.setAttribute("a", project.id == 0 ? "getAll" : "getById");
-        if (project.id != 0) {
-            request.setAttribute("id", project.id);
-        }
-        doGet(request, response);
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        HttpSession session = request.getSession(false);
+        Users user = session != null ? (Users) session.getAttribute("user") : null;
+
+        if (user == null || user.role != 1) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Apenas administradores podem excluir projetos.");
+            return;
+        }
+
         int id = Integer.parseInt(request.getParameter("id"));
         if (new ProjectsHandler().Delete(id)) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao excluir projeto.");
-        } else {
+            System.out.println("Projeto excluído com sucesso.");
             response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            System.out.println("Erro ao excluir projeto.");
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao excluir projeto.");
         }
     }
 }

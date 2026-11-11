@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package servlet;
 
 import Entities.Users;
@@ -15,80 +10,39 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 
-/**
- *
- * @author Salvi
- */
 @WebServlet("/UsersServlet")
 public class UsersServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Users Servlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet action at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        System.out.println("Estou no POST.");
+        
+        response.sendRedirect(request.getContextPath() + "/Menu.jsp");
         
         String email = request.getParameter("email");
-        String password = MD5.getMd5(request.getParameter("password"));
-
-        System.out.println("------------USER------------");
-        System.out.println("Get Email: " + email);
-        System.out.println("Get Password: " + password);
-        System.out.println("------------USER------------");
+        String passwordRaw = request.getParameter("password");
+        String password = (passwordRaw != null) ? MD5.getMd5(passwordRaw) : "";
 
         UsersHandler usersHandler = new UsersHandler();
         Users user = usersHandler.Auth(new Users(email, password));
 
-        System.out.println("------------USER------------");
         if (user != null) {
-            System.out.println("User Email: " + user.email);
-            System.out.println("User Password: " + user.password);
-            System.out.println("User Role: " + user.role + " (1=Admin, 2=User)");
-        }
-        System.out.println("------------USER------------");
-
-        if (user != null) {
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession(true);
             session.setAttribute("user", user);
-        
-            Action.RouterPage("Menu.jsp", request, response);
+
+            System.out.println("Usuário autenticado com sucesso: " + user.email + " (Role: " + user.role + ")");
+            response.sendRedirect(request.getContextPath() + "/Menu.jsp");
         } else {
+            System.out.println("Falha na autenticação para: " + email);
             Action.RouterPage("Error.jsp", request, response);
         }
     }
-
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
-
 }

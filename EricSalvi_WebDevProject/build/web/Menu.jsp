@@ -1,33 +1,42 @@
-<%-- Document : Menu Created on : 3 de set. de 2026, 21:47:20 Author : Salvi
---%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="Entities.Users"%>
+<%
+    Users user = (Users) session.getAttribute("user");
+    String userEmail = user != null ? user.email : "Usuário X";
+    String roleName = (user != null && user.role == 1) ? "Administrador" : "Usuário";
+%>
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css" />
-    <title>Menu</title>
-    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css">
+    <title>Menu Principal</title>
+    <meta charset="UTF-8">
   </head>
 
   <body class="body">
-    <div class="container menu">
-      <h2 class="h2">Menu</h2>
+    <div class="container" style="max-width: 480px; text-align: center;">
+      <h2 class="h2">Menu Principal</h2>
+      
+      <p style="margin-bottom: 24px; color: #444;">
+        Conectado como: <strong><%= userEmail %></strong><t /> (<%= roleName %>)
+      </p>
 
-      <input
-        class="botao-menu"
-        type="button"
-        value="Projetos"
-        onclick="
-          window.location.href =
-            '<%= request.getContextPath() %>/ProjectsServlet?a=getAll'
-        "
-      />
+      <div class="menu">
+        <input
+          class="botao-menu"
+          type="button"
+          value="Gerenciar Projetos"
+          onclick="window.location.href = '<%= request.getContextPath() %>/ProjectsServlet?a=getAll'"
+        >
 
-      <input
-        class="botao-menu"
-        type="button"
-        value="Relatórios"
-        onclick="alert('A tela de relatórios ainda não foi implementada.')"
-      />
+        <input
+          class="botao-menu"
+          type="button"
+          value="Sair (Logout)"
+          style="color: #aa2222;"
+          onclick="window.location.href = '<%= request.getContextPath() %>/index.jsp'"
+        >
+      </div>
     </div>
   </body>
 </html>

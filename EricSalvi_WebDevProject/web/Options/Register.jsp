@@ -1,4 +1,4 @@
-<%-- Document : Register Created on : 6 de set. de 2026, 17:13:39 Author : Salvi
+<!-- <%-- Document : Register Created on : 6 de set. de 2026, 17:13:39 Author : Salvi
 --%> <%@page import="Entities.Users"%> <%@page contentType="text/html"
 pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -49,4 +49,4 @@ pageEncoding="UTF-8"%>
       </div>
     </form>
   </body>
-</html>
+</html> -->
