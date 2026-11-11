@@ -1,71 +1,77 @@
 package Handlers;
 
+import Entities.Users;
 import Support.ConexaoBD;
 import Support.IDAOT;
-import Entities.Users;
-import java.util.ArrayList;
-import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class UsersHandler implements IDAOT<Users> {
-    
-    public static final String _select = 
-                "select 1 "
-                + "from users "
-                + "where email = ? "
-                + "and password = ? ";
+
+    public static final String _select =
+            "select id, email, password, role from users ";
 
     @Override
     public boolean Insert(Users o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return true;
     }
 
     @Override
     public boolean Update(Users o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return true;
     }
 
     @Override
     public boolean Delete(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return true;
     }
 
     @Override
     public ArrayList<Users> GetAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public ArrayList<Users> GetByValue(String criterio, String valor) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     public Users GetById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
-    public boolean Auth (Users u) {
-        
+    public Users Auth(Users u) {
         try {
-            PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(_select);
+
+            PreparedStatement pst = ConexaoBD.getInstance().getConnection()
+                    .prepareStatement(_select + "where email = ? and password = ?");
 
             pst.setString(1, u.email);
             pst.setString(2, u.password);
-
             ResultSet result = pst.executeQuery();
+
             System.out.println("SQL executado!");
-
-            if (result.next()) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return result.next() ? toUser(result) : null;
+            
         } catch (Exception e) {
             System.out.println("Erro ao autenticar USERS: " + e);
-            return false;
+            return null;
         }
     }
 
+    private Users toUser(ResultSet result) {
+        try {
+            return new Users(
+                result.getInt("id"),
+                result.getString("email"),
+                result.getString("password"),
+                result.getInt("role")
+            );
+        } catch (Exception e) {
+            System.out.println("Erro ao converter ResultSet para Users: " + e);
+            return null;
+        }
+    }
 }

@@ -58,18 +58,28 @@ public class UsersServlet extends HttpServlet {
         
         String email = request.getParameter("email");
         String password = MD5.getMd5(request.getParameter("password"));
-        
-        Users users = new Users (email,password);
+
         System.out.println("------------USER------------");
-        System.out.println(users.email);
-        System.out.println(users.password);
+        System.out.println("Get Email: " + email);
+        System.out.println("Get Password: " + password);
         System.out.println("------------USER------------");
 
-        if (new UsersHandler().Auth(users)) {
-            Action.RouterPage("Menu.jsp", request, response);
-            
+        UsersHandler usersHandler = new UsersHandler();
+        Users user = usersHandler.Auth(new Users(email, password));
+
+        System.out.println("------------USER------------");
+        if (user != null) {
+            System.out.println("User Email: " + user.email);
+            System.out.println("User Password: " + user.password);
+            System.out.println("User Role: " + user.role + " (1=Admin, 2=User)");
+        }
+        System.out.println("------------USER------------");
+
+        if (user != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("emailuser", users.email);
+            session.setAttribute("user", user);
+        
+            Action.RouterPage("Menu.jsp", request, response);
         } else {
             Action.RouterPage("Error.jsp", request, response);
         }

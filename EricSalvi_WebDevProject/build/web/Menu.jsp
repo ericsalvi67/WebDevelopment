@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css" />
     <title>Menu</title>
     <meta charset="UTF-8" />
   </head>
@@ -11,27 +11,22 @@
   <body class="body">
     <div class="container menu">
       <h2 class="h2">Menu</h2>
-      <br />
 
       <input
-        class="botao"
+        class="botao-menu"
         type="button"
-        value="Carros"
-        onclick="window.location.href='<%= request.getContextPath() %>/CarsServlet?a=getAll'"
+        value="Projetos"
+        onclick="
+          window.location.href =
+            '<%= request.getContextPath() %>/ProjectsServlet?a=getAll'
+        "
       />
-      
+
       <input
-        class="botao"
+        class="botao-menu"
         type="button"
-        value="Manutenções"
-        onclick="window.location.href='<%= request.getContextPath() %>/MaintanancesServlet?a=getAll'"
-      />
-      
-      <input
-        class="botao"
-        type="button"
-        value="Categorias de Manutenção"
-        onclick="window.location.href='<%= request.getContextPath() %>/OptionsServlet?a=getAll'"
+        value="Relatórios"
+        onclick="alert('A tela de relatórios ainda não foi implementada.')"
       />
     </div>
   </body>

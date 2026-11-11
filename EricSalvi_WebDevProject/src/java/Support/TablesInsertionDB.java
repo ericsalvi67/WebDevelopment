@@ -1,3 +1,4 @@
+
 package Support;
 
 import java.sql.Connection;
@@ -12,76 +13,56 @@ public class TablesInsertionDB {
             "	id serial4 NOT NULL ," +
             "	email varchar(60) NOT NULL," +
             "	password varchar(255) NOT NULL," +
+            "	role int4 NOT NULL," +
             "	created_at timestamp NOT NULL DEFAULT NOW()," +
             "	CONSTRAINT users_pk PRIMARY KEY (id), " +
             "   CONSTRAINT users_un UNIQUE (email));";
 
-    private static final String _createCars = 
-            "CREATE TABLE IF NOT EXISTS cars (" +
+    private static final String _createProjects = 
+            "CREATE TABLE IF NOT EXISTS projects (" +
             "	id serial4 NOT NULL ," +
-            "	name varchar(30) NOT NULL," +
-            "	number_plate varchar(15) NOT NULL," +
-            "	color varchar(20) NULL," +
-            "	users_email varchar(60) NOT NULL," +
+            "	name varchar(60) NOT NULL," +
+            "	created_by varchar(60) NOT NULL," +
             "	created_at timestamp NOT NULL DEFAULT NOW()," +
             "	updated_at timestamp NOT NULL DEFAULT NOW()," +
-            "	CONSTRAINT cars_pk PRIMARY KEY (id), " +
-            "   CONSTRAINT cars_un UNIQUE (number_plate), " +
-            "   CONSTRAINT cars_fk FOREIGN KEY (users_email) REFERENCES users(email) ON DELETE CASCADE);";
+            "	CONSTRAINT projects_pk PRIMARY KEY (id), " +
+            "   CONSTRAINT projects_un UNIQUE (name), " +
+            "	CONSTRAINT projects_fk FOREIGN KEY (created_by) REFERENCES users(email) ON DELETE CASCADE);";
 
-    private static final String _createOptions = 
-            "CREATE TABLE IF NOT EXISTS options (" +
+    private static final String _createRequirements = 
+            "CREATE TABLE IF NOT EXISTS requirements (" +
             "	id serial4 NOT NULL ," +
-            "	name varchar(50) NOT NULL," +
+            "	code varchar(10) NOT NULL," +
+            "	type varchar(3) NOT NULL," +
+            "	requirement varchar(100) NOT NULL," +
             "	description varchar(255) NULL," +
+            "	priority int4 NOT NULL," +
+            "	complexity int4 NOT NULL," +
+            "	version int4 NOT NULL," +
+            "	project_id int4 NOT NULL," +
             "	created_at timestamp NOT NULL DEFAULT NOW()," +
             "	updated_at timestamp NOT NULL DEFAULT NOW()," +
-            "	CONSTRAINT options_pk PRIMARY KEY (id), " +
-            "   CONSTRAINT options_un UNIQUE (name));";
-    
-    private static final String _createMaintanances = 
-            "CREATE TABLE IF NOT EXISTS maintanances (" +
-            "	id serial4 NOT NULL ," +
-            "	name varchar(30) NOT NULL," +
-            "	car_plate varchar(15) NOT NULL," +
-            "	done_by varchar(100) NULL," +
-            "	done_at timestamp NULL," +
-            "	observations varchar(500) NULL," +
-            "	created_at timestamp NOT NULL DEFAULT NOW()," +
-            "	updated_at timestamp NOT NULL DEFAULT NOW()," +
-            "	CONSTRAINT maintanances_pk PRIMARY KEY (id), " +
-            "	CONSTRAINT maintanances_un UNIQUE (name), " +
-            "  CONSTRAINT maintanances_fk FOREIGN KEY (car_plate) REFERENCES cars(number_plate) ON DELETE CASCADE);";
-   
-    private static final String _createMaintanancesOptions = 
-            "CREATE TABLE IF NOT EXISTS maintanances_options (" +
-            "	maintanance_id int4 NOT NULL ," +
-            "	option_id int4 NOT NULL," +
-            "	unit_value decimal(9,2) NOT NULL," +
-            "	CONSTRAINT maintanances_options_pk PRIMARY KEY (maintanance_id, option_id), " +
-            "   CONSTRAINT maintanances_options_fk1 FOREIGN KEY (maintanance_id) REFERENCES maintanances(id) ON DELETE CASCADE," +
-            "   CONSTRAINT maintanances_options_fk2 FOREIGN KEY (option_id) REFERENCES options(id) ON DELETE RESTRICT);";
+            "	CONSTRAINT requirements_pk PRIMARY KEY (id), " +
+            "   CONSTRAINT requirements_un UNIQUE (project_id, code, version), " +
+            "	CONSTRAINT requirements_fk FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE);";
 
     private static final String _insertData = 
-            "INSERT INTO users (email, password)"
+            "INSERT INTO users (email, password, role) "
             + "VALUES "
-            + "('admin', '" + MD5.getMd5("admin") + "'),"
-            + "('juca', '" + MD5.getMd5("bala") + "');";
+            + "('admin', '" + MD5.getMd5("admin") + "', 1),"
+            + "('juca', '" + MD5.getMd5("bala") + "', 2) "
+            + " ON CONFLICT (email) DO NOTHING;";
 
 
-    public static boolean CreateTables(boolean createTable, boolean addData) throws Exception {
+    public static boolean CreateTables(boolean createTable) throws Exception {
         try {
             Statement st = ConexaoBD.getInstance().getConnection().createStatement();
 
             if(createTable){
                 st.executeUpdate(_createUsers);
-                st.executeUpdate(_createCars);
-                st.executeUpdate(_createOptions);
-                st.executeUpdate(_createMaintanances);
-                st.executeUpdate(_createMaintanancesOptions);
-            }
+                st.executeUpdate(_createProjects);
+                st.executeUpdate(_createRequirements);
             
-            if (addData){
                 st.executeUpdate(_insertData);
             }
             

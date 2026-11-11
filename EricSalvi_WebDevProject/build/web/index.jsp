@@ -5,13 +5,13 @@ contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css" />
     <title>Login</title>
     <meta charset="UTF-8" />
   </head>
   <body class="body">
     <%-- USE FOR INSERT TABLES AND ADD A TEST USER --%> <%=
-    TablesInsertionDB.CreateTables(false, false) %>
+    TablesInsertionDB.CreateTables(true) %>
 
     <form
       class="container"
@@ -22,7 +22,7 @@ contentType="text/html" pageEncoding="UTF-8" %>
       <h2 class="h2">Login</h2>
       <br />
 
-      <label for="email">Email:</label>
+      <label for="email">Email:</label><br />
       <input
         id="email"
         type="text"
@@ -33,7 +33,7 @@ contentType="text/html" pageEncoding="UTF-8" %>
       />
       <br /><br />
 
-      <label for="Senha">Senha:</label>
+      <label for="Senha">Senha:</label><br />
       <input
         id="password"
         type="password"
@@ -42,9 +42,9 @@ contentType="text/html" pageEncoding="UTF-8" %>
         autocomplete="new-password"
         required
       />
-      <br /><br />
+      <br /><br /><br /><br />
 
-      <input class="botao" type="submit" value="Enviar" />
+      <input class="botao-menu" type="submit" value="Enviar" />
     </form>
   </body>
 </html>
