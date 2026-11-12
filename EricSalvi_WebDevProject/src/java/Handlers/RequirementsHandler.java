@@ -137,8 +137,23 @@ public class RequirementsHandler implements IDAOT<Requirements> {
     }
         
     public ArrayList<Requirements> GetByProjectId(int projectId) {
-        return query(_select + "where project_id = ? order by code, version",
-                new String[]{String.valueOf(projectId)});
+        ArrayList<Requirements> result = new ArrayList<>();
+        try {
+            
+            String sql = _select + "where project_id = ? order by code, version";
+            
+            PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql);
+             pst.setInt(1, projectId);
+
+            ResultSet rs = pst.executeQuery();
+            
+            while (rs.next()) {
+                result.add(toRequirement(rs));
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar REQUIREMENTS: " + e);
+        }
+        return result;
     }
  
 

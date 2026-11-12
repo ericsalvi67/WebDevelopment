@@ -49,13 +49,13 @@
                         <td>
                             <%= project.created_at == null ? "" : project.created_at %>
                         </td>
-                        <% if (isAdmin) { %>
                         <td>
                             <a href="ProjectsServlet?a=getById&id=<%= project.id %>">
                                 Editar
                             </a>
                         </td>
                         <td>
+                            <% if (isAdmin) { %>
                             <input
                                 style="color: #ff5050; cursor: pointer;"
                                 type="button"

@@ -5,6 +5,7 @@
     String userEmail = (user != null) ? user.email : "";
     String today = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
 %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -62,14 +63,6 @@
                     </div>
                 </form>
             </div>
-
-            <!-- Aba 2: Requisitos (Informativo para novo cadastro) -->
-            <div id="tab-requisitos" class="tab-content" style="display: none;">
-                <div class="alert-box">
-                    <p>⚠️ Registre o projeto primeiro na <strong>Aba 1</strong>. Após a gravação no banco de dados, esta aba será liberada automaticamente para você cadastrar os requisitos associados!</p>
-                </div>
-            </div>
-
         </div>
     </body>
 </html>

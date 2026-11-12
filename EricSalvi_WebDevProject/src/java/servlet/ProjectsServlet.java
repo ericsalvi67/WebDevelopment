@@ -1,6 +1,7 @@
 package servlet;
 
 import Entities.Projects;
+import Entities.Requirements;
 import Entities.Users;
 import Handlers.ProjectsHandler;
 import Handlers.RequirementsHandler;
@@ -11,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
 
 @WebServlet("/ProjectsServlet")
@@ -23,6 +23,7 @@ public class ProjectsServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         Users user = session != null ? (Users) session.getAttribute("user") : null;
+        
        if (user == null) {
            response.sendRedirect(request.getContextPath() + "/index.jsp");
            return;
@@ -30,7 +31,10 @@ public class ProjectsServlet extends HttpServlet {
 
         ArrayList<Projects> projects = new ArrayList<>();
         String action = request.getParameter("a");
-        action = (action == null) ? "getAll" : (String) request.getAttribute("a");
+        
+        if (action == null || action.isBlank()) {
+            action = "getAll";
+        }
 
         String criteria = request.getParameter("c");
         String value = request.getParameter("v");
@@ -54,10 +58,11 @@ public class ProjectsServlet extends HttpServlet {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Projeto não encontrado.");
                     return;
                 }
-
+                
+                ArrayList<Requirements> requirements =  new RequirementsHandler().GetByProjectId(project.id);
+                
                 request.setAttribute("project", project);
-                request.setAttribute("requirementsList",
-                        new RequirementsHandler().GetByProjectId(project.id));
+                request.setAttribute("requirementsList", requirements);
 
                 Action.RouterPage("Projects/Update.jsp", request, response);
                 return;

@@ -15,7 +15,7 @@ public class ProjectsHandler implements IDAOT<Projects> {
             "select id, name, created_by, created_at from projects ";
 
     public static final String _insert =
-            "insert into projects (name, created_by) values (?, ?)";
+            "insert into projects (name, created_by, created_at) values (?, ?, ?)";
 
     public static final String _update =
             "update projects set name = ?, updated_at = ? where id = ?";
@@ -37,6 +37,7 @@ public class ProjectsHandler implements IDAOT<Projects> {
 
             pst.setString(1, o.name);
             pst.setString(2, o.created_by);
+            pst.setTimestamp(3, o.created_at);
 
             pst.executeUpdate();
 

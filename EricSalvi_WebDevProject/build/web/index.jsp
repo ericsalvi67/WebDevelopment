@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Support.TablesInsertionDB"%>
 
-<%-- TablesInsertionDB.CreateTables(false) --%>
+<%= TablesInsertionDB.CreateTables(true) %>
 
 <!DOCTYPE html>
 <html>
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css">
     <title>Login</title>
     <meta charset="UTF-8">
-  </head>
+  </head> 
   <body class="body">
     <form
       class="container"

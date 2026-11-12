@@ -1,0 +1,332 @@
+:root {
+  --bg-page: #23783b;
+  --card-bg: #edf9f0;
+  --accent-pink: #f8c7cb;
+  --header-pink: #f47e87;
+  --border-color: #222222;
+  --text-color: #222222;
+  --radius-card: 16px;
+  --radius-btn: 6px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body.body {
+  margin: 0;
+  padding: 24px 12px;
+  min-height: 100vh;
+  background-color: var(--bg-page);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* =========================
+   CONTAINER PRINCIPAL
+   ========================= */
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  background-color: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-card);
+  padding: 26px 32px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  margin: auto;
+}
+
+.h2 {
+  text-align: center;
+  margin: 0 0 20px 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+/* =========================
+   SISTEMA DE ABAS (TABS)
+   ========================= */
+
+.tab-header {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 22px;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  background-color: #ffffff;
+  border: 2px solid var(--border-color);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover:not(.disabled) {
+  background-color: #fce8ea;
+}
+
+.tab-btn.active {
+  background-color: var(--accent-pink);
+  border-bottom: 2px solid var(--accent-pink);
+  margin-bottom: -2px;
+}
+
+.tab-btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #e5e5e5;
+}
+
+.tab-content {
+  display: block;
+}
+
+.alert-box {
+  background-color: #fff3cd;
+  border: 1.5px solid #ffeeba;
+  border-radius: 8px;
+  padding: 18px;
+  color: #856404;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* =========================
+   FORMULÁRIOS E CAMPOS
+   ========================= */
+
+.container label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.container input:not([type="submit"]):not([type="button"]):not([type="range"]):not([type="hidden"]),
+.container select,
+.container textarea {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 14px;
+  background-color: #ffffff;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-btn);
+  outline: none;
+  margin-top: 4px;
+}
+
+.container input:focus,
+.container select:focus,
+.container textarea:focus {
+  border-color: #106626;
+  box-shadow: 0 0 0 2px rgba(35, 120, 59, 0.25);
+}
+
+.maintenance-options {
+  border: 2px solid var(--header-pink);
+  border-radius: 10px;
+  padding: 16px 20px;
+  background-color: #fff7f8;
+  margin-bottom: 20px;
+}
+
+.maintenance-options legend {
+  font-weight: 800;
+  padding: 0 10px;
+  color: #333333;
+}
+
+.req-grid-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.code-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.code-field span {
+  font-weight: 800;
+  font-size: 15px;
+}
+
+/* =========================
+   TABELAS
+   ========================= */
+
+.tabela {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+  font-size: 14px;
+  background-color: var(--accent-pink);
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.tabela th {
+  background-color: var(--header-pink);
+  padding: 11px 8px;
+  font-weight: 800;
+  color: var(--text-color);
+  border-bottom: 1.5px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+}
+
+.tabela th:last-child {
+  border-right: none;
+}
+
+.tabela td {
+  padding: 9px 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  vertical-align: middle;
+}
+
+.tabela td:last-child {
+  border-right: none;
+}
+
+.tabela tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tabela td a {
+  color: #0b4f1c;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* =========================
+   BOTÕES E AÇÕES (PADRÃO CARS/MAINTANANCES)
+   ========================= */
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.botao,
+.botao2,
+.botao3,
+.botao-menu {
+  display: inline-block;
+  padding: 10px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-color);
+  text-align: center;
+  text-decoration: none;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.botao {
+  background-color: #ffffff;
+}
+
+.botao2 {
+  background-color: var(--header-pink);
+  color: #ffffff;
+}
+
+.botao3 {
+  background-color: var(--accent-pink);
+}
+
+.botao-menu {
+  background-color: #ffffff;
+  width: 200px;
+}
+
+.botao:hover,
+.botao2:hover,
+.botao3:hover,
+.botao-menu:hover {
+  filter: brightness(0.92);
+}
+
+/* =========================
+   MENU & ERRO
+   ========================= */
+
+.menu {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  justify-items: center;
+}
+
+.error {
+  max-width: 500px;
+  background-color: #ffe6e6;
+  border-color: #cc0000;
+  padding: 30px;
+  border-radius: 16px;
+  border: 2px solid #cc0000;
+  margin: auto;
+}
+
+/* =========================
+   RESPONSIVIDADE & IMPRESSÃO
+   ========================= */
+
+@media (max-width: 768px) {
+  .req-grid-form {
+    grid-template-columns: 1fr;
+  }
+  .form-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .botao, .botao2, .botao3 {
+    width: 100%;
+  }
+}
+
+@media print {
+  body.body {
+    background-color: #ffffff !important;
+    padding: 0 !important;
+  }
+  .container {
+    border: none !important;
+    box-shadow: none !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  .tab-header, .form-actions, .filter-bar, .maintenance-options, input[type="button"], input[type="submit"] {
+    display: none !important;
+  }
+  .tabela th {
+    background-color: #eeeeee !important;
+    color: #000000 !important;
+  }
+  .tabela td {
+    background-color: #ffffff !important;
+  }
+}
