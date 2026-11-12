@@ -12,53 +12,129 @@ public class UsersHandler implements IDAOT<Users> {
     public static final String _select =
             "select id, email, password, role from users ";
 
+    public static final String _insert =
+            "insert into users (email, password, role) values (?, ?, ?)";
+
+    public static final String _update =
+            "update users set email = ?, password = ?, role = ? where id = ?";
+
+    public static final String _delete =
+            "delete from users where id = ?";
+
     @Override
     public boolean Insert(Users o) {
-        return true;
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection()
+                .prepareStatement(_insert)) {
+
+            pst.setString(1, o.email);
+            pst.setString(2, o.password);
+            pst.setInt(3, o.role);
+
+            return pst.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Erro ao inserir USERS: " + e);
+            return false;
+        }
     }
 
     @Override
     public boolean Update(Users o) {
-        return true;
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection()
+                .prepareStatement(_update)) {
+
+            pst.setString(1, o.email);
+            pst.setString(2, o.password);
+            pst.setInt(3, o.role);
+            pst.setInt(4, o.id);
+
+            return pst.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Erro ao atualizar USERS: " + e);
+            return false;
+        }
     }
 
     @Override
     public boolean Delete(int id) {
-        return true;
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection()
+                .prepareStatement(_delete)) {
+
+            pst.setInt(1, id);
+
+            return pst.executeUpdate() > 0;
+        } catch (Exception e) {
+            System.out.println("Erro ao excluir USERS: " + e);
+            return false;
+        }
     }
 
     @Override
     public ArrayList<Users> GetAll() {
-        return null;
+        return query(_select + "order by id", null);
     }
 
     @Override
     public ArrayList<Users> GetByValue(String criterio, String valor) {
-        return null;
+        String sql = _select + "where email ilike ? order by id";
+        String pattern = "%" + valor + "%";
+        return query(sql, new String[]{pattern});
     }
 
     @Override
     public Users GetById(int id) {
-        return null;
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection()
+                .prepareStatement(_select + "where id = ?")) {
+
+            pst.setInt(1, id);
+
+            try (ResultSet result = pst.executeQuery()) {
+                return result.next() ? toUser(result) : null;
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar USER por id: " + e);
+            return null;
+        }
     }
 
     public Users Auth(Users u) {
-        try {
-
-            PreparedStatement pst = ConexaoBD.getInstance().getConnection()
-                    .prepareStatement(_select + "where email = ? and password = ?");
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection()
+                .prepareStatement(_select + "where email = ? and password = ?")) {
 
             pst.setString(1, u.email);
             pst.setString(2, u.password);
-            ResultSet result = pst.executeQuery();
 
-            System.out.println("SQL executado!");
-            return result.next() ? toUser(result) : null;
-            
+            try (ResultSet result = pst.executeQuery()) {
+                return result.next() ? toUser(result) : null;
+            }
         } catch (Exception e) {
             System.out.println("Erro ao autenticar USERS: " + e);
             return null;
         }
+    }
+
+    private ArrayList<Users> query(String sql, String[] values) {
+        ArrayList<Users> result = new ArrayList<>();
+
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            if (values != null) {
+                for (int i = 0; i < values.length; i++) {
+                    pst.setString(i + 1, values[i]);
+                }
+            }
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    Users u = toUser(rs);
+                    if (u != null) {
+                        result.add(u);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar USERS: " + e);
+        }
+
+        return result;
     }
 
     private Users toUser(ResultSet result) {

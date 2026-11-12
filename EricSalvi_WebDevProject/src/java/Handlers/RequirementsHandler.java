@@ -22,7 +22,7 @@ public class RequirementsHandler implements IDAOT<Requirements> {
 
     public static final String _update =
             "update requirements set "
-            + "code = ?, " 
+            + "code = ?, "
             + "type = ?, "
             + "requirement = ?, "
             + "description = ?, "
@@ -48,16 +48,12 @@ public class RequirementsHandler implements IDAOT<Requirements> {
 
     @Override
     public boolean Insert(Requirements o) {
-        try {
-
-            PreparedStatement pst = ConexaoBD.getInstance().getConnection()
-                    .prepareStatement(_upsert);
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection()
+                .prepareStatement(_upsert)) {
 
             bind(pst, o);
 
-            pst.executeUpdate();
-
-            return true;
+            return pst.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Erro ao inserir REQUIREMENTS: " + e);
             return false;
@@ -66,18 +62,14 @@ public class RequirementsHandler implements IDAOT<Requirements> {
 
     @Override
     public boolean Update(Requirements o) {
-        try {
-
-            PreparedStatement pst = ConexaoBD.getInstance().getConnection()
-                    .prepareStatement(_update);
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection()
+                .prepareStatement(_update)) {
 
             bind(pst, o);
             pst.setTimestamp(9, Timestamp.from(Instant.now()));
             pst.setInt(10, o.id);
 
-            pst.executeUpdate();
-
-            return true;
+            return pst.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Erro ao atualizar REQUIREMENTS: " + e);
             return false;
@@ -86,16 +78,12 @@ public class RequirementsHandler implements IDAOT<Requirements> {
 
     @Override
     public boolean Delete(int id) {
-        try {
-
-            PreparedStatement pst = ConexaoBD.getInstance().getConnection()
-                    .prepareStatement(_delete);
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection()
+                .prepareStatement(_delete)) {
 
             pst.setInt(1, id);
 
-            pst.executeUpdate();
-
-            return true;
+            return pst.executeUpdate() > 0;
         } catch (Exception e) {
             System.out.println("Erro ao excluir REQUIREMENTS: " + e);
             return false;
@@ -120,42 +108,37 @@ public class RequirementsHandler implements IDAOT<Requirements> {
 
     @Override
     public Requirements GetById(int id) {
-        try {
-
-            PreparedStatement pst = ConexaoBD.getInstance().getConnection()
-                    .prepareStatement(_select + "where id = ?");
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection()
+                .prepareStatement(_select + "where id = ?")) {
 
             pst.setInt(1, id);
 
-            ResultSet rs = pst.executeQuery();
-
-            return rs.next() ? toRequirement(rs) : null;
+            try (ResultSet rs = pst.executeQuery()) {
+                return rs.next() ? toRequirement(rs) : null;
+            }
         } catch (Exception e) {
             System.out.println("Erro ao consultar REQUIREMENT por id: " + e);
             return null;
         }
     }
-        
+
     public ArrayList<Requirements> GetByProjectId(int projectId) {
         ArrayList<Requirements> result = new ArrayList<>();
-        try {
-            
-            String sql = _select + "where project_id = ? order by code, version";
-            
-            PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql);
-             pst.setInt(1, projectId);
+        String sql = _select + "where project_id = ? order by code, version";
 
-            ResultSet rs = pst.executeQuery();
-            
-            while (rs.next()) {
-                result.add(toRequirement(rs));
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            pst.setInt(1, projectId);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    result.add(toRequirement(rs));
+                }
             }
         } catch (Exception e) {
             System.out.println("Erro ao consultar REQUIREMENTS: " + e);
         }
         return result;
     }
- 
 
     private void bind(PreparedStatement pst, Requirements o) throws Exception {
         pst.setString(1, o.code);
@@ -170,20 +153,17 @@ public class RequirementsHandler implements IDAOT<Requirements> {
 
     private ArrayList<Requirements> query(String sql, String[] values) {
         ArrayList<Requirements> result = new ArrayList<>();
-        try {
-
-            PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql);
-
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
             if (values != null) {
                 for (int i = 0; i < values.length; i++) {
                     pst.setString(i + 1, values[i]);
                 }
             }
 
-            ResultSet rs = pst.executeQuery();
-            
-            while (rs.next()) {
-                result.add(toRequirement(rs));
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    result.add(toRequirement(rs));
+                }
             }
         } catch (Exception e) {
             System.out.println("Erro ao consultar REQUIREMENTS: " + e);
@@ -192,17 +172,16 @@ public class RequirementsHandler implements IDAOT<Requirements> {
     }
 
     private Requirements toRequirement(ResultSet rs) throws Exception {
-        return new 
-            Requirements(
-                    rs.getInt("id"), 
-                    rs.getString("code"),
-                    rs.getString("type"), 
-                    rs.getString("requirement"),
-                    rs.getString("description"), 
-                    rs.getInt("priority"),
-                    rs.getInt("complexity"), 
-                    rs.getInt("version"),
-                    rs.getInt("project_id")
-            );
-                }
+        return new Requirements(
+                rs.getInt("id"),
+                rs.getString("code"),
+                rs.getString("type"),
+                rs.getString("requirement"),
+                rs.getString("description"),
+                rs.getInt("priority"),
+                rs.getInt("complexity"),
+                rs.getInt("version"),
+                rs.getInt("project_id")
+        );
+    }
 }

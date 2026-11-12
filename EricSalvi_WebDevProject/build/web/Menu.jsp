@@ -2,8 +2,12 @@
 <%@page import="Entities.Users"%>
 <%
     Users user = (Users) session.getAttribute("user");
-    String userEmail = user != null ? user.email : "Usuário X";
-    String roleName = (user != null && user.role == 1) ? "Administrador" : "Usuário";
+    if (user == null) {
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
+        return;
+    }
+    String userEmail = user.email;
+    String roleName = (user.role == 1) ? "Administrador" : "Usuário";
 %>
 <!DOCTYPE html>
 <html>
@@ -18,10 +22,17 @@
       <h2 class="h2">Menu Principal</h2>
       
       <p style="margin-bottom: 24px; color: #444;">
-        Conectado como: <strong><%= userEmail %></strong><t /> (<%= roleName %>)
+        Conectado como: <strong><%= userEmail %></strong> (<%= roleName %>)
       </p>
 
       <div class="menu">
+        <input
+          class="botao-menu"
+          type="button"
+          value="Gerenciar Usuários"
+          onclick="window.location.href = '<%= request.getContextPath() %>/UsersServlet?a=getAll'"
+        >
+
         <input
           class="botao-menu"
           type="button"
@@ -34,7 +45,7 @@
           type="button"
           value="Sair (Logout)"
           style="color: #aa2222;"
-          onclick="window.location.href = '<%= request.getContextPath() %>/index.jsp'"
+          onclick="window.location.href = '<%= request.getContextPath() %>/UsersServlet?a=logout'"
         >
       </div>
     </div>

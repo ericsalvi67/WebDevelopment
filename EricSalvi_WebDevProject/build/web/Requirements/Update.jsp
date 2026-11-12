@@ -3,103 +3,74 @@
 <%@page import="Entities.Projects"%>
 <%@page import="Entities.Requirements"%>
 <%@page import="Entities.Users"%>
+<%!
+    private String escapeAttr(String s) {
+        if (s == null) return "";
+        return s.replace("&", "&amp;")
+                .replace("\"", "&quot;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;");
+    }
+%>
 <%
-    Projects project = (Projects) request.getAttribute("project");
-    List<Requirements> requirementsList = (List<Requirements>) request.getAttribute("requirementsList");
     Users user = (Users) session.getAttribute("user");
-    boolean isAdmin = user != null && user.role == 1;
-    String activeTab = request.getParameter("tab");
-    boolean startOnReqTab = "req".equals(activeTab);
+    if (user == null) {
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
+        return;
+    }
+
+    Projects project = (Projects) request.getAttribute("project");
+    if (project == null) {
+        response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getAll");
+        return;
+    }
+
+    List<Requirements> requirementsList = (List<Requirements>) request.getAttribute("requirementsList");
+    boolean isAdmin = user.role == 1;
 %>
 
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Projeto - <%= project.name %></title>
+        <title>Requisitos - <%= project.name %></title>
         <link rel="stylesheet" href="<%= request.getContextPath() %>/styles.css">
-        <script src="<%= request.getContextPath() %>/Projects/Scripts.js"></script>
+        <script src="<%= request.getContextPath() %>/Requirements/Scripts.js"></script>
     </head>
     <body class="body">
 
         <div class="container">
             <h2 class="h2">Projeto: <%= project.name %></h2>
 
-            <!-- Sistema de 2 Abas -->
+            <!-- Sistema de 2 Abas (Projetos e Requisitos separados) -->
             <div class="tab-header">
                 <button
                     id="btn-tab-projeto"
                     type="button"
-                    class="tab-btn <%= !startOnReqTab ? "active" : "" %>"
-                    onclick="switchTab('tab-projeto')"
+                    class="tab-btn"
+                    onclick="window.location.href = '<%= request.getContextPath() %>/ProjectsServlet?a=getById&id=<%= project.id %>'"
                 >
                     1. Dados do Projeto
                 </button>
                 <button
                     id="btn-tab-requisitos"
                     type="button"
-                    class="tab-btn <%= startOnReqTab ? "active" : "" %>"
-                    onclick="switchTab('tab-requisitos')"
+                    class="tab-btn active"
                 >
                     2. Requisitos
                 </button>
             </div>
 
-            <!-- Aba 1: Dados do Projeto -->
-            <div id="tab-projeto" class="tab-content" style="<%= !startOnReqTab ? "display:block;" : "display:none;" %>">
-                <form action="<%= request.getContextPath() %>/ProjectsServlet" method="post" onsubmit="return verifyProjectForm()">
-                    <input type="hidden" name="id" value="<%= project.id %>">
-
-                    <div>
-                        <label for="name">Nome do projeto:</label><br>
-                        <input
-                            id="name"
-                            type="text"
-                            name="name"
-                            maxlength="60"
-                            value="<%= project.name %>"
-                            <%= isAdmin ? "required" : "readonly" %>
-                        >
-                        <br><br>
-                    </div>
-
-                    <div>
-                        <label for="created_by">Criado por:</label><br>
-                        <input id="created_by" type="text" value="<%= project.created_by %>" readonly>
-                        <br><br>
-                    </div>
-
-                    <div>
-                        <label for="created_at">Data de criação:</label><br>
-                        <input id="created_at" type="text" value="<%= project.created_at == null ? "" : project.created_at %>" readonly>
-                        <br><br>
-                    </div>
-
-                    <div class="form-actions">
-                        <input
-                            class="botao"
-                            type="button"
-                            value="Voltar"
-                            onclick="window.location.href = '<%= request.getContextPath() %>/ProjectsServlet?a=getAll'"
-                        >
-                        <% if (isAdmin) { %>
-                        <input class="botao3" type="submit" value="Salvar Alterações">
-                        <% } %>
-                    </div>
-                </form>
-            </div>
-
             <!-- Aba 2: Requisitos do Projeto -->
-            <div id="tab-requisitos" class="tab-content" style="<%= startOnReqTab ? "display:block;" : "display:none;" %>">
+            <div id="tab-requisitos" class="tab-content">
 
                 <% if (isAdmin) { %>
-                <!-- Formulário para adicionar requisito neste projeto -->
-                <fieldset class="maintenance-options">
-                    <legend>Adicionar Novo Requisito / Nova Versão</legend>
+                <fieldset id="req-fieldset" class="maintenance-options">
+                    <legend id="req-form-legend">Adicionar Novo Requisito / Nova Versão</legend>
 
-                    <form action="<%= request.getContextPath() %>/RequirementsServlet" method="post" onsubmit="return verifyRequirementForm()">
+                    <form id="req-form" action="<%= request.getContextPath() %>/RequirementsServlet" method="post" onsubmit="return verifyRequirementForm()">
                         <input type="hidden" name="project_id" value="<%= project.id %>">
-                        <input type="hidden" name="id" value="0">
+                        <input type="hidden" id="req-id" name="id" value="0">
 
                         <div class="req-grid-form">
                             <div>
@@ -169,8 +140,9 @@
                                 >
                             </div>
 
-                            <div style="display: flex; align-items: flex-end;">
-                                <input class="botao2" type="submit" value="Adicionar Requisito" style="width: 100%;">
+                            <div style="display: flex; align-items: flex-end; gap: 8px;">
+                                <input id="btn-submit-req" class="botao2" type="submit" value="Adicionar Requisito" style="width: 100%;">
+                                <input id="btn-cancel-req" class="botao" type="button" value="Cancelar" style="display: none;" onclick="resetRequirementForm()">
                             </div>
                         </div>
                     </form>
@@ -178,10 +150,8 @@
                 <br>
                 <% } %>
 
-                <!-- Lista de Requisitos Cadastrados -->
                 <h3 style="margin-bottom: 8px;">Requisitos Cadastrados</h3>
 
-                <!-- Filtro de Requisitos (RF9) -->
                 <div class="filter-bar" style="margin-bottom: 12px; display: flex; gap: 12px; align-items: center;">
                     <label><strong>Filtrar:</strong></label>
                     <select id="filter-priority" onchange="filterRequirements()">
@@ -212,7 +182,10 @@
                             <th>Descrição</th>
                             <th>Prioridade</th>
                             <th>Complexidade</th>
-                            <% if (isAdmin) { %><th>Excluir</th><% } %>
+                            <% if (isAdmin) { %>
+                            <th class="no-print">Editar</th>
+                            <th class="no-print">Excluir</th>
+                            <% } %>
                         </tr>
                     </thead>
                     <tbody id="requirements-table-body">
@@ -220,16 +193,33 @@
                             if (requirementsList != null && !requirementsList.isEmpty()) {
                                 for (Requirements req : requirementsList) {
                         %>
-                        <tr data-priority="<%= req.priority %>" data-complexity="<%= req.complexity %>">
-                            <td><strong><%= req.code %></strong></td>
-                            <td><%= req.type %></td>
+                        <tr
+                            data-id="<%= req.id %>"
+                            data-code="<%= escapeAttr(req.code) %>"
+                            data-type="<%= escapeAttr(req.type) %>"
+                            data-version="<%= req.version %>"
+                            data-requirement="<%= escapeAttr(req.requirement) %>"
+                            data-description="<%= escapeAttr(req.description) %>"
+                            data-priority="<%= req.priority %>"
+                            data-complexity="<%= req.complexity %>"
+                        >
+                            <td><strong><%= escapeAttr(req.code) %></strong></td>
+                            <td><%= escapeAttr(req.type) %></td>
                             <td>v<%= req.version %></td>
-                            <td><%= req.requirement %></td>
-                            <td><%= req.description == null ? "" : req.description %></td>
+                            <td><%= escapeAttr(req.requirement) %></td>
+                            <td><%= escapeAttr(req.description) %></td>
                             <td><%= req.priority %></td>
                             <td><%= req.complexity %></td>
                             <% if (isAdmin) { %>
-                            <td>
+                            <td class="no-print">
+                                <input
+                                    style="color: #0b4f1c; font-weight: bold; cursor: pointer;"
+                                    type="button"
+                                    value="Editar"
+                                    onclick="editRequirement(this)"
+                                >
+                            </td>
+                            <td class="no-print">
                                 <input
                                     style="color: #ff5050; cursor: pointer;"
                                     type="button"
@@ -244,7 +234,7 @@
                             } else {
                         %>
                         <tr>
-                            <td colspan="<%= isAdmin ? 8 : 7 %>">
+                            <td colspan="<%= isAdmin ? 9 : 7 %>">
                                 Nenhum requisito cadastrado para este projeto.
                             </td>
                         </tr>
@@ -263,7 +253,6 @@
                         onclick="window.location.href = '<%= request.getContextPath() %>/ProjectsServlet?a=getAll'"
                     >
 
-                    <!-- Botão de Impressão / Gerar PDF (RF10) -->
                     <input
                         class="botao"
                         type="button"

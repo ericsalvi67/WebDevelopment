@@ -2,7 +2,15 @@
 <%@page import="Entities.Users"%>
 <%
     Users user = (Users) session.getAttribute("user");
-    String userEmail = (user != null) ? user.email : "";
+    if (user == null) {
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
+        return;
+    }
+    if (user.role != 1) {
+        response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getAll");
+        return;
+    }
+    String userEmail = user.email;
     String today = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
 %>
 
@@ -21,7 +29,7 @@
 
             <!-- Sistema de 2 Abas -->
             <div class="tab-header">
-                <button type="button" class="tab-btn active" onclick="switchTab('tab-projeto')">
+                <button type="button" class="tab-btn active">
                     1. Dados do Projeto
                 </button>
                 <button type="button" class="tab-btn disabled" title="Disponível após registrar o projeto">

@@ -27,7 +27,7 @@ public class TablesInsertionDB {
             "	updated_at timestamp NOT NULL DEFAULT NOW()," +
             "	CONSTRAINT projects_pk PRIMARY KEY (id), " +
             "   CONSTRAINT projects_un UNIQUE (name), " +
-            "	CONSTRAINT projects_fk FOREIGN KEY (created_by) REFERENCES users(email) ON DELETE CASCADE);";
+            "	CONSTRAINT projects_fk FOREIGN KEY (created_by) REFERENCES users(email) ON UPDATE CASCADE ON DELETE CASCADE);";
 
     private static final String _createRequirements = 
             "CREATE TABLE IF NOT EXISTS requirements (" +

@@ -45,6 +45,14 @@ public class ConexaoBD {
 
     // Retorna conexão
     public Connection getConnection() {
+        try {
+            if (conexao == null || conexao.isClosed()) {
+                instancia = new ConexaoBD();
+                conexao = instancia.conexao;
+            }
+        } catch (SQLException e) {
+            System.err.println(e);
+        }
         if (conexao == null) {
             throw new RuntimeException("conexao==null");
         }

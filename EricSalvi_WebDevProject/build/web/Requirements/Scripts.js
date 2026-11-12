@@ -1,36 +1,7 @@
 /* =========================================================
-   PROJETOS & REQUISITOS - SCRIPTS E VALIDAÇÕES (verifyForm)
-   Baseado no padrão limpo de Scripts.js de Maintanances
+   REQUISITOS - SCRIPTS E VALIDAÇÕES (verifyRequirementForm)
    ========================================================= */
 
-// Validação do Formulário de Projeto (antes de enviar ao banco)
-function verifyProjectForm() {
-  var nameInput = document.getElementById("name");
-  var name = nameInput ? nameInput.value.trim() : "";
-
-  if (name.length === 0) {
-    alert("Por favor, insira o nome do projeto.");
-    if (nameInput) nameInput.focus();
-    return false;
-  }
-
-  if (name.length < 3) {
-    alert("O nome do projeto deve ter no mínimo 3 caracteres.");
-    if (nameInput) nameInput.focus();
-    return false;
-  }
-
-  if (name.length > 60) {
-    alert("Nome do projeto maior que o permitido no banco (máximo de 60 caracteres).");
-    if (nameInput) nameInput.focus();
-    return false;
-  }
-
-  console.log("Formulário de projeto validado com sucesso!");
-  return true;
-}
-
-// Validação do Formulário de Requisitos (antes de enviar ao banco)
 function verifyRequirementForm() {
   var typeSelect = document.getElementById("type");
   var codeNumberInput = document.getElementById("code-number");
@@ -48,14 +19,12 @@ function verifyRequirementForm() {
   var priority = priInput ? parseInt(priInput.value, 10) : 1;
   var complexity = comInput ? parseInt(comInput.value, 10) : 1;
 
-  // 1. Validação do Tipo
   if (type !== "RF" && type !== "RNF") {
     alert("Por favor, selecione um tipo de requisito válido (RF ou RNF).");
     if (typeSelect) typeSelect.focus();
     return false;
   }
 
-  // 2. Validação do Código Numérico
   if (codeNumber.length === 0) {
     alert("Por favor, informe o número do código do requisito.");
     if (codeNumberInput) codeNumberInput.focus();
@@ -75,7 +44,6 @@ function verifyRequirementForm() {
     return false;
   }
 
-  // 3. Validação da Versão
   var ver = parseInt(version, 10);
   if (isNaN(ver) || ver <= 0) {
     alert("A versão do requisito deve ser um número maior ou igual a 1.");
@@ -83,7 +51,6 @@ function verifyRequirementForm() {
     return false;
   }
 
-  // 4. Validação do Título / Requisito
   if (requirement.length === 0) {
     alert("Por favor, insira o título do requisito.");
     if (reqInput) reqInput.focus();
@@ -102,14 +69,12 @@ function verifyRequirementForm() {
     return false;
   }
 
-  // 5. Validação da Descrição (opcional, mas limitada a 255 no banco)
   if (description.length > 255) {
     alert("A descrição do requisito é maior que o permitido (máximo de 255 caracteres).");
     if (descInput) descInput.focus();
     return false;
   }
 
-  // 6. Validação de Prioridade e Complexidade (1 a 5)
   if (isNaN(priority) || priority < 1 || priority > 5) {
     alert("A prioridade deve ser um valor entre 1 e 5.");
     return false;
@@ -120,7 +85,6 @@ function verifyRequirementForm() {
     return false;
   }
 
-  // Garante que o input oculto 'code' receba o código formatado padrão (ex: RF001 ou RNF001)
   var codeHidden = document.getElementById("code");
   if (codeHidden) {
     codeHidden.value = type + String(num).padStart(3, "0");
@@ -130,45 +94,8 @@ function verifyRequirementForm() {
   return true;
 }
 
-// Função genérica verifyForm / validateForm compatível com chamadas diretas
-function verifyForm(target) {
-  if (target === "project" || document.getElementById("name")) {
-    return verifyProjectForm();
-  }
-  return verifyRequirementForm();
-}
-
 function validateForm() {
-  return verifyForm();
-}
-
-// =========================================================
-// FUNÇÕES AUXILIARES DE NAVEGAÇÃO, ABAS E EXCLUSÃO
-// =========================================================
-
-// Alterna entre a Aba 1 (Projeto) e a Aba 2 (Requisitos)
-function switchTab(tabId) {
-  var contents = document.querySelectorAll(".tab-content");
-  contents.forEach(function (c) {
-    c.style.display = "none";
-  });
-
-  var btns = document.querySelectorAll(".tab-btn");
-  btns.forEach(function (b) {
-    b.classList.remove("active");
-  });
-
-  var targetTab = document.getElementById(tabId);
-  if (targetTab) {
-    targetTab.style.display = "block";
-  }
-
-  var activeBtn = document.getElementById(
-    tabId === "tab-projeto" ? "btn-tab-projeto" : "btn-tab-requisitos"
-  );
-  if (activeBtn) {
-    activeBtn.classList.add("active");
-  }
+  return verifyRequirementForm();
 }
 
 // Atualiza o prefixo do código ao alterar o tipo (RF ou RNF)
@@ -198,26 +125,92 @@ function updateCodePreview() {
   if (codeHidden) codeHidden.value = formatted;
 }
 
-// Exclui projeto via DELETE
-function deleteProject(contextPath, id) {
-  if (!confirm("Deseja realmente excluir este projeto e todos os seus requisitos?")) {
-    return;
+// Carrega os dados do requisito selecionado nos campos acima para edição
+function editRequirement(button) {
+  var row = button.closest("tr");
+  if (!row) return;
+
+  var id = row.getAttribute("data-id");
+  var code = row.getAttribute("data-code") || "";
+  var type = row.getAttribute("data-type") || "RF";
+  var version = row.getAttribute("data-version") || "1";
+  var requirement = row.getAttribute("data-requirement") || "";
+  var description = row.getAttribute("data-description") || "";
+  var priority = row.getAttribute("data-priority") || "1";
+  var complexity = row.getAttribute("data-complexity") || "1";
+
+  var numericPart = code.replace(/\D+/g, "");
+  var codeNum = numericPart ? parseInt(numericPart, 10) : 1;
+
+  document.getElementById("req-id").value = id;
+  document.getElementById("type").value = type;
+  document.getElementById("code-number").value = codeNum;
+  updateCodePrefix();
+
+  document.getElementById("version").value = version;
+  document.getElementById("requirement").value = requirement;
+  document.getElementById("description").value = description;
+
+  document.getElementById("priority").value = priority;
+  document.getElementById("priority-val").value = priority;
+
+  document.getElementById("complexity").value = complexity;
+  document.getElementById("complexity-val").value = complexity;
+
+  var legend = document.getElementById("req-form-legend");
+  if (legend) {
+    legend.textContent = "Editar Requisito (" + code + " - v" + version + ")";
   }
 
-  fetch(contextPath + "/ProjectsServlet?id=" + id, {
-    method: "DELETE",
-  })
-    .then(function (response) {
-      if (response.ok) {
-        window.location.href = contextPath + "/ProjectsServlet?a=getAll";
-      } else {
-        alert("Erro ao excluir projeto.");
-      }
-    })
-    .catch(function (error) {
-      console.error("Erro no DELETE:", error);
-      alert("Erro ao excluir projeto.");
-    });
+  var submitBtn = document.getElementById("btn-submit-req");
+  if (submitBtn) {
+    submitBtn.value = "Salvar Alterações";
+  }
+
+  var cancelBtn = document.getElementById("btn-cancel-req");
+  if (cancelBtn) {
+    cancelBtn.style.display = "inline-block";
+  }
+
+  var fieldset = document.getElementById("req-fieldset");
+  if (fieldset) {
+    fieldset.scrollIntoView({ behavior: "smooth" });
+  }
+  document.getElementById("requirement").focus();
+}
+
+// Restaura o formulário de requisitos para o modo de adição
+function resetRequirementForm() {
+  var form = document.getElementById("req-form");
+  if (form) {
+    form.reset();
+  }
+
+  document.getElementById("req-id").value = "0";
+  document.getElementById("type").value = "RF";
+  document.getElementById("code-number").value = "";
+  updateCodePrefix();
+
+  document.getElementById("version").value = "1";
+  document.getElementById("priority").value = "1";
+  document.getElementById("priority-val").value = "1";
+  document.getElementById("complexity").value = "1";
+  document.getElementById("complexity-val").value = "1";
+
+  var legend = document.getElementById("req-form-legend");
+  if (legend) {
+    legend.textContent = "Adicionar Novo Requisito / Nova Versão";
+  }
+
+  var submitBtn = document.getElementById("btn-submit-req");
+  if (submitBtn) {
+    submitBtn.value = "Adicionar Requisito";
+  }
+
+  var cancelBtn = document.getElementById("btn-cancel-req");
+  if (cancelBtn) {
+    cancelBtn.style.display = "none";
+  }
 }
 
 // Exclui requisito individual via DELETE
@@ -232,7 +225,7 @@ function deleteRequirement(contextPath, id, projectId) {
     .then(function (response) {
       if (response.ok) {
         window.location.href =
-          contextPath + "/ProjectsServlet?a=getById&id=" + projectId + "&tab=req";
+          contextPath + "/RequirementsServlet?project_id=" + projectId;
       } else {
         alert("Erro ao excluir requisito.");
       }
@@ -250,6 +243,8 @@ function filterRequirements() {
   var rows = document.querySelectorAll("#requirements-table-body tr");
 
   rows.forEach(function (row) {
+    if (!row.hasAttribute("data-priority")) return;
+
     var rowPri = row.getAttribute("data-priority");
     var rowCom = row.getAttribute("data-complexity");
 

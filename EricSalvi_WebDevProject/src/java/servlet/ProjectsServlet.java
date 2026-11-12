@@ -1,10 +1,8 @@
 package servlet;
 
 import Entities.Projects;
-import Entities.Requirements;
 import Entities.Users;
 import Handlers.ProjectsHandler;
-import Handlers.RequirementsHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -23,15 +21,15 @@ public class ProjectsServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         Users user = session != null ? (Users) session.getAttribute("user") : null;
-        
-       if (user == null) {
-           response.sendRedirect(request.getContextPath() + "/index.jsp");
-           return;
-       }
+
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            return;
+        }
 
         ArrayList<Projects> projects = new ArrayList<>();
         String action = request.getParameter("a");
-        
+
         if (action == null || action.isBlank()) {
             action = "getAll";
         }
@@ -50,22 +48,25 @@ public class ProjectsServlet extends HttpServlet {
                 break;
 
             case "getById":
-                int projectId = Integer.parseInt(request.getParameter("id"));
-                
+                int projectId;
+                try {
+                    projectId = Integer.parseInt(request.getParameter("id"));
+                } catch (NumberFormatException e) {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de projeto inválido.");
+                    return;
+                }
+
                 Projects project = projectHandler.GetById(projectId);
 
                 if (project == null) {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Projeto não encontrado.");
                     return;
                 }
-                
-                ArrayList<Requirements> requirements =  new RequirementsHandler().GetByProjectId(project.id);
-                
-                request.setAttribute("project", project);
-                request.setAttribute("requirementsList", requirements);
 
+                request.setAttribute("project", project);
                 Action.RouterPage("Projects/Update.jsp", request, response);
                 return;
+
             default:
                 System.out.println("Ação não reconhecida: " + action);
         }
@@ -82,23 +83,34 @@ public class ProjectsServlet extends HttpServlet {
         Users user = session != null ? (Users) session.getAttribute("user") : null;
 
         if (user == null || user.role != 1) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuário não autorizado.");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Usuário não autorizado.");
             return;
         }
 
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
+        int id;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de projeto inválido.");
+            return;
+        }
 
-        Projects project = new Projects(id, name, user.email);
+        String name = request.getParameter("name");
+        if (name == null || name.trim().length() < 3 || name.trim().length() > 60) {
+            Action.RouterPage("Error.jsp", request, response);
+            return;
+        }
+
+        Projects project = new Projects(id, name.trim(), user.email);
         ProjectsHandler projectHandler = new ProjectsHandler();
 
         boolean saved = (id == 0) ? projectHandler.Insert(project) : projectHandler.Update(project);
 
         if (saved) {
             if (id == 0) {
-                Projects savedProject = projectHandler.GetByName(name);
+                Projects savedProject = projectHandler.GetByName(name.trim());
                 int newId = savedProject != null ? savedProject.id : id;
-                response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getById&id=" + newId + "&tab=req");
+                response.sendRedirect(request.getContextPath() + "/RequirementsServlet?project_id=" + newId);
             } else {
                 response.sendRedirect(request.getContextPath() + "/ProjectsServlet?a=getById&id=" + id);
             }
@@ -119,13 +131,17 @@ public class ProjectsServlet extends HttpServlet {
             return;
         }
 
-        int id = Integer.parseInt(request.getParameter("id"));
-        
+        int id;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID de projeto inválido.");
+            return;
+        }
+
         if (new ProjectsHandler().Delete(id)) {
-            System.out.println("Projeto excluído com sucesso.");
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
-            System.out.println("Erro ao excluir projeto.");
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao excluir projeto.");
         }
     }

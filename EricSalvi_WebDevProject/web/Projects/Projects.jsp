@@ -3,9 +3,13 @@
 <%@page import="Entities.Projects"%>
 <%@page import="Entities.Users"%>
 <%
-    List<Projects> projectsList = (List<Projects>) request.getAttribute("projectsList");
     Users user = (Users) session.getAttribute("user");
-    boolean isAdmin = user != null && user.role == 1;
+    if (user == null) {
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
+        return;
+    }
+    List<Projects> projectsList = (List<Projects>) request.getAttribute("projectsList");
+    boolean isAdmin = user.role == 1;
 %>
 
 <!DOCTYPE html>
@@ -50,7 +54,7 @@
                             <%= project.created_at == null ? "" : project.created_at %>
                         </td>
                         <td>
-                            <a href="ProjectsServlet?a=getById&id=<%= project.id %>">
+                            <a href="<%= request.getContextPath() %>/ProjectsServlet?a=getById&id=<%= project.id %>">
                                 Editar
                             </a>
                         </td>
