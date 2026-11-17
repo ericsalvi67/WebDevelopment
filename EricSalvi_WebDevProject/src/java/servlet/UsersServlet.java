@@ -116,8 +116,8 @@ public class UsersServlet extends HttpServlet {
 
         // Login
         if (idParam == null) {
-            String email = "admin";//request.getParameter("email");
-            String rawPassword = "admin";//request.getParameter("password");
+            String email = request.getParameter("email");
+            String rawPassword = request.getParameter("password");
 
             if (email == null || rawPassword == null) {
                 Action.RouterPage("Error.jsp", request, response);
@@ -125,8 +125,7 @@ public class UsersServlet extends HttpServlet {
             }
 
             String password = MD5.getMd5(rawPassword);
-            Users user = new Users(email, password, 1);
-//            Users user = usersHandler.Auth(new Users(email, password));
+            Users user = usersHandler.Auth(new Users(email, password));
 
             if (user != null) {
                 HttpSession session = request.getSession(true);

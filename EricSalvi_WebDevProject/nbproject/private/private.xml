@@ -3,16 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject2/src/java/servlet/ProjectsServlet.java</file>
-            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject2/src/java/Handlers/ProjectsHandler.java</file>
-            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject2/web/Menu.jsp</file>
-            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject2/src/java/servlet/RequirementsServlet.java</file>
-            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject2/src/java/Support/TablesInsertionDB.java</file>
-            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject2/src/java/Entities/Projects.java</file>
-            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject2/web/Projects/Register.jsp</file>
-            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject2/web/Projects/Update.jsp</file>
-            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject2/web/Projects/Projects.jsp</file>
-            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject2/src/java/Handlers/RequirementsHandler.java</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Handlers/ProjectsHandler.java</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/servlet/UsersServlet.java</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/web/index.jsp</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Support/TablesInsertionDB.java</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Entities/Users.java</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Handlers/UsersHandler.java</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/web/Users/Users.jsp</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/web/Menu.jsp</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/web/Users/Scripts.js</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/web/Users/Register.jsp</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/web/Users/Update.jsp</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Handlers/RequirementsHandler.java</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Entities/Requirements.java</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Entities/Projects.java</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/src/java/Support/MD5.java</file>
+            <file>file:/C:/Users/user/Documents/PROG/WebDevelopment/EricSalvi_WebDevProject/web/Error.jsp</file>
         </group>
     </open-files>
 </project-private>
