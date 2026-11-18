@@ -164,7 +164,7 @@ textarea:focus {
 }
 
 /* Botoes */
-.form-actions {
+.return {
     display: flex;
     justify-content: space-between;
     gap: 12px;

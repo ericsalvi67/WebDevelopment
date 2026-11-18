@@ -88,7 +88,7 @@
                 
             <br>
             
-            <div class="form-actions">
+            <div class="return">
                 <input
                     class="botao"
                     type="button"

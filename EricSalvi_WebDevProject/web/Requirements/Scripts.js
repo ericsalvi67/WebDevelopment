@@ -122,17 +122,17 @@ function editRequirement(button) {
   document.getElementById("complexity").value = complexity;
   document.getElementById("complexity-val").value = complexity;
 
-  var legend = document.getElementById("req-form-legend");
+  var legend = document.getElementById("legend");
   if (legend) {
     legend.textContent = "Editar Requisito (" + code + " - v" + version + ")";
   }
 
-  var submitBtn = document.getElementById("btn-submit-req");
+  var submitBtn = document.getElementById("submit");
   if (submitBtn) {
     submitBtn.value = "Salvar Alterações";
   }
 
-  var cancelBtn = document.getElementById("btn-cancel-req");
+  var cancelBtn = document.getElementById("cancel");
   if (cancelBtn) {
     cancelBtn.style.display = "inline-block";
   }
@@ -146,7 +146,7 @@ function editRequirement(button) {
 
 // Restaura o formulário de requisitos para o modo de adição
 function resetRequirementForm() {
-  var form = document.getElementById("req-form");
+  var form = document.getElementById("form");
   if (form) {
     form.reset();
   }
@@ -162,17 +162,17 @@ function resetRequirementForm() {
   document.getElementById("complexity").value = "1";
   document.getElementById("complexity-val").value = "1";
 
-  var legend = document.getElementById("req-form-legend");
+  var legend = document.getElementById("legend");
   if (legend) {
     legend.textContent = "Adicionar Novo Requisito / Nova Versão";
   }
 
-  var submitBtn = document.getElementById("btn-submit-req");
+  var submitBtn = document.getElementById("submit");
   if (submitBtn) {
     submitBtn.value = "Adicionar Requisito";
   }
 
-  var cancelBtn = document.getElementById("btn-cancel-req");
+  var cancelBtn = document.getElementById("cancel");
   if (cancelBtn) {
     cancelBtn.style.display = "none";
   }
