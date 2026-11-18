@@ -29,7 +29,7 @@
         <form
             class="container"
             action="<%= request.getContextPath() %>/UsersServlet"
-            method="post"
+            method="patch"
             autocomplete="off"
             onsubmit="return verifyUpdatedUserForm()"
             style="max-width: 480px;"
