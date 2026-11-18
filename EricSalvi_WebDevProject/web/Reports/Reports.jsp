@@ -13,10 +13,10 @@
     </head>
     <body>
         <%
-            String where = request.getParameter("project_id");
+            String where = request.getParameter("id");
             int projectId = Integer.parseInt(request.getParameter("project_id"));
             
-            byte[] bytes = new Reports().GetReports(projectId);
+            byte[] bytes = new Reports().GetReports(where,projectId);
 
             response.setContentType("application/pdf");
             response.setContentLength(bytes.length);

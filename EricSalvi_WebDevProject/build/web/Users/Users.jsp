@@ -91,7 +91,7 @@
                     <input
                         class="botao"
                         type="button"
-                        value="Imprimir / Salvar PDF"
+                        value="Salvar PDF"
                         onclick="window.open('Reports/Reports.jsp?id=user')"
                     >
                 <%

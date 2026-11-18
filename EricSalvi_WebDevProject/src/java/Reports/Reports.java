@@ -8,16 +8,22 @@ import net.sf.jasperreports.engine.JasperRunManager;
 
 
 public class Reports {
-    public byte[] GetReports(int projectId) {
+    public byte[] GetReports(String origin,int projectId) {
         try {
-            java.sql.Connection conn = ConexaoBD.getInstance().getConnection();
 
-            File reportFile = new File(getClass().getClassLoader().getResource("Reports/projetos.jasper").getPath());
+            String path = null;
+            switch (origin){
+                case "user":
+                    path = "Reports/usuarios.jasper";
+                case "projects":
+                    path = "Reports/projetos.jasper";
+            }
+            File reportFile = new File(getClass().getClassLoader().getResource(path).getPath());
             Map params = new HashMap();
 
             params.put("project_id", projectId);
 
-            byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), params, conn);
+            byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), params, ConexaoBD.getInstance().getConnection());
 
             return bytes;
             } catch (Exception e) {

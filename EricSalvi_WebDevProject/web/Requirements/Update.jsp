@@ -247,8 +247,8 @@
                     <input
                         class="botao"
                         type="button"
-                        value="Imprimir / Salvar PDF"
-                        onclick="window.open('Reports/Reports.jsp?project_id=<%= project.id %>')"
+                        value="Salvar PDF"
+                        onclick="window.open('Reports/Reports.jsp?id=project&project_id=<%= project.id %>')"
                     >
                 </div>
             </div>
