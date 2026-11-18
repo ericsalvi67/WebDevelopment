@@ -8,20 +8,24 @@ import net.sf.jasperreports.engine.JasperRunManager;
 
 
 public class Reports {
-    public byte[] GetReports(String origin,int projectId) {
+    public byte[] GetReports(String type,int id) {
+        Map<String, Object> params = new HashMap<>();
+
         try {
-
             String path = null;
-            switch (origin){
+            switch (type){
                 case "user":
-                    path = "Reports/usuarios.jasper";
+                    path = "Reports/users.jasper";
+                    break;
                 case "projects":
+                    params.put("project_id", id);
                     path = "Reports/projetos.jasper";
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid type: " + type);
             }
-            File reportFile = new File(getClass().getClassLoader().getResource(path).getPath());
-            Map params = new HashMap();
-
-            params.put("project_id", projectId);
+            File reportFile = new File(getClass().getClassLoader().getResource(path).toURI().getPath());
+            
 
             byte[] bytes = JasperRunManager.runReportToPdf(reportFile.getPath(), params, ConexaoBD.getInstance().getConnection());
 

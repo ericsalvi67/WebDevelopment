@@ -90,7 +90,7 @@ public class ProjectsHandler implements IDAOT<Projects> {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Erro ao consultar USERS: " + e);
+            System.out.println("Erro ao consultar PROJECTS: " + e);
         }
 
         return result;
@@ -111,7 +111,7 @@ public class ProjectsHandler implements IDAOT<Projects> {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Erro ao consultar USERS: " + e);
+            System.out.println("Erro ao consultar PROJECTS: " + e);
         }
 
         return result;

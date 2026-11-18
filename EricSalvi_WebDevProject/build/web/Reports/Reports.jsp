@@ -13,10 +13,16 @@
     </head>
     <body>
         <%
+            int id = 0;
             String where = request.getParameter("id");
-            int projectId = Integer.parseInt(request.getParameter("project_id"));
+            String projectId = request.getParameter("project_id");
+
+            try{
+                id = Integer.parseInt(projectId);
+            } catch(NumberFormatException ignore){
+            }
             
-            byte[] bytes = new Reports().GetReports(where,projectId);
+            byte[] bytes = new Reports().GetReports(where,id);
 
             response.setContentType("application/pdf");
             response.setContentLength(bytes.length);

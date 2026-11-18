@@ -57,9 +57,9 @@
 
                 <% if (isAdmin) { %>
                 <fieldset id="req-fieldset" class="maintenance-options">
-                    <legend id="req-form-legend">Adicionar Novo Requisito / Nova Versão</legend>
+                    <legend id="legend">Adicionar Novo Requisito / Nova Versão</legend>
 
-                    <form id="req-form" action="<%= request.getContextPath() %>/RequirementsServlet" method="post" onsubmit="return verifyRequirementForm()">
+                    <form id="form" action="<%= request.getContextPath() %>/RequirementsServlet" method="post" onsubmit="return verifyRequirementForm()">
                         <input type="hidden" name="project_id" value="<%= project.id %>">
                         <input type="hidden" id="req-id" name="id" value="0">
 
@@ -132,8 +132,8 @@
                             </div>
 
                             <div style="display: flex; align-items: flex-end; gap: 8px;">
-                                <input id="btn-submit-req" class="botao2" type="submit" value="Adicionar Requisito" style="width: 100%;">
-                                <input id="btn-cancel-req" class="botao" type="button" value="Cancelar" style="display: none;" onclick="resetRequirementForm()">
+                                <input id="submit" class="botao2" type="submit" value="Adicionar Requisito" style="width: 100%;">
+                                <input id="cancel" class="botao" type="button" value="Cancelar" style="display: none;" onclick="resetRequirementForm()">
                             </div>
                         </div>
                     </form>
@@ -236,7 +236,7 @@
                 </table>
 
                 <br>
-                <div class="form-actions">
+                <div class="return">
                     <input
                         class="botao"
                         type="button"
@@ -248,7 +248,7 @@
                         class="botao"
                         type="button"
                         value="Salvar PDF"
-                        onclick="window.open('Reports/Reports.jsp?id=project&project_id=<%= project.id %>')"
+                        onclick="window.open('<%= request.getContextPath() %>/Reports/Reports.jsp?id=projects&project_id=<%= project.id %>')"
                     >
                 </div>
             </div>

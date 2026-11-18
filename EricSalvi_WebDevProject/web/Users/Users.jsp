@@ -92,7 +92,7 @@
                         class="botao"
                         type="button"
                         value="Salvar PDF"
-                        onclick="window.open('Reports/Reports.jsp?id=user')"
+                        onclick="window.open('<%= request.getContextPath() %>/Reports/Reports.jsp?id=user')"
                     >
                 <%
                     }

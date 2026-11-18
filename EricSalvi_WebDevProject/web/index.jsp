@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="Support.TablesInsertionDB"%>
 <%
-    TablesInsertionDB.CreateTables(true);
+    TablesInsertionDB.CreateTables(false);
 %>
 <!DOCTYPE html>
 <html>
