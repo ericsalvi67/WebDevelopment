@@ -1,87 +1,88 @@
 function verifyLoginForm() {
-  var emailInput = document.getElementById("email");
-  var passwordInput = document.getElementById("password");
+  var email= document.getElementById("email").value.trim();
+  var password = document.getElementById("password").value.trim();
 
-  var email = emailInput ? emailInput.value.trim() : "";
-  var password = passwordInput ? passwordInput.value : "";
 
-  if (email.length === 0) {
+  if (email.length === 0 || email === "") {
     alert("Por favor, insira o email.");
-    if (emailInput) emailInput.focus();
     return false;
   }
 
-  if (password.length === 0) {
+  if (password.length === 0 || password === "") {
     alert("Por favor, insira a senha.");
-    if (passwordInput) passwordInput.focus();
     return false;
   }
-
+  
   return true;
 }
 
 function verifyUserForm() {
-  var emailInput = document.getElementById("email");
-  var passwordInput = document.getElementById("password");
-  var confirmInput = document.getElementById("confirm_password");
-  var roleInput = document.getElementById("role");
+  var email = document.getElementById("email").value.trim();
+  var password = document.getElementById("password").value.trim();
+  var confirmPassword = document.getElementById("confirm_password").value.trim();
+  var role = document.getElementById("role").value.trim();
 
-  var email = emailInput ? emailInput.value.trim() : "";
-  var password = passwordInput ? passwordInput.value : "";
-  var confirmPassword = confirmInput ? confirmInput.value : "";
-  var role = roleInput ? roleInput.value : "";
 
-  if (email.length === 0) {
+  if (email.length === 0 || email.length < 5 || email.length > 60) {
     alert("Por favor, insira o email do usuário.");
-    if (emailInput) emailInput.focus();
     return false;
   }
-
-  if (email.length < 3) {
+  
+  if (!(email.includes("@") && (email.includes(".com") || email.includes(".net")))){
     alert("O email deve ter no mínimo 3 caracteres.");
-    if (emailInput) emailInput.focus();
     return false;
-  }
+  }   
 
-  if (email.length > 60) {
-    alert("Email maior que o permitido no banco (máximo de 60 caracteres).");
-    if (emailInput) emailInput.focus();
-    return false;
-  }
-
-  if (password.length === 0) {
+  if (password.length === 0 || password.length < 3 || password.length > 30) {
     alert("Por favor, insira a senha.");
-    if (passwordInput) passwordInput.focus();
-    return false;
-  }
-
-  if (password.length < 3) {
-    alert("A senha deve ter no mínimo 3 caracteres.");
-    if (passwordInput) passwordInput.focus();
-    return false;
-  }
-
-  if (password.length > 60) {
-    alert("A senha deve ter no máximo 60 caracteres.");
-    if (passwordInput) passwordInput.focus();
     return false;
   }
 
   if (confirmPassword.length === 0) {
     alert("Por favor, confirme a senha.");
-    if (confirmInput) confirmInput.focus();
     return false;
   }
 
   if (password !== confirmPassword) {
     alert("A confirmação de senha não coincide com a senha informada.");
-    if (confirmInput) confirmInput.focus();
     return false;
   }
 
   if (role !== "1" && role !== "2") {
     alert("Por favor, selecione um perfil válido (Admin ou Usuário).");
-    if (roleInput) roleInput.focus();
+    return false;
+  }
+
+  console.log("Formulário de usuário validado com sucesso!");
+  return true;
+}
+
+function verifyUpdatedUserForm() {
+
+  var password = document.getElementById("password").value.trim();
+  var confirmPassword = document.getElementById("confirm_password").value.trim();
+  var role = document.getElementById("role").value.trim();
+
+  if (!password.length === 0){
+      if (password.length < 3 || password.length > 30) {
+        alert("Por favor, insira a senha.");
+        return false;
+      }
+
+      if (confirmPassword.length === 0) {
+        alert("Por favor, confirme a senha.");
+        return false;
+      }
+
+      if (password !== confirmPassword) {
+        alert("A confirmação de senha não coincide com a senha informada.");
+        return false;
+      }
+  }
+  
+
+  if (role !== "1" && role !== "2") {
+    alert("Por favor, selecione um perfil válido (Admin ou Usuário).");
     return false;
   }
 

@@ -18,7 +18,10 @@ public class ProjectsHandler implements IDAOT<Projects> {
             "insert into projects (name, created_by, created_at) values (?, ?, ?)";
 
     public static final String _update =
-            "update projects set name = ?, updated_at = ? where id = ?";
+            "update projects set "
+            + "name = ?, "
+            + "updated_at = ? "
+            + "where id = ?";
 
     public static final String _delete =
             "delete from projects where id = ?";
@@ -76,14 +79,42 @@ public class ProjectsHandler implements IDAOT<Projects> {
 
     @Override
     public ArrayList<Projects> GetAll() {
-        return query(_select + "order by name", null);
+        String sql = _select + "order by name";
+        
+        ArrayList<Projects> result = new ArrayList<>();
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    result.add(ToAggregate(rs));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar USERS: " + e);
+        }
+
+        return result;
     }
 
     @Override
     public ArrayList<Projects> GetByValue(String criterio, String valor) {
         String sql = _select + "where name ilike ? order by name";
-        String pattern = "%" + valor + "%";
-        return query(sql, new String[]{pattern});
+        
+        ArrayList<Projects> result = new ArrayList<>();
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            
+            pst.setString(1, valor);
+            
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    result.add(ToAggregate(rs));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar USERS: " + e);
+        }
+
+        return result;
     }
 
     @Override
@@ -94,7 +125,7 @@ public class ProjectsHandler implements IDAOT<Projects> {
             pst.setInt(1, id);
 
             try (ResultSet rs = pst.executeQuery()) {
-                return rs.next() ? toProject(rs) : null;
+                return rs.next() ? ToAggregate(rs) : null;
             }
         } catch (Exception e) {
             System.out.println("Erro ao consultar PROJECT por id: " + e);
@@ -109,7 +140,7 @@ public class ProjectsHandler implements IDAOT<Projects> {
             pst.setString(1, name);
 
             try (ResultSet rs = pst.executeQuery()) {
-                return rs.next() ? toProject(rs) : null;
+                return rs.next() ? ToAggregate(rs) : null;
             }
         } catch (Exception e) {
             System.out.println("Erro ao consultar PROJECT por nome: " + e);
@@ -117,29 +148,8 @@ public class ProjectsHandler implements IDAOT<Projects> {
         }
     }
 
-    private ArrayList<Projects> query(String sql, String[] values) {
-        ArrayList<Projects> result = new ArrayList<>();
 
-        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
-            if (values != null) {
-                for (int i = 0; i < values.length; i++) {
-                    pst.setString(i + 1, values[i]);
-                }
-            }
-
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    result.add(toProject(rs));
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Erro ao consultar PROJECTS: " + e);
-        }
-
-        return result;
-    }
-
-    private Projects toProject(ResultSet rs) throws Exception {
+    private Projects ToAggregate(ResultSet rs) throws Exception {
         return new Projects(
                 rs.getInt("id"),
                 rs.getString("name"),

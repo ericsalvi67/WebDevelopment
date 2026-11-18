@@ -3,15 +3,6 @@
 <%@page import="Entities.Projects"%>
 <%@page import="Entities.Requirements"%>
 <%@page import="Entities.Users"%>
-<%!
-    private String escapeAttr(String s) {
-        if (s == null) return "";
-        return s.replace("&", "&amp;")
-                .replace("\"", "&quot;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;");
-    }
-%>
 <%
     Users user = (Users) session.getAttribute("user");
     if (user == null) {
@@ -152,7 +143,7 @@
 
                 <h3 style="margin-bottom: 8px;">Requisitos Cadastrados</h3>
 
-                <div class="filter-bar" style="margin-bottom: 12px; display: flex; gap: 12px; align-items: center;">
+                <div style="margin-bottom: 12px; display: flex; gap: 12px; align-items: center;">
                     <label><strong>Filtrar:</strong></label>
                     <select id="filter-priority" onchange="filterRequirements()">
                         <option value="">Todas as Prioridades</option>
@@ -183,8 +174,8 @@
                             <th>Prioridade</th>
                             <th>Complexidade</th>
                             <% if (isAdmin) { %>
-                            <th class="no-print">Editar</th>
-                            <th class="no-print">Excluir</th>
+                            <th>Editar</th>
+                            <th>Excluir</th>
                             <% } %>
                         </tr>
                     </thead>
@@ -195,23 +186,23 @@
                         %>
                         <tr
                             data-id="<%= req.id %>"
-                            data-code="<%= escapeAttr(req.code) %>"
-                            data-type="<%= escapeAttr(req.type) %>"
+                            data-code="<%= req.code %>"
+                            data-type="<%= req.type %>"
                             data-version="<%= req.version %>"
-                            data-requirement="<%= escapeAttr(req.requirement) %>"
-                            data-description="<%= escapeAttr(req.description) %>"
+                            data-requirement="<%= req.requirement %>"
+                            data-description="<%= req.description %>"
                             data-priority="<%= req.priority %>"
                             data-complexity="<%= req.complexity %>"
                         >
-                            <td><strong><%= escapeAttr(req.code) %></strong></td>
-                            <td><%= escapeAttr(req.type) %></td>
+                            <td><strong><%= req.code %></strong></td>
+                            <td><%= req.type %></td>
                             <td>v<%= req.version %></td>
-                            <td><%= escapeAttr(req.requirement) %></td>
-                            <td><%= escapeAttr(req.description) %></td>
+                            <td><%= req.requirement %></td>
+                            <td><%= req.description %></td>
                             <td><%= req.priority %></td>
                             <td><%= req.complexity %></td>
                             <% if (isAdmin) { %>
-                            <td class="no-print">
+                            <td>
                                 <input
                                     style="color: #0b4f1c; font-weight: bold; cursor: pointer;"
                                     type="button"
@@ -219,7 +210,7 @@
                                     onclick="editRequirement(this)"
                                 >
                             </td>
-                            <td class="no-print">
+                            <td >
                                 <input
                                     style="color: #ff5050; cursor: pointer;"
                                     type="button"
@@ -257,7 +248,7 @@
                         class="botao"
                         type="button"
                         value="Imprimir / Salvar PDF"
-                        onclick="window.print()"
+                        onclick="window.open('Reports/Reports.jsp?project_id=<%= project.id %>')"
                     >
                 </div>
             </div>

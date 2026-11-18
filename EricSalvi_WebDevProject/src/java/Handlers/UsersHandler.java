@@ -10,13 +10,21 @@ import java.util.ArrayList;
 public class UsersHandler implements IDAOT<Users> {
 
     public static final String _select =
-            "select id, email, password, role from users ";
+            "select id, "
+            + "email, "
+            + "password, "
+            + "role "
+            + "from users ";
 
     public static final String _insert =
             "insert into users (email, password, role) values (?, ?, ?)";
 
     public static final String _update =
-            "update users set email = ?, password = ?, role = ? where id = ?";
+            "update users set "
+            + "email = ?, "
+            + "password = ?, "
+            + "role = ? "
+            + "where id = ?";
 
     public static final String _delete =
             "delete from users where id = ?";
@@ -70,14 +78,42 @@ public class UsersHandler implements IDAOT<Users> {
 
     @Override
     public ArrayList<Users> GetAll() {
-        return query(_select + "order by id", null);
+        String sql = _select + "order by id";
+        
+        ArrayList<Users> result = new ArrayList<>();
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    result.add(ToAggregate(rs));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar USERS: " + e);
+        }
+
+        return result;
     }
 
     @Override
     public ArrayList<Users> GetByValue(String criterio, String valor) {
         String sql = _select + "where email ilike ? order by id";
-        String pattern = "%" + valor + "%";
-        return query(sql, new String[]{pattern});
+        
+        ArrayList<Users> result = new ArrayList<>();
+        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
+            
+            pst.setString(1, valor);
+            
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    result.add(ToAggregate(rs));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao consultar USERS: " + e);
+        }
+
+        return result;
     }
 
     @Override
@@ -88,7 +124,7 @@ public class UsersHandler implements IDAOT<Users> {
             pst.setInt(1, id);
 
             try (ResultSet result = pst.executeQuery()) {
-                return result.next() ? toUser(result) : null;
+                return result.next() ? ToAggregate(result) : null;
             }
         } catch (Exception e) {
             System.out.println("Erro ao consultar USER por id: " + e);
@@ -104,7 +140,7 @@ public class UsersHandler implements IDAOT<Users> {
             pst.setString(2, u.password);
 
             try (ResultSet result = pst.executeQuery()) {
-                return result.next() ? toUser(result) : null;
+                return result.next() ? ToAggregate(result) : null;
             }
         } catch (Exception e) {
             System.out.println("Erro ao autenticar USERS: " + e);
@@ -112,32 +148,7 @@ public class UsersHandler implements IDAOT<Users> {
         }
     }
 
-    private ArrayList<Users> query(String sql, String[] values) {
-        ArrayList<Users> result = new ArrayList<>();
-
-        try (PreparedStatement pst = ConexaoBD.getInstance().getConnection().prepareStatement(sql)) {
-            if (values != null) {
-                for (int i = 0; i < values.length; i++) {
-                    pst.setString(i + 1, values[i]);
-                }
-            }
-
-            try (ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    Users u = toUser(rs);
-                    if (u != null) {
-                        result.add(u);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Erro ao consultar USERS: " + e);
-        }
-
-        return result;
-    }
-
-    private Users toUser(ResultSet result) {
+    private Users ToAggregate(ResultSet result) {
         try {
             return new Users(
                 result.getInt("id"),

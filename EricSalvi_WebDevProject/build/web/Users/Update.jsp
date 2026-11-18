@@ -31,7 +31,7 @@
             action="<%= request.getContextPath() %>/UsersServlet"
             method="post"
             autocomplete="off"
-            onsubmit="return verifyUserForm()"
+            onsubmit="return verifyUpdatedUserForm()"
             style="max-width: 480px;"
         >
             <h2 class="h2">Editar Usuário</h2>
@@ -47,7 +47,7 @@
                     maxlength="60"
                     value="<%= userEdit.email %>"
                     autocomplete="off"
-                    required
+                    readonly
                 >
                 <br><br>
             </div>
@@ -60,7 +60,7 @@
                     name="password"
                     maxlength="60"
                     autocomplete="new-password"
-                    required
+                    value="<%= userEdit.password %>"
                 >
                 <br><br>
             </div>
@@ -73,7 +73,7 @@
                     name="confirm_password"
                     maxlength="60"
                     autocomplete="new-password"
-                    required
+                    value="<%= userEdit.password %>"
                 >
                 <br><br>
             </div>

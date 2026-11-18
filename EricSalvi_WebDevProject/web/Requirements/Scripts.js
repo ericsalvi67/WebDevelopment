@@ -1,101 +1,66 @@
-/* =========================================================
-   REQUISITOS - SCRIPTS E VALIDAÇÕES (verifyRequirementForm)
-   ========================================================= */
-
 function verifyRequirementForm() {
-  var typeSelect = document.getElementById("type");
-  var codeNumberInput = document.getElementById("code-number");
-  var versionInput = document.getElementById("version");
-  var reqInput = document.getElementById("requirement");
-  var descInput = document.getElementById("description");
-  var priInput = document.getElementById("priority");
-  var comInput = document.getElementById("complexity");
+    
+  var num = parseInt(document.getElementById("code-number").value);
+  var version = parseInt(document.getElementById("version").value);
+  var requirement = document.getElementById("requirement").value.trim();
+  var description = document.getElementById("description").value.trim();
+  var priority = parseInt(document.getElementById("priority"));
+  var complexity = parseInt(document.getElementById("complexity"));
 
-  var type = typeSelect ? typeSelect.value : "";
-  var codeNumber = codeNumberInput ? codeNumberInput.value.trim() : "";
-  var version = versionInput ? versionInput.value.trim() : "";
-  var requirement = reqInput ? reqInput.value.trim() : "";
-  var description = descInput ? descInput.value.trim() : "";
-  var priority = priInput ? parseInt(priInput.value, 10) : 1;
-  var complexity = comInput ? parseInt(comInput.value, 10) : 1;
 
-  if (type !== "RF" && type !== "RNF") {
-    alert("Por favor, selecione um tipo de requisito válido (RF ou RNF).");
-    if (typeSelect) typeSelect.focus();
-    return false;
-  }
-
-  if (codeNumber.length === 0) {
+  if (num.length === 0) {
     alert("Por favor, informe o número do código do requisito.");
-    if (codeNumberInput) codeNumberInput.focus();
     return false;
   }
 
-  var num = parseInt(codeNumber, 10);
-  if (isNaN(num) || num <= 0) {
+  if (num <= 0) {
     alert("O código do requisito deve ser um número inteiro positivo.");
-    if (codeNumberInput) codeNumberInput.focus();
     return false;
   }
 
-  if (codeNumber.length > 4) {
+  if (num.length > 4) {
     alert("Número do código muito longo (máximo de 4 dígitos permitidos).");
-    if (codeNumberInput) codeNumberInput.focus();
     return false;
   }
 
-  var ver = parseInt(version, 10);
-  if (isNaN(ver) || ver <= 0) {
+  if (version <= 0) {
     alert("A versão do requisito deve ser um número maior ou igual a 1.");
-    if (versionInput) versionInput.focus();
     return false;
   }
 
   if (requirement.length === 0) {
     alert("Por favor, insira o título do requisito.");
-    if (reqInput) reqInput.focus();
     return false;
   }
 
   if (requirement.length < 3) {
     alert("O título do requisito deve ter no mínimo 3 caracteres.");
-    if (reqInput) reqInput.focus();
+
     return false;
   }
 
   if (requirement.length > 100) {
-    alert("Título do requisito maior que o permitido no banco (máximo de 100 caracteres).");
-    if (reqInput) reqInput.focus();
+    alert("Título do requisito maior que o permitido (máximo de 100 caracteres).");
     return false;
   }
 
   if (description.length > 255) {
     alert("A descrição do requisito é maior que o permitido (máximo de 255 caracteres).");
-    if (descInput) descInput.focus();
     return false;
   }
 
-  if (isNaN(priority) || priority < 1 || priority > 5) {
+  if (priority < 1 || priority > 5) {
     alert("A prioridade deve ser um valor entre 1 e 5.");
     return false;
   }
 
-  if (isNaN(complexity) || complexity < 1 || complexity > 5) {
+  if (complexity < 1 || complexity > 5) {
     alert("A complexidade deve ser um valor entre 1 e 5.");
     return false;
   }
 
-  var codeHidden = document.getElementById("code");
-  if (codeHidden) {
-    codeHidden.value = type + String(num).padStart(3, "0");
-  }
-
   console.log("Formulário de requisito validado com sucesso!");
   return true;
-}
-
-function validateForm() {
-  return verifyRequirementForm();
 }
 
 // Atualiza o prefixo do código ao alterar o tipo (RF ou RNF)
@@ -108,7 +73,7 @@ function updateCodePrefix() {
   updateCodePreview();
 }
 
-// Atualiza a prévia do código formatado com 3 dígitos (ex: RF001 ou RNF001)
+// Atualiza a prévia do código formatado
 function updateCodePreview() {
   var typeSelect = document.getElementById("type");
   var numInput = document.getElementById("code-number");
@@ -118,7 +83,7 @@ function updateCodePreview() {
   if (!typeSelect || !numInput) return;
 
   var type = typeSelect.value;
-  var num = numInput.value ? numInput.value.padStart(3, "0") : "001";
+  var num = numInput.value ? numInput.value.padStart(4, "0") : "0001";
   var formatted = type + num;
 
   if (preview) preview.textContent = formatted;
@@ -236,7 +201,7 @@ function deleteRequirement(contextPath, id, projectId) {
     });
 }
 
-// Filtra requisitos por prioridade e complexidade (RF9)
+// Filtra requisitos por prioridade e complexidade 
 function filterRequirements() {
   var pri = document.getElementById("filter-priority").value;
   var com = document.getElementById("filter-complexity").value;

@@ -2,12 +2,14 @@
 <%@page import="java.util.List"%>
 <%@page import="Entities.Users"%>
 <%
-    Users sessionUser = (Users) session.getAttribute("user");
-    if (sessionUser == null) {
+    Users user = (Users) session.getAttribute("user");
+    if (user == null) {
         response.sendRedirect(request.getContextPath() + "/index.jsp");
         return;
     }
+    
     List<Users> usersList = (List<Users>) request.getAttribute("usersList");
+    boolean isAdmin = user.role == 1;
 %>
 
 <!DOCTYPE html>
@@ -85,7 +87,18 @@
                     value="Voltar"
                     onclick="window.location.href = '<%= request.getContextPath() %>/Menu.jsp'"
                 >
+                <% if (isAdmin) { %>
+                    <input
+                        class="botao"
+                        type="button"
+                        value="Imprimir / Salvar PDF"
+                        onclick="window.open('Reports/Reports.jsp?id=user')"
+                    >
+                <%
+                    }
+                %>
             </div>
+            
         </div>
     </body>
 </html>
