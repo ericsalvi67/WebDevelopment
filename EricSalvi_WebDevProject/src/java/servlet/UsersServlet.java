@@ -107,111 +107,99 @@ public class UsersServlet extends HttpServlet {
         Action.RouterPage("Users/Users.jsp", request, response);
     }
 
+    private void Login(HttpServletRequest request, HttpServletResponse response, String email, String password)
+            throws IOException, ServletException {
+
+        UsersHandler usersHandler = new UsersHandler();
+        
+        if (email == null || password == null) {
+            Action.RouterPage("Error.jsp", request, response);
+            return;
+        }
+
+        Users user = usersHandler.Auth(new Users(email, password));
+
+        if (user != null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", user);
+            response.sendRedirect(request.getContextPath() + "/Menu.jsp");
+        } else {
+            Action.RouterPage("Error.jsp", request, response);
+        }
+        return;
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String idParam = request.getParameter("id");
+        String idInput = request.getParameter("id");
+        String email = request.getParameter("email");
+        String password = MD5.getMd5(request.getParameter("password"));
+        String confirmPassword =  MD5.getMd5(request.getParameter("confirm_password"));
         UsersHandler usersHandler = new UsersHandler();
 
         // Login
-        if (idParam == null) {
-            String email = request.getParameter("email");
-            String rawPassword = request.getParameter("password");
-
-            if (email == null || rawPassword == null) {
-                Action.RouterPage("Error.jsp", request, response);
-                return;
-            }
-
-            String password = MD5.getMd5(rawPassword);
-            Users user = usersHandler.Auth(new Users(email, password));
-
-            if (user != null) {
-                HttpSession session = request.getSession(true);
-                session.setAttribute("user", user);
-                response.sendRedirect(request.getContextPath() + "/Menu.jsp");
-            } else {
-                Action.RouterPage("Error.jsp", request, response);
-            }
+        if (idInput == null) {
+            Login(request, response, email, password);
             return;
         }
 
-        // Cadastro ou Atualização
+        // Cadastro
         int id;
         try {
-            id = Integer.parseInt(idParam);
+            id = Integer.parseInt(idInput);
         } catch (NumberFormatException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID inválido.");
             return;
         }
 
-        String email = request.getParameter("email");
-        String rawPassword = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirm_password");
-
-        if (email == null || email.trim().length() < 3 || email.trim().length() > 60
-                || rawPassword == null || rawPassword.length() < 3
-                || (confirmPassword != null && !rawPassword.equals(confirmPassword))) {
+        Users newUser = new Users(0, email.trim(), password, 2);
+        if (usersHandler.Insert(newUser)) {
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
+        } else {
             Action.RouterPage("Error.jsp", request, response);
-            return;
         }
+        return;
+    }
 
-        String hashedPassword = MD5.getMd5(rawPassword);
+    @Override
+    protected void doPatch(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String idInput = request.getParameter("id");
+        String email = request.getParameter("email");
+        String password = MD5.getMd5(request.getParameter("password"));
+        String confirmPassword =  MD5.getMd5(request.getParameter("confirm_password"));
+        String oldPassword = request.getParameter("old_password");
+        UsersHandler usersHandler = new UsersHandler();
+
         HttpSession session = request.getSession(false);
-        Users sessionUser = session != null ? (Users) session.getAttribute("user") : null;
+        Users user = session != null ? (Users) session.getAttribute("user") : null;
 
-        if (id == 0) {
-            int role = 2;
-            if (sessionUser != null && sessionUser.role == 1 && request.getParameter("role") != null) {
-                try {
-                    int parsedRole = Integer.parseInt(request.getParameter("role"));
-                    if (parsedRole == 1 || parsedRole == 2) {
-                        role = parsedRole;
-                    }
-                } catch (NumberFormatException ignored) {
-                }
-            }
-
-            Users newUser = new Users(0, email.trim(), hashedPassword, role);
-            if (usersHandler.Insert(newUser)) {
-                response.sendRedirect(request.getContextPath() + "/index.jsp");
-            } else {
-                Action.RouterPage("Error.jsp", request, response);
-            }
-            return;
-        }
-
-        // Atualização de usuário existente
-        if (sessionUser == null) {
+        if (user == null) {
             response.sendRedirect(request.getContextPath() + "/index.jsp");
             return;
         }
 
-        if (sessionUser.role != 1 && sessionUser.id != id) {
+        int id;
+        int role = user.role;
+        try {
+            id = Integer.parseInt(idInput);
+            role = Integer.parseInt(request.getParameter("role"));
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID/Role inválido.");
+            return;
+        }
+
+        if (user.role != 1 && user.id != id) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Usuário não autorizado.");
             return;
         }
 
-        int role = sessionUser.role;
-        if (sessionUser.role == 1) {
-            try {
-                int parsedRole = Integer.parseInt(request.getParameter("role"));
-                if (parsedRole == 1 || parsedRole == 2) {
-                    role = parsedRole;
-                } else {
-                    Action.RouterPage("Error.jsp", request, response);
-                    return;
-                }
-            } catch (NumberFormatException e) {
-                Action.RouterPage("Error.jsp", request, response);
-                return;
-            }
-        }
-
-        Users updatedUser = new Users(id, email.trim(), hashedPassword, role);
+        Users updatedUser = new Users(id, email.trim(), password, role);
         if (usersHandler.Update(updatedUser)) {
-            if (sessionUser.id == id) {
+            if (user.id == id) {
                 session.setAttribute("user", updatedUser);
             }
             response.sendRedirect(request.getContextPath() + "/UsersServlet?a=getAll");
