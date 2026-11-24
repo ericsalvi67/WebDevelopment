@@ -37,6 +37,7 @@
             <h2 class="h2">Editar Usuário</h2>
 
             <input type="hidden" name="id" value="<%= userEdit.id %>">
+            <input type="hidden" name="old_password" value="<%= userEdit.password %>"
 
             <div>
                 <label for="email">Email:</label><br>
@@ -60,7 +61,6 @@
                     name="password"
                     maxlength="60"
                     autocomplete="new-password"
-                    value="<%= userEdit.password %>"
                 >
                 <br><br>
             </div>
@@ -73,7 +73,6 @@
                     name="confirm_password"
                     maxlength="60"
                     autocomplete="new-password"
-                    value="<%= userEdit.password %>"
                 >
                 <br><br>
             </div>

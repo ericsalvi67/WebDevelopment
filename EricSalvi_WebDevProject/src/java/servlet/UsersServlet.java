@@ -53,7 +53,7 @@ public class UsersServlet extends HttpServlet {
         ArrayList<Users> users = new ArrayList<>();
 
         switch (action) {
-            case "getAll":
+            case "getAll" -> {
                 if (user.role == 1) {
                     users.addAll(usersHandler.GetAll());
                 } else {
@@ -62,9 +62,9 @@ public class UsersServlet extends HttpServlet {
                         users.add(current);
                     }
                 }
-                break;
+            }
 
-            case "getByValue":
+            case "getByValue" -> {
                 if (user.role == 1) {
                     users.addAll(usersHandler.GetByValue(criteria, value));
                 } else {
@@ -73,9 +73,9 @@ public class UsersServlet extends HttpServlet {
                         users.add(current);
                     }
                 }
-                break;
+            }
 
-            case "getById":
+            case "getById" -> {
                 int targetId;
                 try {
                     targetId = Integer.parseInt(request.getParameter("id"));
@@ -98,9 +98,9 @@ public class UsersServlet extends HttpServlet {
                 request.setAttribute("userEdit", targetUser);
                 Action.RouterPage("Users/Update.jsp", request, response);
                 return;
+            }
 
-            default:
-                System.out.println("Ação não reconhecida: " + action);
+            default -> System.out.println("Ação não reconhecida: " + action);
         }
 
         request.setAttribute("usersList", users);
@@ -148,16 +148,11 @@ public class UsersServlet extends HttpServlet {
 
         String email = request.getParameter("email");
         String rawPassword = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirm_password");
-
-        if (email == null || email.trim().length() < 3 || email.trim().length() > 60
-                || rawPassword == null || rawPassword.length() < 3
-                || (confirmPassword != null && !rawPassword.equals(confirmPassword))) {
-            Action.RouterPage("Error.jsp", request, response);
-            return;
-        }
-
         String hashedPassword = MD5.getMd5(rawPassword);
+        
+        if (rawPassword.isEmpty())
+            hashedPassword = request.getParameter("old_password");
+            
         HttpSession session = request.getSession(false);
         Users sessionUser = session != null ? (Users) session.getAttribute("user") : null;
 
